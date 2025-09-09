@@ -511,6 +511,42 @@ export interface ApiAuthorAuthor extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCarCar extends Struct.CollectionTypeSchema {
+  collectionName: 'cars';
+  info: {
+    displayName: 'car';
+    pluralName: 'cars';
+    singularName: 'car';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    co2kategorie: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    Image: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
+    kraftstoff: Schema.Attribute.String;
+    leistung: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::car.car'> &
+      Schema.Attribute.Private;
+    marke: Schema.Attribute.String;
+    modell: Schema.Attribute.String;
+    mwst: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    schaltung: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    verbrauch: Schema.Attribute.String;
+  };
+}
+
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -1088,6 +1124,7 @@ declare module '@strapi/strapi' {
       'api::about.about': ApiAboutAbout;
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
+      'api::car.car': ApiCarCar;
       'api::category.category': ApiCategoryCategory;
       'api::global.global': ApiGlobalGlobal;
       'plugin::content-releases.release': PluginContentReleasesRelease;

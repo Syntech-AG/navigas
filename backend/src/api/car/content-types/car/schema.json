@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cars",
+  "info": {
+    "singularName": "car",
+    "pluralName": "cars",
+    "displayName": "car"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "marke": {
+      "type": "string"
+    },
+    "schaltung": {
+      "type": "string"
+    },
+    "kraftstoff": {
+      "type": "string"
+    },
+    "leistung": {
+      "type": "string"
+    },
+    "verbrauch": {
+      "type": "string"
+    },
+    "co2kategorie": {
+      "type": "string"
+    },
+    "mwst": {
+      "type": "string"
+    },
+    "modell": {
+      "type": "string"
+    },
+    "Image": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}
