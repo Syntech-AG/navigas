@@ -17,7 +17,7 @@
 @font-face {
   font-family: "Manrope";
   src: url("/font/Manrope-SemiBold.ttf") format("truetype");
-  font-weight: 600; /* SemiBold */
+  font-weight: 600;
   font-style: normal;
 }
 
@@ -31,7 +31,7 @@
 @font-face {
   font-family: "Manrope";
   src: url("/font/Manrope-ExtraBold.ttf") format("truetype");
-  font-weight: 800; /* ExtraBold */
+  font-weight: 800;
   font-style: normal;
 }
 
@@ -45,10 +45,39 @@
 @font-face {
   font-family: "Manrope";
   src: url("/font/Manrope-Medium.ttf") format("truetype");
-  font-weight: 500; /* Medium */
+  font-weight: 500;
   font-style: normal;
 }
 
 * {
   font-family: "Manrope", sans-serif;
+}
+
+.slider-mask {
+  overflow: hidden;
+}
+
+.slider-track {
+  display: flex;
+  width: max-content;
+  animation: scroll 10s linear infinite;
+  will-change: transform;
+}
+
+.slide {
+  display: flex;
+  align-items: center;
+}
+
+.slide img {
+  flex: 0 0 auto;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }

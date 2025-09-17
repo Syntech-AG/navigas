@@ -1,6 +1,11 @@
 import { useState } from "react";
-import CarList from "../components/CarList";
-import HomeStart from "../components/HomeSTart";
+import HomeStart from "../components/home/HomeStart";
+import LogoSlider from "../components/home/LogoSlider";
+import HoverCategories from "../components/home/HoverCategories";
+import Auto from "../components/home/Auto";
+import CarList from "../components/general/CarList";
+import ServicesType from "../components/home/ServicesType";
+import ScrollAnimation from "../components/home/ScrollAnimation";
 
 function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -12,6 +17,13 @@ function Home() {
   return (
     <div className="">
       <HomeStart />
+      <LogoSlider />
+      <hr className="w-full h-[1px] text-[#d2d0d0]" />
+      <HoverCategories />
+      <Auto />
+      <ServicesType />
+      <ScrollAnimation />
+      <ServicesType />
 
       {/* <ExcelUploader onUploadSuccess={handleUploadSuccess} /> */}
 

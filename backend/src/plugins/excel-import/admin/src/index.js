@@ -1,6 +1,5 @@
-// src/plugins/excel-import/admin/src/index.js
 import { prefixPluginTranslations } from '@strapi/strapi/admin';
-import { getTranslation } from './utils/getTranslation'; // returns `${PLUGIN_ID}.${suffix}`
+import { getTranslation } from './utils/getTranslation';
 import { PLUGIN_ID } from './pluginId';
 import { Initializer } from './components/Initializer';
 import { PluginIcon } from './components/PluginIcon';
