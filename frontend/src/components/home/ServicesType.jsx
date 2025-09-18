@@ -46,7 +46,7 @@ const data = [
 const ServicesType = () => {
   return (
     <div>
-      <div className="container grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-y-14 gap-x-6">
+      <div className="container grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-y-14 gap-x-6 py-23">
         {data.map((item, index) => (
           <div key={index} className="flex flex-col items-center gap-3">
             <div className="bg-[#E8EBF2] rounded-full p-8">

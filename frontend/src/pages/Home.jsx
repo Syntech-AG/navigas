@@ -6,6 +6,8 @@ import Auto from "../components/home/Auto";
 import CarList from "../components/general/CarList";
 import ServicesType from "../components/home/ServicesType";
 import ScrollAnimation from "../components/home/ScrollAnimation";
+import Video from "../components/home/Video";
+import Nachrichten from "../components/about/Nachrichten";
 
 function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -22,8 +24,8 @@ function Home() {
       <HoverCategories />
       <Auto />
       <ServicesType />
+      <Video />
       <ScrollAnimation />
-      <ServicesType />
 
       {/* <ExcelUploader onUploadSuccess={handleUploadSuccess} /> */}
 
@@ -33,8 +35,9 @@ function Home() {
       >
         Refresh List
       </button> */}
+      <Nachrichten />
 
-      <CarList refreshTrigger={refreshTrigger} />
+      {/* <CarList refreshTrigger={refreshTrigger} /> */}
     </div>
   );
 }
