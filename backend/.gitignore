@@ -129,3 +129,6 @@ dist
 build
 .strapi-updater.json
 .strapi-cloud.json
+
+# Ignore database runtime files
+backend/data/mysql/
