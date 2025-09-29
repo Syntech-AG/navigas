@@ -7,7 +7,7 @@
     "displayName": "car"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
@@ -44,6 +44,35 @@
         "videos",
         "audios"
       ]
+    },
+    "Autokategorien": {
+      "type": "enumeration",
+      "enum": [
+        "Kleinwagen",
+        "Kompakt",
+        "Mittelklasse",
+        "SUV",
+        "Premium"
+      ]
+    },
+    "Fahrzeugtypen": {
+      "type": "enumeration",
+      "enum": [
+        "Elektrisch",
+        "Hybrid",
+        "Gas"
+      ]
+    },
+    "Spezifikationen": {
+      "type": "enumeration",
+      "enum": [
+        "Automatik",
+        "Handschaltung",
+        "Allrad"
+      ]
+    },
+    "preis": {
+      "type": "string"
     }
   }
 }
