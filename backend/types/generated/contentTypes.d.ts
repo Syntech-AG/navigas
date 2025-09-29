@@ -519,13 +519,19 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
     singularName: 'car';
   };
   options: {
-    draftAndPublish: false;
+    draftAndPublish: true;
   };
   attributes: {
+    Autokategorien: Schema.Attribute.Enumeration<
+      ['Kleinwagen', 'Kompakt', 'Mittelklasse', 'SUV', 'Premium']
+    >;
     co2kategorie: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    Fahrzeugtypen: Schema.Attribute.Enumeration<
+      ['Elektrisch', 'Hybrid', 'Gas']
+    >;
     Image: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
@@ -538,8 +544,12 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
     marke: Schema.Attribute.String;
     modell: Schema.Attribute.String;
     mwst: Schema.Attribute.String;
+    preis: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     schaltung: Schema.Attribute.String;
+    Spezifikationen: Schema.Attribute.Enumeration<
+      ['Automatik', 'Handschaltung', 'Allrad']
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import axios from "axios";
 import qs from "qs";
 
 const API_BASE = "http://localhost:1337";
 const PAGE_SIZE = 9;
-
 const Image = "Image";
 
 const toAbsolute = (maybeUrl) =>
@@ -27,118 +26,202 @@ const pickBestUrl = (file) => {
   return toAbsolute(url);
 };
 
+// Memoized card to skip unchanged re-renders
+const CarCard = memo(function CarCard({ car }) {
+  return (
+    <div className="" key={car.id}>
+      <div className="bg-[#0A1424] w-fit rounded-xl">
+        <div className="relative">
+          <img
+            className="min-w-[300px] rounded-t-xl"
+            src={car.imageUrl}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+          <div className="absolute w-[90%] bottom-5 flex flex-row translate-x-[-50%] left-1/2 justify-start gap-1 items-end">
+            {/* <h1>{car.preise}</h1> */}
+            <h1 className="text-[24px] text-white font-medium tracking-[2px]">
+              {car.preis}
+            </h1>
+            <p className="text-[10px] text-white ">
+              pro Monat <br /> inkl. MwSt.
+            </p>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 w-[90%] mx-auto py-5 border-b border-b-[#152032]">
+          <h1 className="text-[20px] text-white font-medium">
+            {car.marke} {car.modell}
+          </h1>
+          <h1 className="text-[#C0C0C1] text-[14px] font-regular">
+            {car.schaltung}
+          </h1>
+        </div>
+
+        <div className="flex flex-row justify-between w-[80%] mx-auto py-5">
+          <div className="flex flex-col-reverse items-center gap-2">
+            <p className="text-[#C0C0C1] text-[12px] font-regular">
+              {car.leistung} PS
+            </p>
+            <img src="/images/psIcon.svg" alt="" />
+          </div>
+          <div className="flex flex-col-reverse items-center gap-2">
+            <p className="text-[#C0C0C1] text-[12px] font-regular">
+              {car.kraftstoff}
+            </p>
+            <img src="/images/pumpIcon.svg" alt="" />
+          </div>
+          <div className="flex flex-col-reverse items-center gap-2">
+            <p className="text-[#C0C0C1] text-[12px] font-regular">
+              {car.verbrauch} L/100km
+            </p>
+            <img src="/images/typeIcon.svg" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
 const CarList = ({ refreshTrigger }) => {
   const [cars, setCars] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pageCount, setPageCount] = useState(1);
 
-  const fetchCars = async (pageToFetch = page) => {
+  console.log(cars);
+
+  // simple in-memory page cache to avoid re-fetching the same page
+  const cacheRef = useRef(new Map());
+  // track the current in-flight request to cancel it when needed
+  const inflightRef = useRef(null);
+
+  const normalize = (arr) =>
+    (arr || []).map((item) => {
+      const attrs = item?.attributes ? item.attributes : item || {};
+      const mediaNode = (attrs?.[Image]?.data ?? attrs?.[Image]) || [];
+      const files = Array.isArray(mediaNode)
+        ? mediaNode
+        : mediaNode && typeof mediaNode === "object"
+        ? [mediaNode]
+        : [];
+      const imageUrls = files.map(pickBestUrl);
+
+      return {
+        id: item?.documentId || item?.id,
+        ...attrs,
+        imageUrls,
+        imageUrl: imageUrls[0] || "",
+      };
+    });
+
+  const fetchCars = useCallback(async (pageToFetch, { force = false } = {}) => {
+    // serve from cache unless forced
+    if (!force && cacheRef.current.has(pageToFetch)) {
+      const cached = cacheRef.current.get(pageToFetch);
+      setCars(cached.cars);
+      setPageCount(cached.pageCount);
+      return;
+    }
+
+    // cancel any in-flight request
+    if (inflightRef.current) {
+      inflightRef.current.abort();
+    }
+    const controller = new AbortController();
+    inflightRef.current = controller;
+
     setLoading(true);
     try {
       const query = qs.stringify(
         {
-          pagination: { page: pageToFetch, pageSize: PAGE_SIZE },
+          pagination: {
+            page: pageToFetch,
+            pageSize: PAGE_SIZE,
+            withCount: true,
+          },
           sort: ["updatedAt:desc"],
-          populate: { [Image]: true },
+          // request only the fields actually used
+          fields: [
+            "marke",
+            "modell",
+            "schaltung",
+            "leistung",
+            "kraftstoff",
+            "verbrauch",
+            "updatedAt",
+            "Autokategorien",
+            "Fahrzeugtypen",
+            "Spezifikationen",
+            "preis",
+          ],
+          populate: {
+            [Image]: {
+              fields: ["url", "formats"],
+            },
+          },
         },
         { encodeValuesOnly: true }
       );
 
-      const { data } = await axios.get(`${API_BASE}/api/cars?${query}`);
+      const { data } = await axios.get(`${API_BASE}/api/cars?${query}`, {
+        signal: controller.signal,
+      });
 
-      const normalized = (data?.data || []).map((item) => {
-        const attrs = item?.attributes ? item.attributes : item || {};
+      const normalized = normalize(data?.data);
+      const nextPageCount = data?.meta?.pagination?.pageCount || 1;
 
-        const mediaNode = (attrs?.[Image]?.data ?? attrs?.[Image]) || [];
-
-        const files = Array.isArray(mediaNode)
-          ? mediaNode
-          : mediaNode && typeof mediaNode === "object"
-          ? [mediaNode]
-          : [];
-
-        const imageUrls = files.map(pickBestUrl);
-
-        return {
-          id: item?.documentId || item?.id,
-          ...attrs,
-          imageUrls,
-          imageUrl: imageUrls[0] || "",
-        };
+      // cache the page
+      cacheRef.current.set(pageToFetch, {
+        cars: normalized,
+        pageCount: nextPageCount,
       });
 
       setCars(normalized);
-      setPageCount(data?.meta?.pagination?.pageCount || 1);
+      setPageCount(nextPageCount);
     } catch (err) {
-      console.error("Failed to fetch cars:", err?.response?.data || err);
+      // ignore abort errors; rethrow/log others
+      if (!controller.signal.aborted) {
+        console.error("Failed to fetch cars:", err?.response?.data || err);
+      }
     } finally {
+      if (inflightRef.current === controller) {
+        inflightRef.current = null;
+      }
       setLoading(false);
     }
-  };
+  }, []);
 
+  // When refreshTrigger changes, reset to page 1; let the page effect do the fetching
   useEffect(() => {
     setPage(1);
-    fetchCars(1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshTrigger]);
 
+  // Fetch whenever page changes
   useEffect(() => {
     fetchCars(page);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
+    // cancel on unmount or page change
+    return () => {
+      if (inflightRef.current) inflightRef.current.abort();
+    };
+  }, [page, fetchCars]);
+
+  const goToPrevious = useCallback(
+    () => setPage((p) => Math.max(1, p - 1)),
+    []
+  );
+  const goToNext = useCallback(
+    () => setPage((p) => Math.min(pageCount, p + 1)),
+    [pageCount]
+  );
 
   if (loading) return <div>Loading cars...</div>;
-
-  const goToPrevious = () => setPage((p) => Math.max(1, p - 1));
-  const goToNext = () => setPage((p) => Math.min(pageCount, p + 1));
-
-  console.log(cars[0]);
 
   return (
     <div>
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
         {cars.map((car) => (
-          <div className="" key={car.id}>
-            <div>
-              <div>
-                <div>
-                  {car.marke} {car.modell}
-                </div>
-                <div>{car.schaltung}</div>
-              </div>
-
-              <div>
-                <div className="flex flex-col items-center gap-2">
-                  <p>{car.leistung} PS</p>
-                  <img src="/images/psIcon.svg" alt="" />
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <p>{car.kraftstoff}</p>
-                  <img src="/images/pumpIcon.svg" alt="" />
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <p>{car.verbrauch} L/100km</p>
-                  <img src="/images/typeIcon.svg" alt="" />
-                </div>
-              </div>
-              <img src={car.imageUrl} alt="" />
-
-              {/* {car.imageUrls?.length >= 1 && (
-                <div>
-                  {car.imageUrls.slice(1).map((url, idx) => (
-                    <img
-                      key={idx}
-                      src={url}
-                      alt=""
-                     
-                    />
-                  ))}
-                  
-                </div>
-              )} */}
-            </div>
-          </div>
+          <CarCard key={car.id} car={car} />
         ))}
       </div>
 
@@ -151,7 +234,8 @@ const CarList = ({ refreshTrigger }) => {
           Previous
         </button>
         <span>
-          Page {page} of {pageCount}
+          {" "}
+          Page {page} of {pageCount}{" "}
         </span>
         <button
           className="bg-black text-white rounded-lg"
@@ -160,7 +244,9 @@ const CarList = ({ refreshTrigger }) => {
         >
           Next
         </button>
-        <button onClick={() => fetchCars(page)}>Refresh</button>
+        <button onClick={() => fetchCars(page, { force: true })}>
+          Refresh
+        </button>
       </div>
     </div>
   );
