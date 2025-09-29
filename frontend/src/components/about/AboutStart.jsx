@@ -9,7 +9,7 @@ const AboutStart = ({ src, title }) => {
       </h1>
       <img
         className="absolute w-full h-full z-9 bottom-0"
-        src="/images/gradientBg.png"
+        src="/images/Gradient.png"
         alt=""
       />
     </div>

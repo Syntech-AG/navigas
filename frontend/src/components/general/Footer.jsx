@@ -3,6 +3,24 @@ import React from "react";
 const Footer = () => {
   return (
     <div className="bg-[#0A1424]">
+      <div className="flex flex-row items-center justify-around w-full bg-[#2860B7] text-xs md:text-sm text-white ">
+        <div className="flex flex-row items-center justify-center px-full py-[40px]   w-full">
+          <img src="/images/fb.svg" alt="" />
+          <h1>Facebook</h1>
+        </div>
+        <div className="flex flex-row items-center justify-center px-full py-[40px] border-gray-500 border-r border-l w-full">
+          <img src="/images/x.svg" alt="" />
+          <h1>Twitter (X)</h1>
+        </div>
+        <div className="flex flex-row items-center justify-center px-full py-[40px] border-gray-500 border-r  w-full">
+          <img src="/images/in.svg" alt="" />
+          <h1>Linkedin</h1>
+        </div>
+        <div className="flex flex-row items-center justify-center px-full] py-[40px] w-full">
+          <img src="/images/insta.svg" alt="" />
+          <h1>Instagram</h1>
+        </div>
+      </div>
       <div className="container">
         <div className="grid xl:grid-cols-4 md:grid-cols-4 grid-cols-1 gap-12 md:gap-8 py-[100px] justify-items-center">
           <img src="/images/navigasLogo.svg" alt="" />

@@ -8,6 +8,8 @@ import About from "./pages/About";
 import ReserveCar from "./pages/ReserveCar";
 import Customer from "./pages/Customer";
 import Faq from "./pages/Faq";
+import Kontakt from "./pages/Kontakt";
+import Blogs from "./pages/Blogs";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="/privatKunden2" element={<ReserveCar />} />
           <Route path="/geschäftskunden" element={<Customer />} />
           <Route path="/faq" element={<Faq />} />
+          <Route path="/kontakt" element={<Kontakt />} />
+          <Route path="blogs" element={<Blogs />} />
         </Routes>
         <Footer />
       </BrowserRouter>
