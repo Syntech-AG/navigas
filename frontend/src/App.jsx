@@ -11,6 +11,7 @@ import Faq from "./pages/Faq";
 import Kontakt from "./pages/Kontakt";
 import Blogs from "./pages/Blogs";
 import FilteredCarPage from "./pages/FilteredCarPage";
+import BlogsInfo from "./components/blogs/BlogsInfo";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="blogs" element={<Blogs />} />
           <Route path="/filter" element={<FilteredCarPage />} />
+          {/* <Route path="/blogsInfo" element={<BlogsInfo />} /> */}
+          <Route path="/blogs/:blogId" element={<BlogsInfo />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const reports = [
@@ -65,7 +65,23 @@ const reports = [
   },
 ];
 
-const Berichte = () => {
+const shuffleArray = (array) => {
+  let shuffled = array.slice();
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+const BerichteShuffle = () => {
+  const [visibleReports, setVisibleReports] = useState([]);
+
+  useEffect(() => {
+    const shuffled = shuffleArray(reports);
+    setVisibleReports(shuffled.slice(0, 2));
+  }, []);
+
   return (
     <div className="container mx-auto py-[100px] ">
       <div className="text-center text-black mb-10 max-w-3xl mx-auto">
@@ -76,7 +92,7 @@ const Berichte = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-        {reports.map(
+        {visibleReports.map(
           (
             { img, title, description, date, comments, link, category },
             index
@@ -117,4 +133,4 @@ const Berichte = () => {
   );
 };
 
-export default Berichte;
+export default BerichteShuffle;

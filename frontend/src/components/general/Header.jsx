@@ -5,9 +5,8 @@ const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="sticky top-0 w-full backdrop-blur-lg bg-[#0A14241A] z-5000">
-      <div className="container flex flex-row justify-between   py-9 px-4 md:px-0">
-        {/* Logo and nav */}
+    <div className="fixed top-0 w-full  backdrop-blur-lg bg-[#0A14241A] z-5000">
+      <div className="container flex flex-row justify-between  py-9 px-4 md:px-0">
         <div className="flex flex-row justify-between w-full md:w-auto gap-12 items-center ">
           <img
             className="w-[160px]"
@@ -44,13 +43,12 @@ const Header = () => {
             </svg>
           </button>
 
-          {/* Nav links - horizontal on md and up, hidden and vertical on mobile when menuOpen */}
           <ul
             className={`${
               menuOpen ? "flex" : "hidden"
-            } absolute top-full left-0 text-[14px] right-0 bg-[#0A14241A] flex-col gap-4 p-4 md:static md:flex md:flex-row md:gap-5 md:bg-transparent md:p-0 text-white font-medium`}
+            } absolute top-full left-0 text-[14px] right-0  flex-col gap-4 p-4 md:static md:flex md:flex-row md:gap-5  md:p-0 text-white font-medium`}
           >
-            <li className="border-b-2 border-transparent hover:border-white transition-all duration-300">
+            <li className="border-b-2 border-transparent  hover:border-white transition-all duration-300">
               <Link to="/" onClick={() => setMenuOpen(false)}>
                 Home
               </Link>
@@ -75,7 +73,6 @@ const Header = () => {
                 FAQ
               </Link>
             </li>
-            {/* Kontakt button inside menu on mobile */}
             <li className="md:hidden">
               <Link to="/kontakt" onClick={() => setMenuOpen(false)}>
                 <button className="bg-[#0847A4] text-white text-[14px] font-semibold rounded-lg px-6 py-3 w-full">
@@ -85,8 +82,6 @@ const Header = () => {
             </li>
           </ul>
         </div>
-
-        {/* Contact info and Kontakt button hidden on all screen sizes */}
         <div className="hidden md:flex flex-row items-center space-x-4">
           <h1 className="text-white whitespace-nowrap md:hidden lg:block">
             + (0)41 780 31 33
