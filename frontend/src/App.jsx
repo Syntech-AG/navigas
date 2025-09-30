@@ -10,6 +10,7 @@ import Customer from "./pages/Customer";
 import Faq from "./pages/Faq";
 import Kontakt from "./pages/Kontakt";
 import Blogs from "./pages/Blogs";
+import BlogsInfo from "./components/blogs/BlogsInfo";
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="blogs" element={<Blogs />} />
+          {/* <Route path="/blogsInfo" element={<BlogsInfo />} /> */}
+          <Route path="/blogs/:blogId" element={<BlogsInfo />} />
         </Routes>
         <Footer />
       </BrowserRouter>

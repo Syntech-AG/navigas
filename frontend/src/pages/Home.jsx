@@ -8,6 +8,7 @@ import ServicesType from "../components/home/ServicesType";
 import ScrollAnimation from "../components/home/ScrollAnimation";
 import Video from "../components/home/Video";
 import Nachrichten from "../components/about/Nachrichten";
+import Abonnieren from "../components/general/Abonnieren";
 
 function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -25,6 +26,7 @@ function Home() {
       <Auto />
       <ServicesType />
       <Video />
+      <Abonnieren />
       <ScrollAnimation />
 
       {/* <ExcelUploader onUploadSuccess={handleUploadSuccess} /> */}
