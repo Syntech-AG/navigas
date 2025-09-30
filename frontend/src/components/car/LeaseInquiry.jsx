@@ -162,7 +162,7 @@ export default function LeaseInquiry({
               <img
                 src={car.img}
                 alt={`${car.name}`}
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
                 loading="eager"
                 decoding="async"
                 width="800"

@@ -26,7 +26,6 @@ const pickBestUrl = (file) => {
   return toAbsolute(url);
 };
 
-// Memoized card to skip unchanged re-renders
 const CarCard = memo(function CarCard({ car }) {
   return (
     <div className="" key={car.id}>
@@ -40,7 +39,6 @@ const CarCard = memo(function CarCard({ car }) {
             decoding="async"
           />
           <div className="absolute w-[90%] bottom-5 flex flex-row translate-x-[-50%] left-1/2 justify-start gap-1 items-end">
-            {/* <h1>{car.preise}</h1> */}
             <h1 className="text-[24px] text-white font-medium tracking-[2px]">
               {car.preis}
             </h1>
@@ -91,9 +89,7 @@ const CarList = ({ refreshTrigger }) => {
 
   console.log(cars);
 
-  // simple in-memory page cache to avoid re-fetching the same page
   const cacheRef = useRef(new Map());
-  // track the current in-flight request to cancel it when needed
   const inflightRef = useRef(null);
 
   const normalize = (arr) =>
@@ -116,7 +112,6 @@ const CarList = ({ refreshTrigger }) => {
     });
 
   const fetchCars = useCallback(async (pageToFetch, { force = false } = {}) => {
-    // serve from cache unless forced
     if (!force && cacheRef.current.has(pageToFetch)) {
       const cached = cacheRef.current.get(pageToFetch);
       setCars(cached.cars);
@@ -124,7 +119,6 @@ const CarList = ({ refreshTrigger }) => {
       return;
     }
 
-    // cancel any in-flight request
     if (inflightRef.current) {
       inflightRef.current.abort();
     }
@@ -141,7 +135,6 @@ const CarList = ({ refreshTrigger }) => {
             withCount: true,
           },
           sort: ["updatedAt:desc"],
-          // request only the fields actually used
           fields: [
             "marke",
             "modell",
@@ -171,7 +164,6 @@ const CarList = ({ refreshTrigger }) => {
       const normalized = normalize(data?.data);
       const nextPageCount = data?.meta?.pagination?.pageCount || 1;
 
-      // cache the page
       cacheRef.current.set(pageToFetch, {
         cars: normalized,
         pageCount: nextPageCount,
@@ -180,7 +172,6 @@ const CarList = ({ refreshTrigger }) => {
       setCars(normalized);
       setPageCount(nextPageCount);
     } catch (err) {
-      // ignore abort errors; rethrow/log others
       if (!controller.signal.aborted) {
         console.error("Failed to fetch cars:", err?.response?.data || err);
       }
@@ -192,15 +183,12 @@ const CarList = ({ refreshTrigger }) => {
     }
   }, []);
 
-  // When refreshTrigger changes, reset to page 1; let the page effect do the fetching
   useEffect(() => {
     setPage(1);
   }, [refreshTrigger]);
 
-  // Fetch whenever page changes
   useEffect(() => {
     fetchCars(page);
-    // cancel on unmount or page change
     return () => {
       if (inflightRef.current) inflightRef.current.abort();
     };

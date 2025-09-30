@@ -10,6 +10,7 @@ import Customer from "./pages/Customer";
 import Faq from "./pages/Faq";
 import Kontakt from "./pages/Kontakt";
 import Blogs from "./pages/Blogs";
+import FilteredCarPage from "./pages/FilteredCarPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="blogs" element={<Blogs />} />
+          <Route path="/filter" element={<FilteredCarPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>
