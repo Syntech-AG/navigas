@@ -1,9 +1,15 @@
-import { useId, useMemo, useRef, useState } from "react";
+import React, { useId, useMemo, useRef, useState } from "react";
 
 const currency = (n) =>
   new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF" }).format(
     n
   );
+
+const steps = [
+  { label: "Fahrzeug wählen" },
+  { label: "Anfrage senden" },
+  { label: "Lieferung" },
+];
 
 const Input = ({
   id,
@@ -16,11 +22,13 @@ const Input = ({
   maxLength,
   onChange,
   value,
+  error,
   ...rest
 }) => {
   const inputId = id || useId();
   const [touched, setTouched] = useState(false);
   const invalid = touched && required && !value;
+
   return (
     <div className="w-full">
       <label
@@ -43,18 +51,18 @@ const Input = ({
           onChange?.(e);
         }}
         onBlur={() => setTouched(true)}
+        aria-invalid={invalid ? "true" : undefined}
+        aria-describedby={error ? `${inputId}-error` : undefined}
         className={[
           "mt-2 block w-full rounded-lg border bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition",
           "focus:outline-none focus:ring-2 focus:ring-blue-600/30 focus:border-blue-600",
           invalid ? "border-pink-600 ring-2 ring-pink-200" : "border-gray-300",
-          "aria-[invalid=true]:border-pink-600",
         ].join(" ")}
-        aria-invalid={invalid ? "true" : "false"}
         {...rest}
       />
-      {invalid && (
-        <p className="mt-1.5 text-xs text-pink-600">
-          Dieses Feld ist erforderlich. [5]
+      {error && (
+        <p id={`${inputId}-error`} className="mt-1.5 text-xs text-pink-600">
+          {error}
         </p>
       )}
     </div>
@@ -83,15 +91,9 @@ const Textarea = ({ id, label, value, onChange, ...rest }) => {
   );
 };
 
-export default function LeaseInquiry({
-  car = {
-    name: "Polestar 2",
-    img: "/images/car.png",
-    kmPerYear: 5000,
-    termMonths: 48,
-    price: 599,
-  },
-}) {
+export default function LeaseInquiry({ car }) {
+  const [currentStep, setCurrentStep] = useState(2);
+
   const totals = useMemo(
     () => ({
       monthly: car.price,
@@ -114,12 +116,12 @@ export default function LeaseInquiry({
 
   const errors = useMemo(() => {
     const e = {};
-    if (!form.firstName.trim()) e.firstName = "Vorname ist erforderlich. [3]";
-    if (!form.lastName.trim()) e.lastName = "Name ist erforderlich. [3]";
+    if (!form.firstName.trim()) e.firstName = "Vorname ist erforderlich.";
+    if (!form.lastName.trim()) e.lastName = "Name ist erforderlich.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim() || ""))
-      e.email = "Gültige E-Mail angeben. [3]";
+      e.email = "Gültige E-Mail angeben.";
     if (!/^[+()0-9\s-]{6,}$/.test(form.phone.trim() || ""))
-      e.phone = "Gültige Telefonnummer angeben. [3]";
+      e.phone = "Gültige Telefonnummer angeben.";
     return e;
   }, [form]);
 
@@ -132,7 +134,6 @@ export default function LeaseInquiry({
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    e.currentTarget.classList.add("validated");
     if (Object.keys(errors).length) {
       submitRef.current?.focus();
       return;
@@ -141,134 +142,136 @@ export default function LeaseInquiry({
     await new Promise((r) => setTimeout(r, 900));
     setSubmitting(false);
     setSubmitted(true);
+    setCurrentStep(2);
   };
 
   return (
     <main className="bg-white">
       <section className="mx-auto max-w-6xl px-4 py-10 sm:py-12 lg:py-16">
-        <header className="text-center">
-          <h1 className="text-3xl font-semibold text-gray-900 sm:text-4xl">
-            Sle haben die richtige Wahl getroffen!
-          </h1>
-          <p className="mt-3 text-sm text-gray-600 sm:text-base">
-            Sie haben Ihre Auswahl getroffen, senden Sie uns jetzt Ihre Anfrage
-            | Wir melden uns umgehend mit einer unverbindlichen Offerte.
-          </p>
-        </header>
+        {/* Stepper */}
+        <div
+          className="flex items-center justify-center w-full py-6"
+          aria-label="Progress"
+        >
+          {steps.map((step, idx) => {
+            const isCompleted = idx + 1 < currentStep;
+            const isActive = idx + 1 === currentStep;
 
-        <div className="mt-10 rounded-2xl bg-gradient-to-b from-[#0F56FF] to-[#0D43C7] p-6 text-white shadow-xl sm:p-8">
-          <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-2">
-            <div className="mx-auto aspect-[4/3] w-full max-w-[420px] overflow-hidden rounded-xl">
-              <img
-                src={car.img}
-                alt={`${car.name}`}
-                className="h-full w-full object-contain"
-                loading="eager"
-                decoding="async"
-                width="800"
-                height="600"
-              />
-            </div>
-            <div>
-              <h2 className="text-2xl font-semibold">{car.name}</h2>
-              <hr className="my-4 border-white/20" />
-              <div className="grid grid-cols-2 gap-4 sm:max-w-sm">
-                <Spec
-                  label="KM / Jahr"
-                  value={`${car.kmPerYear.toLocaleString("de-CH")} km`}
-                />
-                <Spec label="Laufzeit" value={`${car.termMonths} Monate`} />
-                <Spec label="Preis" value={`${currency(car.price)} / Monat`} />
-              </div>
-            </div>
-          </div>
+            return (
+              <React.Fragment key={step.label}>
+                <div className="flex flex-col items-center min-w-[120px]">
+                  <div
+                    className={
+                      isCompleted
+                        ? "bg-blue-600 text-white w-10 h-10 rounded-xl flex items-center justify-center"
+                        : isActive
+                        ? "bg-blue-900 text-white w-10 h-10 rounded-xl flex items-center justify-center"
+                        : "bg-gray-100 text-gray-400 w-10 h-10 rounded-xl flex items-center justify-center"
+                    }
+                  >
+                    {isCompleted ? (
+                      <svg
+                        className="w-6 h-6"
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="M5 10l4 4 6-6"
+                          stroke="white"
+                          strokeWidth="2"
+                          fill="none"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    ) : (
+                      <span className="font-semibold text-lg">{idx + 1}</span>
+                    )}
+                  </div>
+                  <span
+                    className={
+                      isCompleted
+                        ? "mt-2 text-xs text-blue-600"
+                        : isActive
+                        ? "mt-2 text-xs text-black"
+                        : "mt-2 text-xs text-gray-400"
+                    }
+                  >
+                    {step.label}
+                  </span>
+                </div>
+                {idx < steps.length - 1 && (
+                  <div
+                    className="flex-1 border-t border-dashed border-gray-300 mx-2"
+                    role="presentation"
+                  ></div>
+                )}
+              </React.Fragment>
+            );
+          })}
         </div>
-
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1fr_380px]">
+          {/* Form */}
           <form
             onSubmit={onSubmit}
             noValidate
             className="rounded-2xl border border-gray-200 bg-gray-50/80 p-5 shadow-sm sm:p-7 flex flex-col justify-center"
           >
             <h3 className="lg:text-[34px] text-[24px] max-sm:mx-auto font-semibold text-gray-900">
-              Anfragen per Formular
+              Ihre Anfragen
             </h3>
 
-            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Input
-                label="Vorname"
-                required
-                autoComplete="given-name"
-                value={form.firstName}
-                onChange={handleChange("firstName")}
-                placeholder="Geben Sie Ihren Vornamen ein"
-                aria-errormessage={
-                  errors.firstName ? "err-firstName" : undefined
-                }
-              />
-              <Input
-                label="Name"
-                required
-                autoComplete="family-name"
-                value={form.lastName}
-                onChange={handleChange("lastName")}
-                placeholder="Geben Sie Ihren Nachnamen ein"
-                aria-errormessage={errors.lastName ? "err-lastName" : undefined}
-              />
-              <Input
-                label="E‑mail Adresse"
-                required
-                type="email"
-                autoComplete="email"
-                value={form.email}
-                onChange={handleChange("email")}
-                placeholder="Geben Sie Ihre E‑Mail Adresse ein"
-                aria-errormessage={errors.email ? "err-email" : undefined}
-              />
-              <Input
-                label="Telefonnummer"
-                required
-                type="tel"
-                autoComplete="tel"
-                inputMode="tel"
-                value={form.phone}
-                onChange={handleChange("phone")}
-                placeholder="Geben Sie Ihre Telefonnummer ein"
-                aria-errormessage={errors.phone ? "err-phone" : undefined}
-              />
-            </div>
-
-            <h3 className="mt-8 text-lg font-semibold text-gray-900">
-              Rückruf gewünscht
-            </h3>
-            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Input
-                label="Datum (optional)"
-                type="date"
-                value={form.date}
-                onChange={handleChange("date")}
-              />
-              <Input
-                label="Zeit (optional)"
-                type="time"
-                value={form.time}
-                onChange={handleChange("time")}
-              />
-              <div className="sm:col-span-2">
-                <Textarea
-                  label="Ihre Wünsche und Bemerkungen (optional)"
-                  value={form.notes}
-                  onChange={handleChange("notes")}
-                  placeholder="Haben Sie besondere Wünsche?"
+            <div className="mt-5 flex flex-col items-center">
+              <div className="flex flex-row items-center w-full gap-3">
+                <Input
+                  label="Vorname"
+                  required
+                  autoComplete="given-name"
+                  value={form.firstName}
+                  onChange={handleChange("firstName")}
+                  placeholder="Geben Sie Ihren Vornamen ein"
+                  error={errors.firstName}
+                />
+                <Input
+                  label="Nachname"
+                  required
+                  autoComplete="family-name"
+                  value={form.lastName}
+                  onChange={handleChange("lastName")}
+                  placeholder="Geben Sie Ihren Nachnamen ein"
+                  error={errors.lastName}
+                />
+              </div>
+              <div className="flex flex-col items-center w-full">
+                <Input
+                  label="E‑mail Adresse"
+                  required
+                  type="email"
+                  autoComplete="email"
+                  value={form.email}
+                  onChange={handleChange("email")}
+                  placeholder="Geben Sie Ihre E‑Mail Adresse ein"
+                  error={errors.email}
+                />
+                <Input
+                  label="Telefonnummer"
+                  required
+                  type="tel"
+                  autoComplete="tel"
+                  inputMode="tel"
+                  value={form.phone}
+                  onChange={handleChange("phone")}
+                  placeholder="Geben Sie Ihre Telefonnummer ein"
+                  error={errors.phone}
                 />
               </div>
             </div>
-
             <div aria-live="polite" className="sr-only">
               {Object.values(errors).join(". ")}
             </div>
 
-            {/* <div className="mt-6 sm:mt-8">
+            <div className="mt-6 sm:mt-8">
               <button
                 ref={submitRef}
                 type="submit"
@@ -283,9 +286,10 @@ export default function LeaseInquiry({
                   Anfrage gesendet – wir melden uns umgehend.
                 </p>
               )}
-            </div> */}
+            </div>
           </form>
 
+          {/* Sidebar */}
           <aside className="rounded-2xl border border-gray-200 bg-white pb-5">
             <div className="flex flex-col items-start gap-4">
               <div className="w-full overflow-hidden rounded-lg bg-gray-100">
@@ -373,15 +377,6 @@ function Row({ label, value, strong = false }) {
       <dd className={strong ? "font-semibold text-gray-900" : "text-gray-900"}>
         {value}
       </dd>
-    </div>
-  );
-}
-
-function Spec({ label, value }) {
-  return (
-    <div className="rounded-lg bg-white/5 px-4 py-3">
-      <p className="text-xs uppercase tracking-wide text-white/80">{label}</p>
-      <p className="mt-1 text-base font-semibold">{value}</p>
     </div>
   );
 }

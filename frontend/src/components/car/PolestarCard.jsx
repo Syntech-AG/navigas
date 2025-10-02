@@ -8,44 +8,28 @@ function useSelection(initial) {
   return { value, set };
 }
 
-function SegmentedRadio({ name, label, options, value, onChange }) {
+function Dropdown({ name, label, options, value, onChange }) {
   const groupId = useId();
+
   return (
-    <fieldset aria-labelledby={`${groupId}-label`} className="w-full">
-      <div id={`${groupId}-label`} className="mb-2 text-sm text-gray-600">
+    <div className="w-full">
+      <label htmlFor={groupId} className="mb-2 block text-sm text-gray-600">
         {label}
-      </div>
-      <div className="flex flex-wrap gap-2">
-        {options.map((opt) => {
-          const id = `${groupId}-${opt.value}`;
-          const checked = value === opt.value;
-          return (
-            <label
-              key={opt.value}
-              htmlFor={id}
-              className={cx(
-                "cursor-pointer select-none rounded-md border px-3 py-2 text-sm transition",
-                checked
-                  ? "border-gray-900 bg-gray-900 text-white"
-                  : "border-gray-300 bg-white text-gray-900 hover:border-gray-400",
-                "focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2"
-              )}
-            >
-              <input
-                id={id}
-                name={name}
-                type="radio"
-                value={String(opt.value)}
-                checked={checked}
-                onChange={() => onChange(opt.value)}
-                className="sr-only"
-              />
-              {opt.label}
-            </label>
-          );
-        })}
-      </div>
-    </fieldset>
+      </label>
+      <select
+        id={groupId}
+        name={name}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+      >
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }
 
@@ -91,9 +75,11 @@ export default function PolestarCard({
     [images]
   );
 
+  // Corrected initial selections to first elements
   const imageSel = useSelection(0);
-  const kmSel = useSelection(kmPerYearOptions[21] ?? kmPerYearOptions);
-  const termSel = useSelection(termOptions[22] ?? termOptions);
+  const kmSel = useSelection(kmPerYearOptions[0]);
+  const termSel = useSelection(termOptions[0]);
+
   const trio = useMemo(() => {
     const i = imageSel.value;
     const len = gallery.length;
@@ -120,112 +106,128 @@ export default function PolestarCard({
 
   return (
     <section className="mx-auto rounded-xl container">
-      <div className="grid gap-3 md:grid-cols-3">
-        <div className="relative md:col-span-2">
-          <div className="aspect-[4/3] overflow-hidden rounded-lg bg-gray-100">
-            <ImageWithFallback
-              src={gallery[imageSel.value]?.src}
-              alt={gallery[imageSel.value]?.alt || title}
+      <div className="flex flex-col md:flex-row justify-between">
+        <div className="md:w-[65%] w-full">
+          <div className="grid gap-3 md:grid-cols-1">
+            <div className="relative md:cols-span-2">
+              <div className="aspect-[5/3] overflow-hidden rounded-lg bg-gray-100">
+                {/* Show current image with fallback */}
+                <ImageWithFallback
+                  src={gallery[imageSel.value]?.src}
+                  alt={gallery[imageSel.value]?.alt || title}
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="pointer-events-none absolute flex items-center justify-center gap-4 px-2 w-fit bottom-8 right-6">
+                <button
+                  type="button"
+                  aria-label="Previous image"
+                  onClick={prev}
+                  className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  aria-label="Next image"
+                  onClick={next}
+                  className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-3 overflow-hidden max-md:hidden">
+              {trio
+                .filter((img) => img.idx !== imageSel.value)
+                .map((img) => (
+                  <button
+                    type="button"
+                    key={img.idx}
+                    onClick={() => imageSel.set(img.idx)}
+                    aria-pressed={imageSel.value === img.idx}
+                    className={cx(
+                      "overflow-hidden rounded-lg ring-1 transition",
+                      imageSel.value === img.idx
+                        ? "ring-blue-600"
+                        : "ring-gray-200 hover:ring-gray-300"
+                    )}
+                  >
+                    <div className="aspect-[4/3]">
+                      <ImageWithFallback src={img.src} alt={img.alt} />
+                    </div>
+                  </button>
+                ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="md:w-[30%] w-full">
+          <div className="mt-7 flex flex-col gap-2">
+            <p className="text-xs text-[#0847A4] bg-[#0847A41A] py-1 px-4 rounded-xl w-fit">
+              Sofort verfügbar
+            </p>
+            <h1 className="mt-1 lg:text-[40px] text-[30px] font-semibold text-gray-900">
+              {title}
+            </h1>
+            <p className="text-[20px] text-black">{subtitle}</p>
+          </div>
+          <hr className="text-gray-300 mt-10" />
+          <div className=" grid gap-6 md:grid-cols-1 w-[60%]  pt-7 pb-10 ">
+            <Dropdown
+              name="km"
+              label="Km / Jahr:"
+              value={kmSel.value}
+              onChange={kmSel.set}
+              options={kmPerYearOptions.map((k) => ({
+                value: k,
+                label: k.toLocaleString("de-CH") + " km",
+              }))}
+            />
+            <Dropdown
+              name="term"
+              label="Laufzeit:"
+              value={termSel.value}
+              onChange={termSel.set}
+              options={termOptions.map((m) => ({
+                value: m,
+                label: `${m} Monate`,
+              }))}
             />
           </div>
-          <div className="pointer-events-none absolute flex items-center justify-center gap-4 px-2 w-fit bottom-8 right-6">
+          <hr className="text-gray-300 mt-5" />
+          <div className="mt-6 flex flex-col items-start justify-between gap-4 pt-4 ">
+            <div>
+              <div className="lg:text-[34px] text-[28px] font-semibold text-[#0847A4] flex flex-col gap-2">
+                <h1>
+                  {priceChf.toLocaleString("de-CH", {
+                    style: "currency",
+                    currency: "CHF",
+                    minimumFractionDigits: 2,
+                  })}{" "}
+                </h1>
+                <span className="text-[14px] font-light text-black">
+                  pro Monat inkl. MwSt.
+                </span>
+              </div>
+            </div>
             <button
               type="button"
-              aria-label="Previous image"
-              onClick={prev}
-              className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
+              onClick={handleSubmit}
+              className="inline-flex w-full items-center justify-center rounded-md bg-[#0847A4] px-6 py-3 text-sm font-medium text-white shadow hover:bg-[black] "
             >
-              ‹
+              {buttonLabel}
             </button>
             <button
               type="button"
-              aria-label="Next image"
-              onClick={next}
-              className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
+              onClick={handleSubmit}
+              className="inline-flex w-full items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-medium text-[#0847A4] hover:text-white shadow hover:bg-black border"
             >
-              ›
+              <img src="/images/pdf.svg" alt="" className="mr-3" />
+              Datenblatt (PDF)
             </button>
           </div>
         </div>
-        <div className="grid grid-rows-2 gap-3 overflow-hidden max-md:hidden">
-          {trio
-            .filter((img) => img.idx !== imageSel.value)
-            .map((img) => (
-              <button
-                type="button"
-                key={img.idx}
-                onClick={() => imageSel.set(img.idx)}
-                aria-pressed={imageSel.value === img.idx}
-                className={cx(
-                  "overflow-hidden rounded-lg ring-1 transition",
-                  imageSel.value === img.idx
-                    ? "ring-blue-600"
-                    : "ring-gray-200 hover:ring-gray-300"
-                )}
-              >
-                <div className="aspect-[4/3]">
-                  <ImageWithFallback src={img.src} alt={img.alt} />
-                </div>
-              </button>
-            ))}
-        </div>
-      </div>
-
-      <div className="mt-7 flex flex-col gap-2">
-        <p className="text-xs text-[#0847A4] bg-[#0847A41A] py-1 px-4 rounded-xl w-fit">
-          Sofort verfügbar
-        </p>
-        <h1 className="mt-1 lg:text-[40px] text-[30px] font-semibold text-gray-900">
-          {title}
-        </h1>
-        <p className="text-sm text-black">{subtitle}</p>
-      </div>
-
-      <div className="mt-5 grid gap-6 md:grid-cols-2 border-y border-y-[#D1D5DD] pt-7 pb-10">
-        <SegmentedRadio
-          name="km"
-          label="Km / Jahr:"
-          value={kmSel.value}
-          onChange={kmSel.set}
-          options={kmPerYearOptions.map((k) => ({
-            value: k,
-            label: k.toLocaleString("de-CH") + " km",
-          }))}
-        />
-        <SegmentedRadio
-          name="term"
-          label="Laufzeit:"
-          value={termSel.value}
-          onChange={termSel.set}
-          options={termOptions.map((m) => ({
-            value: m,
-            label: `${m} Monate`,
-          }))}
-        />
-      </div>
-
-      <div className="mt-6 flex flex-col items-start justify-between gap-4 pt-4 md:flex-row md:items-center">
-        <div>
-          <div className="lg:text-[34px] text-[28px] font-semibold text-[#0847A4] flex flex-col gap-2">
-            <h1>
-              {priceChf.toLocaleString("de-CH", {
-                style: "currency",
-                currency: "CHF",
-                minimumFractionDigits: 2,
-              })}{" "}
-            </h1>
-            <span className="text-[14px] font-light text-black">
-              pro Monat inkl. MwSt.
-            </span>
-          </div>
-        </div>
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="inline-flex w-full items-center justify-center rounded-md bg-[#0847A4] px-6 py-3 text-sm font-medium text-white shadow hover:bg-black focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 md:w-[50%]"
-        >
-          Jetzt wählen
-        </button>
       </div>
     </section>
   );
