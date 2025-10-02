@@ -1,99 +1,197 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // Handle scroll effect for backdrop
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isMenuOpen]);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const navLinks = [
+    { label: "Home", href: "#home" },
+    { label: "Privatkunden", href: "#privatkunden" },
+    { label: "Geschäftskunden", href: "#geschaeftskunden" },
+    { label: "Über uns", href: "#ueber-uns" },
+    { label: "FAQ", href: "#faq" },
+  ];
 
   return (
-    <div className="fixed top-0 w-full  backdrop-blur-lg bg-[#0A14241A] z-5000">
-      <div className="container flex flex-row justify-between  py-9 px-4 md:px-0">
-        <div className="flex flex-row justify-between w-full md:w-auto gap-12 items-center ">
-          <img
-            className="w-[160px]"
-            src="/images/navigasLogo.svg"
-            alt="Navigas Logo"
-          />
-          <button
-            className="block md:hidden  text-white"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {menuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M6 18L18 6M6 6l12 12"
+    <>
+      <header
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 z-9999999 ${
+          isScrolled
+            ? "backdrop-blur-lg bg-[#0A14241A]"
+            : "backdrop-blur-lg bg-[#0A14241A]"
+        }`}
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-4 md:py-6 lg:py-9">
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <a href="#home" aria-label="Navigas Home">
+                <img
+                  className="w-[120px] sm:w-[140px] md:w-[160px] h-auto"
+                  src="/images/navigasLogo.svg"
+                  alt="Navigas Logo"
                 />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
+              </a>
+            </div>
 
-          <ul
-            className={`${
-              menuOpen ? "flex" : "hidden"
-            } absolute top-full left-0 text-[14px] right-0  flex-col gap-4 p-4 md:static md:flex md:flex-row md:gap-5  md:p-0 text-white font-medium`}
-          >
-            <li className="border-b-2 border-transparent  hover:border-white transition-all duration-300">
-              <Link to="/" onClick={() => setMenuOpen(false)}>
-                Home
-              </Link>
-            </li>
-            <li className="border-b-2 border-transparent hover:border-white transition-all duration-300">
-              <Link to="/privatkunden" onClick={() => setMenuOpen(false)}>
-                Privatkunden
-              </Link>
-            </li>
-            <li className="border-b-2 border-transparent hover:border-white transition-all duration-300">
-              <Link to="/geschaeftskunden" onClick={() => setMenuOpen(false)}>
-                Geschäftskunden
-              </Link>
-            </li>
-            <li className="border-b-2 border-transparent hover:border-white transition-all duration-300">
-              <Link to="/ueber-uns" onClick={() => setMenuOpen(false)}>
-                Über uns
-              </Link>
-            </li>
-            <li className="border-b-2 border-transparent hover:border-white transition-all duration-300">
-              <Link to="/faq" onClick={() => setMenuOpen(false)}>
-                FAQ
-              </Link>
-            </li>
-            <li className="md:hidden">
-              <Link to="/kontakt" onClick={() => setMenuOpen(false)}>
-                <button className="bg-[#0847A4] text-white text-[14px] font-semibold rounded-lg px-6 py-3 w-full">
-                  Kontakt
-                </button>
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className="hidden md:flex flex-row items-center space-x-4">
-          <h1 className="text-white whitespace-nowrap md:hidden lg:block">
-            + (0)41 780 31 33
-          </h1>
-          <Link to="/kontakt">
-            <button className="bg-[#0847A4] text-white text-[14px] font-semibold rounded-lg px-6 py-3 transition-colors duration-300 hover:bg-[#063983]">
-              Kontakt
+            {/* Desktop Navigation */}
+            <nav
+              className="hidden lg:flex items-center gap-[60px]"
+              aria-label="Main navigation"
+            >
+              <ul className="flex items-center gap-5 xl:gap-6">
+                {navLinks.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-white font-medium text-sm xl:text-base hover:text-blue-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-transparent rounded px-2 py-1"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            {/* Desktop Contact Section */}
+            <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
+              <a
+                href="tel:+41417803133"
+                className="text-white text-sm lg:text-base hover:text-blue-300 transition-colors duration-200 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-transparent rounded px-2 py-1"
+                aria-label="Call us at +41 41 780 31 33"
+              >
+                + (0)41 780 31 33
+              </a>
+              <a
+                href="#kontakt"
+                className="bg-[#0847A4] text-white text-sm font-semibold rounded-lg px-4 py-2 lg:px-6 lg:py-3 hover:bg-[#063a8a] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 whitespace-nowrap"
+              >
+                Kontakt
+              </a>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMenu}
+              className="lg:hidden relative z-50 w-10 h-10 flex flex-col items-center justify-center gap-[6px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 rounded"
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              <span
+                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+                  isMenuOpen ? "rotate-45 translate-y-[7px]" : ""
+                }`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+                  isMenuOpen ? "opacity-0" : ""
+                }`}
+              />
+              <span
+                className={`block w-6 h-0.5 bg-white transition-all duration-300 ${
+                  isMenuOpen ? "-rotate-45 -translate-y-[7px]" : ""
+                }`}
+              />
             </button>
-          </Link>
+          </div>
         </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      <div
+        id="mobile-menu"
+        className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 z-9999 ${
+          isMenuOpen
+            ? "opacity-100 visible"
+            : "opacity-0 invisible pointer-events-none"
+        }`}
+      >
+        {/* Backdrop */}
+        <div
+          className="absolute inset-0 bg-[#0A1424] bg-opacity-95 backdrop-blur-lg"
+          onClick={closeMenu}
+          aria-hidden="true"
+        />
+
+        {/* Menu Content */}
+        <nav
+          className={`relative h-full flex flex-col items-center justify-center px-6 transition-transform duration-300 ${
+            isMenuOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
+          aria-label="Mobile navigation"
+        >
+          <ul className="flex flex-col items-center gap-6 mb-12">
+            {navLinks.map((link, index) => (
+              <li
+                key={link.label}
+                className={`transition-all duration-300 delay-${index * 75}`}
+                style={{
+                  transitionDelay: isMenuOpen ? `${index * 75}ms` : "0ms",
+                  opacity: isMenuOpen ? 1 : 0,
+                  transform: isMenuOpen ? "translateY(0)" : "translateY(-20px)",
+                }}
+              >
+                <a
+                  href={link.href}
+                  onClick={closeMenu}
+                  className="text-white text-2xl font-medium hover:text-blue-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-3 py-2"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          {/* Mobile Contact Section */}
+          <div className="flex flex-col items-center gap-6">
+            <a
+              href="tel:+41417803133"
+              className="text-white text-xl hover:text-blue-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-3 py-2"
+              onClick={closeMenu}
+            >
+              + (0)41 780 31 33
+            </a>
+            <a
+              href="#kontakt"
+              onClick={closeMenu}
+              className="bg-[#0847A4] text-white text-base font-semibold rounded-lg px-8 py-3 hover:bg-[#063a8a] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              Kontakt
+            </a>
+          </div>
+        </nav>
       </div>
-    </div>
+    </>
   );
 };
 
