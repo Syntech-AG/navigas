@@ -35,9 +35,9 @@ const Header = () => {
 
   const navLinks = [
     { label: "Home", href: "#home" },
-    { label: "Privatkunden", href: "#privatkunden" },
-    { label: "Geschäftskunden", href: "#geschaeftskunden" },
-    { label: "Über uns", href: "#ueber-uns" },
+    { label: "Privatkunden", href: "/privatkunden" },
+    { label: "Geschäftskunden", href: "/geschaeftskunden" },
+    { label: "Über uns", href: "/uberuns" },
     { label: "FAQ", href: "#faq" },
   ];
 

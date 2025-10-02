@@ -29,10 +29,10 @@ const FilterPanel = ({ filters, setFilters }) => {
 
   // UI options; note that enum values must match schema exactly
   const filterOptions = {
-    autokategorien: ["Kleinwagen", "Kompakt", "Mittelklasse", "SUV", "Premium"],
-    fahrzeugtypen: ["Elektrisch", "Hybrid", "Gas"],
+    fahrzeugart: ["Kleinwagen", "Kompakt", "Mittelklasse", "SUV", "Premium"],
+    treibstoff: ["Elektrisch", "Hybrid", "Gas"],
     // UI label kept, normalized later: "Allrad (4x4)" -> "Allrad"
-    spezifikationen: ["Automatik", "Handschaltung", "Allrad (4x4)"],
+    getriebe: ["Automatik", "Handschaltung", "Allrad (4x4)"],
   };
 
   const handleSearchChange = (e) => {
@@ -112,19 +112,19 @@ const FilterPanel = ({ filters, setFilters }) => {
           className="w-full p-2 mb-6 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
         />
         <FilterGroup
-          title="Autokategorien"
-          category="autokategorien"
-          options={filterOptions.autokategorien}
+          title="Fahrzeugart"
+          category="fahrzeugart"
+          options={filterOptions.fahrzeugart}
         />
         <FilterGroup
-          title="Fahrzeugtypen"
-          category="fahrzeugtypen"
-          options={filterOptions.fahrzeugtypen}
+          title="Treibstoff"
+          category="treibstoff"
+          options={filterOptions.treibstoff}
         />
         <FilterGroup
-          title="Spezifikationen"
-          category="spezifikationen"
-          options={filterOptions.spezifikationen}
+          title="Getriebe"
+          category="getriebe"
+          options={filterOptions.getriebe}
         />
       </div>
     </div>
@@ -181,7 +181,7 @@ const CarCard = memo(function CarCard({ car }) {
             {car.marke} {car.modell}
           </h1>
           <h1 className="text-[#C0C0C1] text-[14px] font-regular">
-            {car.schaltung}
+            {car.Getriebe}
           </h1>
         </div>
         <div className="flex flex-row justify-between w-[80%] mx-auto py-5">
@@ -193,7 +193,7 @@ const CarCard = memo(function CarCard({ car }) {
           </div>
           <div className="flex flex-col-reverse items-center gap-2">
             <p className="text-[#C0C0C1] text-[12px] font-regular">
-              {car.kraftstoff}
+              {car.Treibstoff}
             </p>
             <img src="/images/pumpIcon.svg" alt="" />
           </div>
@@ -259,15 +259,14 @@ const CarList = ({ filters }) => {
 
       // Map UI keys (lowercase) to schema keys (capitalized enums)
       const uiToSchemaKey = {
-        autokategorien: "Autokategorien",
-        fahrzeugtypen: "Fahrzeugtypen",
-        spezifikationen: "Spezifikationen",
+        fahrzeugart: "Fahrzeugart",
+        treibstoff: "Treibstoff",
+        getriebe: "Getriebe",
       };
 
       // Normalize UI labels to actual enum values
       const normalizeEnumValue = (key, val) => {
-        if (key === "spezifikationen" && val === "Allrad (4x4)")
-          return "Allrad";
+        if (key === "getriebe" && val === "Allrad (4x4)") return "Allrad";
         return val;
       };
 
@@ -292,9 +291,9 @@ const CarList = ({ filters }) => {
           fields: [
             "marke",
             "modell",
-            "schaltung",
+            "Getriebe",
             "leistung",
-            "kraftstoff",
+            "Treibstoff",
             "verbrauch",
             "preis",
           ],
@@ -304,7 +303,7 @@ const CarList = ({ filters }) => {
         },
         {
           encodeValuesOnly: true,
-          arrayFormat: "repeat",
+          // arrayFormat: "indices"
         }
       );
 
@@ -335,9 +334,9 @@ const CarList = ({ filters }) => {
   useEffect(() => {
     setPage(1);
   }, [
-    filters.autokategorien,
-    filters.fahrzeugtypen,
-    filters.spezifikationen,
+    filters.fahrzeugart,
+    filters.treibstoff,
+    filters.getriebe,
     debouncedAutoname,
   ]);
 
@@ -348,9 +347,9 @@ const CarList = ({ filters }) => {
     };
   }, [
     page,
-    filters.autokategorien,
-    filters.fahrzeugtypen,
-    filters.spezifikationen,
+    filters.fahrzeugart,
+    filters.treibstoff,
+    filters.getriebe,
     debouncedAutoname,
     fetchCars,
   ]);
@@ -412,9 +411,9 @@ const CarList = ({ filters }) => {
 const FilteredCarPage = () => {
   const [filters, setFilters] = useState({
     autoname: "",
-    autokategorien: [],
-    fahrzeugtypen: [],
-    spezifikationen: [],
+    fahrzeugart: [],
+    treibstoff: [],
+    getriebe: [],
   });
 
   return (

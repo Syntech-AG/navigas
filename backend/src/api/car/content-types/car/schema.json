@@ -14,10 +14,10 @@
     "marke": {
       "type": "string"
     },
-    "schaltung": {
+    "verfugbareFarbe": {
       "type": "string"
     },
-    "kraftstoff": {
+    "reichweite": {
       "type": "string"
     },
     "leistung": {
@@ -26,10 +26,10 @@
     "verbrauch": {
       "type": "string"
     },
-    "co2kategorie": {
+    "turen": {
       "type": "string"
     },
-    "mwst": {
+    "energieverbrauch": {
       "type": "string"
     },
     "modell": {
@@ -45,7 +45,7 @@
         "audios"
       ]
     },
-    "Autokategorien": {
+    "Fahrzeugart": {
       "type": "enumeration",
       "enum": [
         "Kleinwagen",
@@ -55,7 +55,7 @@
         "Premium"
       ]
     },
-    "Fahrzeugtypen": {
+    "Treibstoff": {
       "type": "enumeration",
       "enum": [
         "Elektrisch",
@@ -63,7 +63,7 @@
         "Gas"
       ]
     },
-    "Spezifikationen": {
+    "Getriebe": {
       "type": "enumeration",
       "enum": [
         "Automatik",
@@ -72,6 +72,9 @@
       ]
     },
     "preis": {
+      "type": "string"
+    },
+    "lieferfrist": {
       "type": "string"
     }
   }

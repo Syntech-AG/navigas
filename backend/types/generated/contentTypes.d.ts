@@ -522,38 +522,37 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    Autokategorien: Schema.Attribute.Enumeration<
-      ['Kleinwagen', 'Kompakt', 'Mittelklasse', 'SUV', 'Premium']
-    >;
-    co2kategorie: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    Fahrzeugtypen: Schema.Attribute.Enumeration<
-      ['Elektrisch', 'Hybrid', 'Gas']
+    energieverbrauch: Schema.Attribute.String;
+    Fahrzeugart: Schema.Attribute.Enumeration<
+      ['Kleinwagen', 'Kompakt', 'Mittelklasse', 'SUV', 'Premium']
+    >;
+    Getriebe: Schema.Attribute.Enumeration<
+      ['Automatik', 'Handschaltung', 'Allrad']
     >;
     Image: Schema.Attribute.Media<
       'images' | 'files' | 'videos' | 'audios',
       true
     >;
-    kraftstoff: Schema.Attribute.String;
     leistung: Schema.Attribute.String;
+    lieferfrist: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::car.car'> &
       Schema.Attribute.Private;
     marke: Schema.Attribute.String;
     modell: Schema.Attribute.String;
-    mwst: Schema.Attribute.String;
     preis: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    schaltung: Schema.Attribute.String;
-    Spezifikationen: Schema.Attribute.Enumeration<
-      ['Automatik', 'Handschaltung', 'Allrad']
-    >;
+    reichweite: Schema.Attribute.String;
+    Treibstoff: Schema.Attribute.Enumeration<['Elektrisch', 'Hybrid', 'Gas']>;
+    turen: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     verbrauch: Schema.Attribute.String;
+    verfugbareFarbe: Schema.Attribute.String;
   };
 }
 
