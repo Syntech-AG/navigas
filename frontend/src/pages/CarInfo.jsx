@@ -28,7 +28,6 @@ const CarInfo = () => {
     loadCar();
   }, [documentId]);
 
-  // Memoize images array to prevent re-creation on every render
   const images = useMemo(() => {
     if (!car?.imageUrls || !Array.isArray(car.imageUrls)) return [];
 
@@ -37,6 +36,26 @@ const CarInfo = () => {
       alt: `${car.marke} ${car.modell} - View ${idx + 1}`,
     }));
   }, [car?.imageUrls, car?.marke, car?.modell]);
+
+  // Handle car selection and navigate with data
+  const handleCarSelect = (selection) => {
+    navigate("/reserve-car", {
+      state: {
+        car: {
+          name: `${car.marke} ${car.modell}`,
+          img: car.imageUrls?.[0] || "/images/car.png",
+          kmPerYear: selection.kmPerYear,
+          termMonths: selection.termMonths,
+          price: parseInt(car.preis) || 749,
+          // Include additional car details if needed
+          marke: car.marke,
+          modell: car.modell,
+
+          imageUrls: car.imageUrls,
+        },
+      },
+    });
+  };
 
   if (loading) {
     return (
@@ -67,7 +86,7 @@ const CarInfo = () => {
         subtitle={car.Fahrzeugart || "Electric Vehicle"}
         images={images}
         priceChf={parseInt(car.preis) || 749}
-        onSelect={(state) => console.log("Selected:", state)}
+        onSelect={handleCarSelect}
       />
       <VehicleDetails
         info={[

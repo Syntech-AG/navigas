@@ -4,7 +4,6 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-  // Handle scroll effect for backdrop
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
@@ -13,7 +12,6 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -34,17 +32,17 @@ const Header = () => {
   };
 
   const navLinks = [
-    { label: "Home", href: "#home" },
-    { label: "Privatkunden", href: "/privatkunden" },
+    { label: "Home", href: "/" },
+    { label: "Privatkunden", href: "/api/cars/:id" },
     { label: "Geschäftskunden", href: "/geschaeftskunden" },
     { label: "Über uns", href: "/uberuns" },
-    { label: "FAQ", href: "#faq" },
+    { label: "FAQ", href: "faq" },
   ];
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 z-9999999 ${
+        className={`fixed top-0 left-0 w-full transition-all duration-300 z-9999999 ${
           isScrolled
             ? "backdrop-blur-lg bg-[#0A14241A]"
             : "backdrop-blur-lg bg-[#0A14241A]"
@@ -52,7 +50,6 @@ const Header = () => {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4 md:py-6 lg:py-9">
-            {/* Logo */}
             <div className="flex-shrink-0">
               <a href="#home" aria-label="Navigas Home">
                 <img
@@ -63,7 +60,6 @@ const Header = () => {
               </a>
             </div>
 
-            {/* Desktop Navigation */}
             <nav
               className="hidden lg:flex items-center gap-[60px]"
               aria-label="Main navigation"
@@ -82,7 +78,6 @@ const Header = () => {
               </ul>
             </nav>
 
-            {/* Desktop Contact Section */}
             <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
               <a
                 href="tel:+41417803133"
@@ -99,7 +94,6 @@ const Header = () => {
               </a>
             </div>
 
-            {/* Mobile Menu Button */}
             <button
               onClick={toggleMenu}
               className="lg:hidden relative z-50 w-10 h-10 flex flex-col items-center justify-center gap-[6px] focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 rounded"
@@ -127,23 +121,20 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile Menu Overlay */}
       <div
         id="mobile-menu"
-        className={`lg:hidden fixed inset-0 z-40 transition-all duration-300 z-9999 ${
+        className={`lg:hidden fixed inset-0  transition-all duration-300 z-9999 ${
           isMenuOpen
             ? "opacity-100 visible"
             : "opacity-0 invisible pointer-events-none"
         }`}
       >
-        {/* Backdrop */}
         <div
           className="absolute inset-0 bg-[#0A1424] bg-opacity-95 backdrop-blur-lg"
           onClick={closeMenu}
           aria-hidden="true"
         />
 
-        {/* Menu Content */}
         <nav
           className={`relative h-full flex flex-col items-center justify-center px-6 transition-transform duration-300 ${
             isMenuOpen ? "translate-y-0" : "-translate-y-full"
@@ -172,7 +163,6 @@ const Header = () => {
             ))}
           </ul>
 
-          {/* Mobile Contact Section */}
           <div className="flex flex-col items-center gap-6">
             <a
               href="tel:+41417803133"
