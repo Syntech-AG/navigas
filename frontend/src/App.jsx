@@ -12,6 +12,7 @@ import Kontakt from "./pages/Kontakt";
 import Blogs from "./pages/Blogs";
 import FilteredCarPage from "./pages/FilteredCarPage";
 import BlogsInfo from "./components/blogs/BlogsInfo";
+import ReserveCar2 from "./pages/ReserveCar2";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/uberUns" element={<About />} />
           <Route path="/privatKunden" element={<CarInfo />} />
           <Route path="/privatKunden2" element={<ReserveCar />} />
+          <Route path="/privatKunden3" element={<ReserveCar2 />} />
           <Route path="/geschäftskunden" element={<Customer />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/kontakt" element={<Kontakt />} />
