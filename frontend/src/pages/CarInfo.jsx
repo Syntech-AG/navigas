@@ -2,7 +2,10 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PolestarCard from "../components/car/PolestarCard";
 import VehicleDetails from "../components/car/VehicleDetails";
-import { fetchCarById } from "../components/car/carService";
+import {
+  fetchCarById,
+  transformPricingOptions,
+} from "../components/car/carService";
 
 const CarInfo = () => {
   const { id: documentId } = useParams();
@@ -28,7 +31,7 @@ const CarInfo = () => {
     loadCar();
   }, [documentId]);
 
-  // Memoize images array to prevent re-creation on every render
+  // Memoize images array
   const images = useMemo(() => {
     if (!car?.imageUrls || !Array.isArray(car.imageUrls)) return [];
 
@@ -37,6 +40,11 @@ const CarInfo = () => {
       alt: `${car.marke} ${car.modell} - View ${idx + 1}`,
     }));
   }, [car?.imageUrls, car?.marke, car?.modell]);
+
+  // Transform pricing options from Strapi fields
+  const pricingOptions = useMemo(() => {
+    return transformPricingOptions(car);
+  }, [car]);
 
   if (loading) {
     return (
@@ -66,8 +74,16 @@ const CarInfo = () => {
         title={`${car.marke} ${car.modell}`}
         subtitle={car.Fahrzeugart || "Electric Vehicle"}
         images={images}
-        priceChf={parseInt(car.preis) || 749}
-        onSelect={(state) => console.log("Selected:", state)}
+        basePrice={parseInt(car.preis) || 749}
+        kmPricingOptions={pricingOptions.kmOptions}
+        termPricingOptions={pricingOptions.termOptions}
+        onSelect={(state) => {
+          console.log("Selected configuration:", state);
+          // Handle booking or redirect to checkout with:
+          // - state.kmPerYear
+          // - state.termMonths
+          // - state.finalPrice
+        }}
       />
       <VehicleDetails
         info={[

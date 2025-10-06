@@ -522,6 +522,7 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    AchtundvierzigMonate: Schema.Attribute.Integer;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -529,6 +530,9 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
     Fahrzeugart: Schema.Attribute.Enumeration<
       ['Kleinwagen', 'Kompakt', 'Mittelklasse', 'SUV', 'Premium']
     >;
+    FuenftausendKilometer: Schema.Attribute.Integer;
+    FuenfundzwanzigtausendKilometer: Schema.Attribute.Integer;
+    FuenfzehntausendKilometer: Schema.Attribute.Integer;
     Getriebe: Schema.Attribute.Enumeration<
       ['Automatik', 'Handschaltung', 'Allrad']
     >;
@@ -546,6 +550,7 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
     preis: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     reichweite: Schema.Attribute.String;
+    SechsunddreissigMonate: Schema.Attribute.Integer;
     Treibstoff: Schema.Attribute.Enumeration<['Elektrisch', 'Hybrid', 'Gas']>;
     turen: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
@@ -553,6 +558,9 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     verbrauch: Schema.Attribute.String;
     verfugbareFarbe: Schema.Attribute.String;
+    VierundzwanzigMonate: Schema.Attribute.Integer;
+    ZehntausendKilometer: Schema.Attribute.Integer;
+    ZwanzigtausendKilometer: Schema.Attribute.Integer;
   };
 }
 

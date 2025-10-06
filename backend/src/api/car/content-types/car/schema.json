@@ -76,6 +76,30 @@
     },
     "lieferfrist": {
       "type": "string"
+    },
+    "FuenftausendKilometer": {
+      "type": "integer"
+    },
+    "ZehntausendKilometer": {
+      "type": "integer"
+    },
+    "FuenfzehntausendKilometer": {
+      "type": "integer"
+    },
+    "ZwanzigtausendKilometer": {
+      "type": "integer"
+    },
+    "FuenfundzwanzigtausendKilometer": {
+      "type": "integer"
+    },
+    "VierundzwanzigMonate": {
+      "type": "integer"
+    },
+    "AchtundvierzigMonate": {
+      "type": "integer"
+    },
+    "SechsunddreissigMonate": {
+      "type": "integer"
     }
   }
 }

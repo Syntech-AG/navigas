@@ -1,7 +1,6 @@
 import { useId, useMemo, useState, useEffect } from "react";
 
 const cx = (...c) => c.filter(Boolean).join(" ");
-const mod = (n, m) => ((n % m) + m) % m;
 
 function useSelection(initial) {
   const [value, set] = useState(initial);
@@ -65,9 +64,9 @@ export default function PolestarCard({
   title = "Polestar 2",
   subtitle = "Long Range Dual Motor",
   images = [],
-  kmPerYearOptions = [5000, 10000, 15000, 20000, 25000],
-  termOptions = [24, 36, 48],
-  priceChf = 749,
+  kmPricingOptions = [],
+  termPricingOptions = [],
+  basePrice = 749,
   buttonLabel = "Jetzt wählen",
   onSelect,
 }) {
@@ -84,37 +83,62 @@ export default function PolestarCard({
   }, [imagesKey]);
 
   const imageSel = useSelection(0);
-  const kmSel = useSelection(kmPerYearOptions[0]);
-  const termSel = useSelection(termOptions[0]);
+  const kmSel = useSelection(kmPricingOptions[0]?.km || 5000);
+  const termSel = useSelection(termPricingOptions[0]?.months || 24);
 
   useEffect(() => {
     imageSel.set(0);
   }, [imagesKey]);
 
-  // Get thumbnail images (excluding current)
+  const priceBreakdown = useMemo(() => {
+    const kmOption = kmPricingOptions.find(
+      (opt) => opt.km === Number(kmSel.value)
+    );
+    const termOption = termPricingOptions.find(
+      (opt) => opt.months === Number(termSel.value)
+    );
+
+    return {
+      base: basePrice,
+      km: kmOption?.priceModifier || 0,
+      term: termOption?.priceModifier || 0,
+    };
+  }, [
+    basePrice,
+    kmSel.value,
+    termSel.value,
+    kmPricingOptions,
+    termPricingOptions,
+  ]);
+
+  const finalPrice = useMemo(() => {
+    return priceBreakdown.base + priceBreakdown.km + priceBreakdown.term;
+  }, [priceBreakdown]);
+
   const thumbnails = useMemo(() => {
     const i = imageSel.value;
     const len = gallery.length;
 
     if (len <= 1) return [];
 
-    // Get all indices except current
     const allIndices = Array.from({ length: len }, (_, idx) => idx);
     const otherIndices = allIndices.filter((idx) => idx !== i);
 
-    // Return up to 2 thumbnails with unique keys
     return otherIndices.slice(0, 2).map((idx) => ({
       idx,
       ...gallery[idx],
-      uniqueKey: `thumb-${idx}`, // Add unique key
+      uniqueKey: `thumb-${idx}`,
     }));
   }, [imageSel.value, gallery]);
 
   const handleSubmit = () => {
     onSelect?.({
-      kmPerYear: kmSel.value,
-      termMonths: termSel.value,
+      kmPerYear: Number(kmSel.value),
+      termMonths: Number(termSel.value),
       imageIndex: imageSel.value,
+      finalPrice,
+      basePrice,
+      priceBreakdown,
     });
   };
 
@@ -135,6 +159,7 @@ export default function PolestarCard({
                   className="h-full w-full object-cover"
                 />
               </div>
+
               {gallery.length > 1 && (
                 <div className="pointer-events-none absolute flex items-center justify-center gap-4 px-2 w-fit bottom-8 right-6">
                   <button
@@ -186,16 +211,18 @@ export default function PolestarCard({
             </h1>
             <p className="text-[20px] text-black">{subtitle}</p>
           </div>
+
           <hr className="text-gray-300 mt-10" />
-          <div className=" grid gap-6 md:grid-cols-1 w-[60%]  pt-7 pb-10 ">
+
+          <div className="grid gap-6 md:grid-cols-1 w-[60%] pt-7 pb-10">
             <Dropdown
               name="km"
               label="Km / Jahr:"
               value={kmSel.value}
               onChange={kmSel.set}
-              options={kmPerYearOptions.map((k) => ({
-                value: k,
-                label: k.toLocaleString("de-CH") + " km",
+              options={kmPricingOptions.map((opt) => ({
+                value: opt.km,
+                label: `${opt.km.toLocaleString("de-CH")} km`,
               }))}
             />
             <Dropdown
@@ -203,39 +230,66 @@ export default function PolestarCard({
               label="Laufzeit:"
               value={termSel.value}
               onChange={termSel.set}
-              options={termOptions.map((m) => ({
-                value: m,
-                label: `${m} Monate`,
+              options={termPricingOptions.map((opt) => ({
+                value: opt.months,
+                label: `${opt.months} Monate`,
               }))}
             />
           </div>
+
           <hr className="text-gray-300 mt-5" />
-          <div className="mt-6 flex flex-col items-start justify-between gap-4 pt-4 ">
-            <div>
+
+          <div className="mt-6 flex flex-col items-start justify-between gap-4 pt-4">
+            <div className="w-full">
               <div className="lg:text-[34px] text-[28px] font-semibold text-[#0847A4] flex flex-col gap-2">
                 <h1>
-                  {priceChf.toLocaleString("de-CH", {
+                  {finalPrice.toLocaleString("de-CH", {
                     style: "currency",
                     currency: "CHF",
                     minimumFractionDigits: 2,
-                  })}{" "}
+                  })}
                 </h1>
                 <span className="text-[14px] font-light text-black">
                   pro Monat inkl. MwSt.
                 </span>
               </div>
+
+              {/* {(priceBreakdown.km !== 0 || priceBreakdown.term !== 0) && (
+                <div className="mt-3 text-xs text-gray-600 space-y-1">
+                  <div className="flex justify-between">
+                    <span>Basispreis:</span>
+                    <span>{priceBreakdown.base} CHF</span>
+                  </div>
+                  {priceBreakdown.km !== 0 && (
+                    <div className="flex justify-between">
+                      <span>Km-Paket:</span>
+                      <span>+{priceBreakdown.km} CHF</span>
+                    </div>
+                  )}
+                  {priceBreakdown.term !== 0 && (
+                    <div className="flex justify-between">
+                      <span>Laufzeit:</span>
+                      <span>
+                        {priceBreakdown.term > 0 ? "+" : ""}
+                        {priceBreakdown.term} CHF
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )} */}
             </div>
+
             <button
               type="button"
               onClick={handleSubmit}
-              className="inline-flex w-full items-center justify-center rounded-md bg-[#0847A4] px-6 py-3 text-sm font-medium text-white shadow hover:bg-[black] "
+              className="inline-flex w-full items-center justify-center rounded-md bg-[#0847A4] px-6 py-3 text-sm font-medium text-white shadow hover:bg-[black] transition"
             >
               {buttonLabel}
             </button>
             <button
               type="button"
               onClick={handleSubmit}
-              className="inline-flex w-full items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-medium text-[#0847A4] hover:text-white shadow hover:bg-black border"
+              className="inline-flex w-full items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-medium text-[#0847A4] hover:text-white shadow hover:bg-black border transition"
             >
               <img src="/images/pdf.svg" alt="" className="mr-3" />
               Datenblatt (PDF)

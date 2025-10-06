@@ -8,6 +8,50 @@ const normalizeEnumValue = (key, val) => {
   return val;
 };
 
+export const transformPricingOptions = (car) => {
+  if (!car) return { kmOptions: [], termOptions: [] };
+
+  const kmOptions = [
+    {
+      km: 5000,
+      priceModifier: car.FuenftausendKilometer || 0,
+    },
+    {
+      km: 10000,
+      priceModifier: car.ZehntausendKilometer || 0,
+    },
+    {
+      km: 15000,
+      priceModifier: car.FuenfzehntausendKilometer || 0,
+    },
+    {
+      km: 20000,
+      priceModifier: car.ZwanzigtausendKilometer || 0,
+    },
+    {
+      km: 25000,
+      priceModifier: car.FuenfundzwanzigtausendKilometer || 0,
+    },
+  ];
+
+  const termOptions = [
+    {
+      months: 24,
+      priceModifier: car.VierundzwanzigMonate || 0,
+    },
+    {
+      months: 36,
+      priceModifier: car.SechsunddreissigMonate || 0,
+    },
+    {
+      months: 48,
+      priceModifier: car.AchtundvierzigMonate || 0,
+    },
+  ];
+
+  return { kmOptions, termOptions };
+};
+
 export const fetchCars = async (page, filters, signal) => {
   const strapiFilters = {};
 
