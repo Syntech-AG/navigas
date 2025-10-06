@@ -11,12 +11,7 @@ export const pickBestUrl = (file) => {
   const fa = getFileAttrs(file);
   const fmts = fa.formats || {};
   return toAbsolute(
-    fmts.thumbnail?.url ||
-      fmts.small?.url ||
-      fmts.medium?.url ||
-      fmts.large?.url ||
-      fa.url ||
-      ""
+    fmts.small?.url || fmts.medium?.url || fmts.large?.url || fa.url || ""
   );
 };
 
@@ -27,7 +22,7 @@ export const normalizeCarData = (arr) =>
     // Handle Strapi v5 media field structure
     let mediaNode = attrs?.[IMAGE_FIELD];
 
-    // If it's wrapped in { data: [...] }, unwrap it
+    // If wrapped in { data: [...] }, unwrap it
     if (mediaNode && mediaNode.data) {
       mediaNode = mediaNode.data;
     }
@@ -39,15 +34,16 @@ export const normalizeCarData = (arr) =>
       ? [mediaNode]
       : [];
 
-    // Get unique URLs - pickBestUrl returns ONE url per file
+    // Get unique URLs - filter out nulls and duplicates
     const imageUrls = files
+      .filter((f) => f) // Remove null/undefined
       .map(pickBestUrl)
       .filter(Boolean) // Remove empty strings
       .filter((url, index, self) => self.indexOf(url) === index); // Remove duplicates
 
     return {
       id: item?.id,
-      documentId: item?.documentId, // ADD documentId here!
+      documentId: item?.documentId,
       ...attrs,
       imageUrls,
       imageUrl: imageUrls[0] || "",

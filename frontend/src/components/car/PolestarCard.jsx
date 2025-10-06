@@ -1,4 +1,4 @@
-import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useState, useEffect } from "react";
 
 const cx = (...c) => c.filter(Boolean).join(" ");
 const mod = (n, m) => ((n % m) + m) % m;
@@ -35,6 +35,11 @@ function Dropdown({ name, label, options, value, onChange }) {
 
 function ImageWithFallback({ src, alt, className }) {
   const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    setFailed(false);
+  }, [src]);
+
   return failed ? (
     <div
       aria-label="image unavailable"
@@ -59,37 +64,50 @@ function ImageWithFallback({ src, alt, className }) {
 export default function PolestarCard({
   title = "Polestar 2",
   subtitle = "Long Range Dual Motor",
-  images = [
-    { src: "/images/polestar-1.jpg", alt: "Front 3/4 view" },
-    { src: "/images/polestar-2.jpg", alt: "Front view" },
-    { src: "/images/polestar-3.jpg", alt: "Rear view" },
-  ],
+  images = [],
   kmPerYearOptions = [5000, 10000, 15000, 20000, 25000],
   termOptions = [24, 36, 48],
   priceChf = 749,
   buttonLabel = "Jetzt wählen",
   onSelect,
 }) {
-  const gallery = useMemo(
-    () => (images.length ? images : [{ src: "", alt: "placeholder" }]),
+  const imagesKey = useMemo(
+    () => images.map((img) => img.src).join("|"),
     [images]
   );
 
-  // Corrected initial selections to first elements
+  const gallery = useMemo(() => {
+    if (!images || images.length === 0) {
+      return [{ src: "", alt: "placeholder" }];
+    }
+    return images;
+  }, [imagesKey]);
+
   const imageSel = useSelection(0);
   const kmSel = useSelection(kmPerYearOptions[0]);
   const termSel = useSelection(termOptions[0]);
 
-  const trio = useMemo(() => {
+  useEffect(() => {
+    imageSel.set(0);
+  }, [imagesKey]);
+
+  // Get thumbnail images (excluding current)
+  const thumbnails = useMemo(() => {
     const i = imageSel.value;
     const len = gallery.length;
-    const prev = mod(i - 1, len);
-    const next = mod(i + 1, len);
-    return [
-      { idx: prev, ...gallery[prev] },
-      { idx: i, ...gallery[i] },
-      { idx: next, ...gallery[next] },
-    ];
+
+    if (len <= 1) return [];
+
+    // Get all indices except current
+    const allIndices = Array.from({ length: len }, (_, idx) => idx);
+    const otherIndices = allIndices.filter((idx) => idx !== i);
+
+    // Return up to 2 thumbnails with unique keys
+    return otherIndices.slice(0, 2).map((idx) => ({
+      idx,
+      ...gallery[idx],
+      uniqueKey: `thumb-${idx}`, // Add unique key
+    }));
   }, [imageSel.value, gallery]);
 
   const handleSubmit = () => {
@@ -111,54 +129,50 @@ export default function PolestarCard({
           <div className="grid gap-3 md:grid-cols-1">
             <div className="relative md:cols-span-2">
               <div className="aspect-[5/3] overflow-hidden rounded-lg bg-gray-100">
-                {/* Show current image with fallback */}
                 <ImageWithFallback
                   src={gallery[imageSel.value]?.src}
                   alt={gallery[imageSel.value]?.alt || title}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="pointer-events-none absolute flex items-center justify-center gap-4 px-2 w-fit bottom-8 right-6">
-                <button
-                  type="button"
-                  aria-label="Previous image"
-                  onClick={prev}
-                  className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
-                >
-                  ‹
-                </button>
-                <button
-                  type="button"
-                  aria-label="Next image"
-                  onClick={next}
-                  className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
-                >
-                  ›
-                </button>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-3 overflow-hidden max-md:hidden">
-              {trio
-                .filter((img) => img.idx !== imageSel.value)
-                .map((img) => (
+              {gallery.length > 1 && (
+                <div className="pointer-events-none absolute flex items-center justify-center gap-4 px-2 w-fit bottom-8 right-6">
                   <button
                     type="button"
-                    key={img.idx}
+                    aria-label="Previous image"
+                    onClick={prev}
+                    className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Next image"
+                    onClick={next}
+                    className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
+                  >
+                    ›
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {thumbnails.length > 0 && (
+              <div className="grid grid-cols-2 gap-3 overflow-hidden max-md:hidden">
+                {thumbnails.map((img) => (
+                  <button
+                    type="button"
+                    key={img.uniqueKey}
                     onClick={() => imageSel.set(img.idx)}
-                    aria-pressed={imageSel.value === img.idx}
-                    className={cx(
-                      "overflow-hidden rounded-lg ring-1 transition",
-                      imageSel.value === img.idx
-                        ? "ring-blue-600"
-                        : "ring-gray-200 hover:ring-gray-300"
-                    )}
+                    className="overflow-hidden rounded-lg ring-1 ring-gray-200 hover:ring-gray-300 transition"
                   >
                     <div className="aspect-[4/3]">
                       <ImageWithFallback src={img.src} alt={img.alt} />
                     </div>
                   </button>
                 ))}
-            </div>
+              </div>
+            )}
           </div>
         </div>
 

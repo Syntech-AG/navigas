@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PolestarCard from "../components/car/PolestarCard";
 import VehicleDetails from "../components/car/VehicleDetails";
@@ -13,12 +13,9 @@ const CarInfo = () => {
 
   useEffect(() => {
     const loadCar = async () => {
-      console.log("documentId from URL:", documentId);
-
       try {
         setLoading(true);
         const carData = await fetchCarById(documentId);
-        console.log("Fetched car data:", carData);
         setCar(carData);
       } catch (err) {
         console.error("Failed to fetch car:", err);
@@ -30,6 +27,16 @@ const CarInfo = () => {
 
     loadCar();
   }, [documentId]);
+
+  // Memoize images array to prevent re-creation on every render
+  const images = useMemo(() => {
+    if (!car?.imageUrls || !Array.isArray(car.imageUrls)) return [];
+
+    return car.imageUrls.map((url, idx) => ({
+      src: url,
+      alt: `${car.marke} ${car.modell} - View ${idx + 1}`,
+    }));
+  }, [car?.imageUrls, car?.marke, car?.modell]);
 
   if (loading) {
     return (
@@ -58,10 +65,7 @@ const CarInfo = () => {
       <PolestarCard
         title={`${car.marke} ${car.modell}`}
         subtitle={car.Fahrzeugart || "Electric Vehicle"}
-        images={car.imageUrls.map((url, idx) => ({
-          src: url,
-          alt: `${car.marke} ${car.modell} - View ${idx + 1}`,
-        }))}
+        images={images}
         priceChf={parseInt(car.preis) || 749}
         onSelect={(state) => console.log("Selected:", state)}
       />
