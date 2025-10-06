@@ -31,7 +31,6 @@ const CarInfo = () => {
     loadCar();
   }, [documentId]);
 
-  // Memoize images array
   const images = useMemo(() => {
     if (!car?.imageUrls || !Array.isArray(car.imageUrls)) return [];
 
@@ -45,6 +44,25 @@ const CarInfo = () => {
   const pricingOptions = useMemo(() => {
     return transformPricingOptions(car);
   }, [car]);
+  // Handle car selection and navigate with data
+  const handleCarSelect = (selection) => {
+    navigate("/reserve-car", {
+      state: {
+        car: {
+          name: `${car.marke} ${car.modell}`,
+          img: car.imageUrls?.[0] || "/images/car.png",
+          kmPerYear: selection.kmPerYear,
+          termMonths: selection.termMonths,
+          price: parseInt(car.preis) || 749,
+          // Include additional car details if needed
+          marke: car.marke,
+          modell: car.modell,
+
+          imageUrls: car.imageUrls,
+        },
+      },
+    });
+  };
 
   if (loading) {
     return (
