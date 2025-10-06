@@ -2,11 +2,6 @@ import { useId, useMemo, useState, useEffect } from "react";
 
 const cx = (...c) => c.filter(Boolean).join(" ");
 
-function useSelection(initial) {
-  const [value, set] = useState(initial);
-  return { value, set };
-}
-
 function Dropdown({ name, label, options, value, onChange }) {
   const groupId = useId();
 
@@ -82,41 +77,62 @@ export default function PolestarCard({
     return images;
   }, [imagesKey]);
 
-  const imageSel = useSelection(0);
-  const kmSel = useSelection(kmPricingOptions[0]?.km || 5000);
-  const termSel = useSelection(termPricingOptions[0]?.months || 24);
+  // State management with regular useState
+  const [imageIndex, setImageIndex] = useState(0);
+  const [selectedKm, setSelectedKm] = useState(kmPricingOptions[0]?.km || 5000);
+  const [selectedTerm, setSelectedTerm] = useState(
+    termPricingOptions[0]?.months || 24
+  );
 
+  // Reset selections when options change
   useEffect(() => {
-    imageSel.set(0);
+    setImageIndex(0);
   }, [imagesKey]);
 
+  useEffect(() => {
+    if (kmPricingOptions.length > 0) {
+      setSelectedKm(kmPricingOptions[0].km);
+    }
+  }, [kmPricingOptions]);
+
+  useEffect(() => {
+    if (termPricingOptions.length > 0) {
+      setSelectedTerm(termPricingOptions[0].months);
+    }
+  }, [termPricingOptions]);
+
+  // Calculate price breakdown with explicit return
   const priceBreakdown = useMemo(() => {
-    const kmOption = kmPricingOptions.find(
-      (opt) => opt.km === Number(kmSel.value)
-    );
+    const kmValue = Number(selectedKm);
+    const termValue = Number(selectedTerm);
+
+    const kmOption = kmPricingOptions.find((opt) => Number(opt.km) === kmValue);
     const termOption = termPricingOptions.find(
-      (opt) => opt.months === Number(termSel.value)
+      (opt) => Number(opt.months) === termValue
     );
 
     return {
-      base: basePrice,
-      km: kmOption?.priceModifier || 0,
-      term: termOption?.priceModifier || 0,
+      base: Number(basePrice) || 0,
+      km: Number(kmOption?.priceModifier) || 0,
+      term: Number(termOption?.priceModifier) || 0,
     };
   }, [
-    basePrice,
-    kmSel.value,
-    termSel.value,
+    selectedKm,
+    selectedTerm,
     kmPricingOptions,
     termPricingOptions,
+    basePrice,
   ]);
 
+  // Calculate final price with explicit return
   const finalPrice = useMemo(() => {
-    return priceBreakdown.base + priceBreakdown.km + priceBreakdown.term;
+    const total = priceBreakdown.base + priceBreakdown.km + priceBreakdown.term;
+    console.log("PolestarCard finalPrice calculated:", total);
+    return total;
   }, [priceBreakdown]);
 
   const thumbnails = useMemo(() => {
-    const i = imageSel.value;
+    const i = imageIndex;
     const len = gallery.length;
 
     if (len <= 1) return [];
@@ -129,22 +145,37 @@ export default function PolestarCard({
       ...gallery[idx],
       uniqueKey: `thumb-${idx}`,
     }));
-  }, [imageSel.value, gallery]);
+  }, [imageIndex, gallery]);
 
   const handleSubmit = () => {
-    onSelect?.({
-      kmPerYear: Number(kmSel.value),
-      termMonths: Number(termSel.value),
-      imageIndex: imageSel.value,
-      finalPrice,
-      basePrice,
-      priceBreakdown,
-    });
+    const selectionData = {
+      kmPerYear: Number(selectedKm),
+      termMonths: Number(selectedTerm),
+      imageIndex: imageIndex,
+      finalPrice: finalPrice,
+      basePrice: Number(basePrice),
+      priceBreakdown: priceBreakdown,
+    };
+
+    console.log("PolestarCard handleSubmit:", selectionData);
+    console.log("finalPrice being sent:", finalPrice);
+
+    onSelect?.(selectionData);
   };
 
-  const next = () => imageSel.set((imageSel.value + 1) % gallery.length);
+  const next = () => setImageIndex((imageIndex + 1) % gallery.length);
   const prev = () =>
-    imageSel.set((imageSel.value - 1 + gallery.length) % gallery.length);
+    setImageIndex((imageIndex - 1 + gallery.length) % gallery.length);
+
+  const handleKmChange = (value) => {
+    console.log("KM changed to:", value);
+    setSelectedKm(Number(value));
+  };
+
+  const handleTermChange = (value) => {
+    console.log("Term changed to:", value);
+    setSelectedTerm(Number(value));
+  };
 
   return (
     <section className="mx-auto rounded-xl container">
@@ -154,8 +185,8 @@ export default function PolestarCard({
             <div className="relative md:cols-span-2">
               <div className="aspect-[5/3] overflow-hidden rounded-lg bg-gray-100">
                 <ImageWithFallback
-                  src={gallery[imageSel.value]?.src}
-                  alt={gallery[imageSel.value]?.alt || title}
+                  src={gallery[imageIndex]?.src}
+                  alt={gallery[imageIndex]?.alt || title}
                   className="h-full w-full object-cover"
                 />
               </div>
@@ -188,7 +219,7 @@ export default function PolestarCard({
                   <button
                     type="button"
                     key={img.uniqueKey}
-                    onClick={() => imageSel.set(img.idx)}
+                    onClick={() => setImageIndex(img.idx)}
                     className="overflow-hidden rounded-lg ring-1 ring-gray-200 hover:ring-gray-300 transition"
                   >
                     <div className="aspect-[4/3]">
@@ -218,8 +249,8 @@ export default function PolestarCard({
             <Dropdown
               name="km"
               label="Km / Jahr:"
-              value={kmSel.value}
-              onChange={kmSel.set}
+              value={selectedKm}
+              onChange={handleKmChange}
               options={kmPricingOptions.map((opt) => ({
                 value: opt.km,
                 label: `${opt.km.toLocaleString("de-CH")} km`,
@@ -228,8 +259,8 @@ export default function PolestarCard({
             <Dropdown
               name="term"
               label="Laufzeit:"
-              value={termSel.value}
-              onChange={termSel.set}
+              value={selectedTerm}
+              onChange={handleTermChange}
               options={termPricingOptions.map((opt) => ({
                 value: opt.months,
                 label: `${opt.months} Monate`,
@@ -253,30 +284,6 @@ export default function PolestarCard({
                   pro Monat inkl. MwSt.
                 </span>
               </div>
-
-              {/* {(priceBreakdown.km !== 0 || priceBreakdown.term !== 0) && (
-                <div className="mt-3 text-xs text-gray-600 space-y-1">
-                  <div className="flex justify-between">
-                    <span>Basispreis:</span>
-                    <span>{priceBreakdown.base} CHF</span>
-                  </div>
-                  {priceBreakdown.km !== 0 && (
-                    <div className="flex justify-between">
-                      <span>Km-Paket:</span>
-                      <span>+{priceBreakdown.km} CHF</span>
-                    </div>
-                  )}
-                  {priceBreakdown.term !== 0 && (
-                    <div className="flex justify-between">
-                      <span>Laufzeit:</span>
-                      <span>
-                        {priceBreakdown.term > 0 ? "+" : ""}
-                        {priceBreakdown.term} CHF
-                      </span>
-                    </div>
-                  )}
-                </div>
-              )} */}
             </div>
 
             <button

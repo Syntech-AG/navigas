@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import LeaseInquiry from "../components/car/LeaseInquiry";
 
@@ -6,18 +6,19 @@ const ReserveCar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Get car data from navigation state
   const carData = location.state?.car;
 
-  // Redirect if no car data provided
-  React.useEffect(() => {
+  useEffect(() => {
+    console.log("ReserveCar received location.state:", location.state);
+    console.log("ReserveCar carData:", carData);
+    console.log("ReserveCar carData.finalPrice:", carData?.finalPrice);
+
     if (!carData) {
       console.warn("No car data provided, redirecting to home");
       navigate("/", { replace: true });
     }
-  }, [carData, navigate]);
+  }, [carData, navigate, location.state]);
 
-  // Show loading state while checking for data
   if (!carData) {
     return (
       <div className="container mx-auto pt-50 text-center py-20">
@@ -25,8 +26,6 @@ const ReserveCar = () => {
       </div>
     );
   }
-
-  console.log(carData);
 
   return (
     <div className="md:py-30 py-20">

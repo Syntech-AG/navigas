@@ -19,6 +19,7 @@ const CarInfo = () => {
       try {
         setLoading(true);
         const carData = await fetchCarById(documentId);
+        console.log("CarInfo loaded car data:", carData);
         setCar(carData);
       } catch (err) {
         console.error("Failed to fetch car:", err);
@@ -40,27 +41,30 @@ const CarInfo = () => {
     }));
   }, [car?.imageUrls, car?.marke, car?.modell]);
 
-  // Transform pricing options from Strapi fields
   const pricingOptions = useMemo(() => {
     return transformPricingOptions(car);
   }, [car]);
-  // Handle car selection and navigate with data
-  const handleCarSelect = (selection) => {
-    navigate("/reserve-car", {
-      state: {
-        car: {
-          name: `${car.marke} ${car.modell}`,
-          img: car.imageUrls?.[0] || "/images/car.png",
-          kmPerYear: selection.kmPerYear,
-          termMonths: selection.termMonths,
-          price: parseInt(car.preis) || 749,
-          // Include additional car details if needed
-          marke: car.marke,
-          modell: car.modell,
 
-          imageUrls: car.imageUrls,
-        },
-      },
+  const handleCarSelect = (selection) => {
+    console.log("CarInfo handleCarSelect received:", selection);
+    console.log("selection.finalPrice:", selection.finalPrice);
+
+    const carState = {
+      name: `${car.marke} ${car.modell}`,
+      img: car.imageUrls?.[0] || "/images/car.png",
+      kmPerYear: selection.kmPerYear,
+      termMonths: selection.termMonths,
+      price: parseInt(car.preis) || 749,
+      finalPrice: selection.finalPrice, // This is the calculated price
+      marke: car.marke,
+      modell: car.modell,
+      imageUrls: car.imageUrls,
+    };
+
+    console.log("CarInfo navigating with carState:", carState);
+
+    navigate("/reserve-car", {
+      state: { car: carState },
     });
   };
 
@@ -95,13 +99,7 @@ const CarInfo = () => {
         basePrice={parseInt(car.preis) || 749}
         kmPricingOptions={pricingOptions.kmOptions}
         termPricingOptions={pricingOptions.termOptions}
-        onSelect={(state) => {
-          console.log("Selected configuration:", state);
-          // Handle booking or redirect to checkout with:
-          // - state.kmPerYear
-          // - state.termMonths
-          // - state.finalPrice
-        }}
+        onSelect={handleCarSelect}
       />
       <VehicleDetails
         info={[

@@ -1,4 +1,4 @@
-import React, { useId, useMemo, useRef, useState } from "react";
+import React, { useId, useMemo, useRef, useState, useEffect } from "react";
 
 const currency = (n) =>
   new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF" }).format(
@@ -94,13 +94,49 @@ const Textarea = ({ id, label, value, onChange, ...rest }) => {
 export default function LeaseInquiry({ car }) {
   const [currentStep, setCurrentStep] = useState(2);
 
+  // Debug: Log received car data
+  useEffect(() => {
+    console.log("=== LeaseInquiry Component ===");
+    console.log("Full car object:", car);
+    console.log("car.finalPrice:", car?.finalPrice);
+    console.log("car.price:", car?.price);
+    console.log("car.kmPerYear:", car?.kmPerYear);
+    console.log("car.termMonths:", car?.termMonths);
+  }, [car]);
+
+  // Calculate display price with proper fallback
+  const displayPrice = useMemo(() => {
+    const final = Number(car?.finalPrice);
+    const base = Number(car?.price);
+
+    console.log("Calculating displayPrice:");
+    console.log("  - finalPrice (raw):", car?.finalPrice);
+    console.log("  - finalPrice (parsed):", final);
+    console.log("  - basePrice (raw):", car?.price);
+    console.log("  - basePrice (parsed):", base);
+
+    // Use finalPrice if it exists and is valid, otherwise fallback to price
+    if (!isNaN(final) && final > 0) {
+      console.log("  ✓ Using finalPrice:", final);
+      return final;
+    }
+    if (!isNaN(base) && base > 0) {
+      console.log("  ✓ Using basePrice:", base);
+      return base;
+    }
+    console.log("  ⚠ No valid price found, defaulting to 0");
+    return 0;
+  }, [car?.finalPrice, car?.price]);
+
+  console.log("Final displayPrice:", displayPrice);
+
   const totals = useMemo(
     () => ({
-      monthly: car.price || 0,
+      monthly: displayPrice,
       fees: 0,
-      total: car.price || 0,
+      total: displayPrice,
     }),
-    [car.price]
+    [displayPrice]
   );
 
   const [form, setForm] = useState({
@@ -137,20 +173,23 @@ export default function LeaseInquiry({ car }) {
     }
     setSubmitting(true);
 
-    // Here you can send the form data along with car details to your backend
     const inquiryData = {
       ...form,
       carDetails: {
         name: car.name,
         kmPerYear: car.kmPerYear,
         termMonths: car.termMonths,
-        price: car.price,
+        basePrice: car.price,
+        finalPrice: displayPrice,
         imageUrls: car.imageUrls,
       },
     };
 
-    console.log("Submitting inquiry:", inquiryData);
+    console.log("=== Submitting inquiry ===");
+    console.log("Form data:", inquiryData);
+    console.log("Final price being submitted:", displayPrice);
 
+    // Simulate API call
     await new Promise((r) => setTimeout(r, 900));
     setSubmitting(false);
     setSubmitted(true);
@@ -160,6 +199,7 @@ export default function LeaseInquiry({ car }) {
   return (
     <main className="bg-white">
       <section className="mx-auto max-w-6xl px-4 py-10 sm:py-12 lg:py-16">
+        {/* Progress Steps */}
         <div
           className="flex items-center justify-center w-full py-6"
           aria-label="Progress"
@@ -224,6 +264,7 @@ export default function LeaseInquiry({ car }) {
         </div>
 
         <div className="mt-8 flex lg:flex-row-reverse flex-col justify-between w-full gap-8">
+          {/* Form Section */}
           <form
             onSubmit={onSubmit}
             noValidate
@@ -277,15 +318,10 @@ export default function LeaseInquiry({ car }) {
                   error={errors.phone}
                 />
                 <Textarea
-                  label="Ihre Wünsche oder Bemerkungen (optional)"
-                  required
-                  type="textarea"
-                  autoComplete="textarea"
-                  inputMode="textarea"
+                  label="Ihre Wünsche oder Bemerkungen (optional)"
                   value={form.textarea}
                   onChange={handleChange("textarea")}
                   placeholder="Haben Sie besondere Wünsche?"
-                  error={errors.textarea}
                 />
               </div>
             </div>
@@ -301,7 +337,7 @@ export default function LeaseInquiry({ car }) {
                 className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-blue-700/20 transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600/30 active:translate-y-px disabled:opacity-60"
                 aria-busy={submitting ? "true" : "false"}
               >
-                Jetzt Anfrage absenden
+                {submitting ? "Wird gesendet..." : "Jetzt Anfrage absenden"}
               </button>
             </div>
             <div className="mt-10">
@@ -315,11 +351,11 @@ export default function LeaseInquiry({ car }) {
             </div>
           </form>
 
-          {/* Sidebar */}
-          <aside className="lg:max-w-[60%] ">
+          {/* Sidebar - Car Details */}
+          <aside className="lg:max-w-[60%]">
             <div className="flex flex-col items-start gap-[20px]">
               <h1 className="text-[#010101] text-[32px] font-medium">
-                Super Wahl – Ihr {car.name} wartet auf Sie!
+                Super Wahl – Ihr {car?.name || "Fahrzeug"} wartet auf Sie!
               </h1>
               <p className="text-[#474747] text-[13px]">
                 Füllen Sie bitte noch kurz das Anfrage-Formular aus. Danach
@@ -327,17 +363,19 @@ export default function LeaseInquiry({ car }) {
                 und die Bonitätsprüfung.
               </p>
               <h1 className="text-[#010101] text-[32px] font-semibold py-[31px] border-[#DCDCDC] border-t border-b w-[95%]">
-                {car.name}
+                {car?.name || "Fahrzeug"}
               </h1>
             </div>
+
+            {/* Configuration Options Display */}
             <div>
-              <div className="mt-10 flex flex-row items-center justify-start gap-10">
+              <div className="mt-10 flex flex-row items-center justify-start gap-10 flex-wrap">
                 <div className="flex flex-col items-start gap-2">
                   <h1 className="text-[#5E83E7] text-[14px] tracking-loose ml-2">
                     Km / Jahr:
                   </h1>
                   <h1 className="text-[#010101] py-2 p-8 border-[#D1D5DD] border rounded-2xl text-[22px] font-semibold">
-                    {car.kmPerYear} km
+                    {car?.kmPerYear?.toLocaleString("de-CH") || "0"} km
                   </h1>
                 </div>
                 <div className="flex flex-col items-start gap-2">
@@ -345,7 +383,7 @@ export default function LeaseInquiry({ car }) {
                     Laufzeit:
                   </h1>
                   <h1 className="text-[#010101] py-2 px-8 border-[#D1D5DD] border rounded-2xl text-[22px] font-semibold">
-                    {car.termMonths} Monate
+                    {car?.termMonths || "0"} Monate
                   </h1>
                 </div>
                 <div className="flex flex-col items-start gap-2">
@@ -353,15 +391,31 @@ export default function LeaseInquiry({ car }) {
                     Preis
                   </h1>
                   <h1 className="text-[#010101] py-2 px-8 border-[#D1D5DD] border rounded-2xl text-[22px] font-semibold">
-                    {car.price} CHF
+                    {displayPrice > 0 ? (
+                      <>
+                        {displayPrice.toLocaleString("de-CH", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        CHF
+                      </>
+                    ) : (
+                      "Preis auf Anfrage"
+                    )}
                   </h1>
                 </div>
               </div>
+
+              {/* Car Image */}
               <div className="mt-10">
                 <img
-                  src={car.imageUrls[0]}
-                  alt=""
-                  className="w-full rounded-xl"
+                  src={car?.imageUrls?.[0] || car?.img || "/images/car.png"}
+                  alt={car?.name || "Fahrzeug"}
+                  className="w-full rounded-xl object-cover"
+                  onError={(e) => {
+                    console.log("Image failed to load:", e.target.src);
+                    e.target.src = "/images/car.png";
+                  }}
                 />
               </div>
             </div>
