@@ -55,7 +55,7 @@ const CarInfo = () => {
       kmPerYear: selection.kmPerYear,
       termMonths: selection.termMonths,
       price: parseInt(car.preis) || 749,
-      finalPrice: selection.finalPrice, // This is the calculated price
+      finalPrice: selection.finalPrice,
       marke: car.marke,
       modell: car.modell,
       imageUrls: car.imageUrls,
@@ -99,6 +99,7 @@ const CarInfo = () => {
         basePrice={parseInt(car.preis) || 749}
         kmPricingOptions={pricingOptions.kmOptions}
         termPricingOptions={pricingOptions.termOptions}
+        carData={car}
         onSelect={handleCarSelect}
       />
       <VehicleDetails
