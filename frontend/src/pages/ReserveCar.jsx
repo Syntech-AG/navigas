@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import LeaseInquiry from "../components/car/LeaseInquiry";
+import Abonnieren from "../components/general/Abonnieren";
+import Nachrichten from "../components/about/Nachrichten";
 
 const ReserveCar = () => {
   const location = useLocation();
@@ -9,10 +11,6 @@ const ReserveCar = () => {
   const carData = location.state?.car;
 
   useEffect(() => {
-    console.log("ReserveCar received location.state:", location.state);
-    console.log("ReserveCar carData:", carData);
-    console.log("ReserveCar carData.finalPrice:", carData?.finalPrice);
-
     if (!carData) {
       console.warn("No car data provided, redirecting to home");
       navigate("/", { replace: true });
@@ -28,8 +26,10 @@ const ReserveCar = () => {
   }
 
   return (
-    <div className="md:py-30 py-20">
+    <div className="md:pt-30 pt-20">
       <LeaseInquiry car={carData} />
+      <Abonnieren />
+      <Nachrichten />
     </div>
   );
 };

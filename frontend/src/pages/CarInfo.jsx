@@ -46,9 +46,6 @@ const CarInfo = () => {
   }, [car]);
 
   const handleCarSelect = (selection) => {
-    console.log("CarInfo handleCarSelect received:", selection);
-    console.log("selection.finalPrice:", selection.finalPrice);
-
     const carState = {
       name: `${car.marke} ${car.modell}`,
       img: car.imageUrls?.[0] || "/images/car.png",

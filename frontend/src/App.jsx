@@ -25,7 +25,7 @@ function App() {
           <Route path="/uberUns" element={<About />} />
           <Route path="/api/cars/:id" element={<CarInfo />} />
           <Route path="/reserve-car" element={<ReserveCar />} />
-          <Route path="/api/cars3/:id" element={<ReserveCar2 />} />
+          <Route path="/reserve-car-2" element={<ReserveCar2 />} />
           <Route path="/geschäftskunden" element={<Customer />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/kontakt" element={<Kontakt />} />
