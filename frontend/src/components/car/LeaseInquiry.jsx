@@ -1,9 +1,6 @@
 import React, { useId, useMemo, useRef, useState, useEffect } from "react";
-
-const currency = (n) =>
-  new Intl.NumberFormat("de-CH", { style: "currency", currency: "CHF" }).format(
-    n
-  );
+import { useNavigate } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 
 const steps = [
   { label: "Fahrzeug wählen" },
@@ -92,7 +89,13 @@ const Textarea = ({ id, label, value, onChange, ...rest }) => {
 };
 
 export default function LeaseInquiry({ car }) {
+  const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(2);
+
+  // Initialize EmailJS once when component mounts
+  useEffect(() => {
+    emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
+  }, []);
 
   // Debug: Log received car data
   useEffect(() => {
@@ -173,27 +176,82 @@ export default function LeaseInquiry({ car }) {
     }
     setSubmitting(true);
 
-    const inquiryData = {
-      ...form,
-      carDetails: {
-        name: car.name,
-        kmPerYear: car.kmPerYear,
-        termMonths: car.termMonths,
-        basePrice: car.price,
-        finalPrice: displayPrice,
-        imageUrls: car.imageUrls,
-      },
-    };
+    try {
+      // Prepare template parameters for company email
+      const companyTemplateParams = {
+        from_name: `${form.firstName} ${form.lastName}`,
+        client_email: form.email,
+        phone: form.phone,
+        message: form.textarea || "Keine Bemerkungen",
+        car_name: car.name,
+        km_per_year: car.kmPerYear,
+        term_months: car.termMonths,
+        price: displayPrice.toLocaleString("de-CH", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+      };
 
-    console.log("=== Submitting inquiry ===");
-    console.log("Form data:", inquiryData);
-    console.log("Final price being submitted:", displayPrice);
+      // Prepare template parameters for client email
+      const clientTemplateParams = {
+        client_name: `${form.firstName} ${form.lastName}`,
+        client_email: form.email,
+        car_name: car.name,
+        km_per_year: car.kmPerYear,
+        term_months: car.termMonths,
+        price: displayPrice.toLocaleString("de-CH", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+      };
 
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
-    setSubmitted(true);
-    setCurrentStep(3);
+      console.log("=== Sending emails ===");
+      console.log("Company template params:", companyTemplateParams);
+      console.log("Client template params:", clientTemplateParams);
+
+      // Send both emails in parallel
+      const [companyResponse, clientResponse] = await Promise.all([
+        emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_COMPANY,
+          companyTemplateParams
+        ),
+        emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_CLIENT,
+          clientTemplateParams
+        ),
+      ]);
+
+      console.log("✅ Company email sent:", companyResponse);
+      console.log("✅ Client email sent:", clientResponse);
+
+      setSubmitted(true);
+
+      // Navigate to FinalLeaseInquiry page with car data
+      navigate("/reserve-car-2", {
+        state: {
+          car: {
+            id: car.id || 1,
+            name: car.name,
+            image: car.imageUrls?.[0] || car.img || "/images/Image.png",
+            kmPerYear: `${car.kmPerYear?.toLocaleString("de-CH")} km`,
+            duration: `${car.termMonths} Monate`,
+            price: `${displayPrice.toLocaleString("de-CH", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })} CHF`,
+          },
+        },
+      });
+    } catch (error) {
+      console.error("❌ Error sending email:", error);
+      alert(
+        "Es gab ein Problem beim Senden Ihrer Anfrage. Bitte versuchen Sie es erneut."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -263,7 +321,7 @@ export default function LeaseInquiry({ car }) {
           })}
         </div>
 
-        <div className="mt-8 flex lg:flex-row-reverse flex-col justify-between w-full gap-8">
+        <div className="mt-25 flex lg:flex-row-reverse flex-col justify-between w-full gap-8">
           {/* Form Section */}
           <form
             onSubmit={onSubmit}
@@ -423,16 +481,5 @@ export default function LeaseInquiry({ car }) {
         </div>
       </section>
     </main>
-  );
-}
-
-function Row({ label, value, strong = false }) {
-  return (
-    <div className="flex items-center justify-between">
-      <dt className="text-gray-600">{label}</dt>
-      <dd className={strong ? "font-semibold text-gray-900" : "text-gray-900"}>
-        {value}
-      </dd>
-    </div>
   );
 }

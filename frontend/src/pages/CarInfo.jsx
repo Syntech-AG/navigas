@@ -46,16 +46,13 @@ const CarInfo = () => {
   }, [car]);
 
   const handleCarSelect = (selection) => {
-    console.log("CarInfo handleCarSelect received:", selection);
-    console.log("selection.finalPrice:", selection.finalPrice);
-
     const carState = {
       name: `${car.marke} ${car.modell}`,
       img: car.imageUrls?.[0] || "/images/car.png",
       kmPerYear: selection.kmPerYear,
       termMonths: selection.termMonths,
       price: parseInt(car.preis) || 749,
-      finalPrice: selection.finalPrice, // This is the calculated price
+      finalPrice: selection.finalPrice,
       marke: car.marke,
       modell: car.modell,
       imageUrls: car.imageUrls,
