@@ -1,8 +1,23 @@
-import React, { useId, useMemo, useRef, useState, useEffect } from "react";
+import React, {
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import emailjs from "@emailjs/browser";
 
-const steps = [
+const INITIAL_FORM_STATE = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  textarea: "",
+};
+
+const STEPS = [
   { label: "Fahrzeug wählen" },
   { label: "Anfrage senden" },
   { label: "Lieferung" },
@@ -26,6 +41,16 @@ const Input = ({
   const [touched, setTouched] = useState(false);
   const invalid = touched && required && !value;
 
+  const handleChange = useCallback(
+    (e) => {
+      setTouched(true);
+      onChange?.(e);
+    },
+    [onChange]
+  );
+
+  const handleBlur = useCallback(() => setTouched(true), []);
+
   return (
     <div className="w-full">
       <label
@@ -43,11 +68,8 @@ const Input = ({
         pattern={pattern}
         maxLength={maxLength}
         value={value}
-        onChange={(e) => {
-          setTouched(true);
-          onChange?.(e);
-        }}
-        onBlur={() => setTouched(true)}
+        onChange={handleChange}
+        onBlur={handleBlur}
         aria-invalid={invalid ? "true" : undefined}
         aria-describedby={error ? `${inputId}-error` : undefined}
         className={[
@@ -90,65 +112,23 @@ const Textarea = ({ id, label, value, onChange, ...rest }) => {
 
 export default function LeaseInquiry({ car }) {
   const navigate = useNavigate();
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep] = useState(2);
+  const [form, setForm] = useState(INITIAL_FORM_STATE);
+  const [submitting, setSubmitting] = useState(false);
+  const submitRef = useRef(null);
 
-  // Initialize EmailJS once when component mounts
   useEffect(() => {
     emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY);
   }, []);
 
-  // Debug: Log received car data
-  useEffect(() => {
-    console.log("=== LeaseInquiry Component ===");
-    console.log("Full car object:", car);
-    console.log("car.finalPrice:", car?.finalPrice);
-    console.log("car.price:", car?.price);
-    console.log("car.kmPerYear:", car?.kmPerYear);
-    console.log("car.termMonths:", car?.termMonths);
-  }, [car]);
-
-  // Calculate display price with proper fallback
   const displayPrice = useMemo(() => {
     const final = Number(car?.finalPrice);
     const base = Number(car?.price);
 
-    console.log("Calculating displayPrice:");
-    console.log("  - finalPrice (raw):", car?.finalPrice);
-    console.log("  - finalPrice (parsed):", final);
-    console.log("  - basePrice (raw):", car?.price);
-    console.log("  - basePrice (parsed):", base);
-
-    // Use finalPrice if it exists and is valid, otherwise fallback to price
-    if (!isNaN(final) && final > 0) {
-      console.log("  ✓ Using finalPrice:", final);
-      return final;
-    }
-    if (!isNaN(base) && base > 0) {
-      console.log("  ✓ Using basePrice:", base);
-      return base;
-    }
-    console.log("  ⚠ No valid price found, defaulting to 0");
+    if (!isNaN(final) && final > 0) return final;
+    if (!isNaN(base) && base > 0) return base;
     return 0;
   }, [car?.finalPrice, car?.price]);
-
-  console.log("Final displayPrice:", displayPrice);
-
-  const totals = useMemo(
-    () => ({
-      monthly: displayPrice,
-      fees: 0,
-      total: displayPrice,
-    }),
-    [displayPrice]
-  );
-
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    textarea: "",
-  });
 
   const errors = useMemo(() => {
     const e = {};
@@ -161,108 +141,90 @@ export default function LeaseInquiry({ car }) {
     return e;
   }, [form]);
 
-  const submitRef = useRef(null);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const handleChange = useCallback(
+    (key) => (e) => setForm((s) => ({ ...s, [key]: e.target.value })),
+    []
+  );
 
-  const handleChange = (key) => (e) =>
-    setForm((s) => ({ ...s, [key]: e.target.value }));
+  const handleImageError = useCallback((e) => {
+    console.log("Image failed to load:", e.target.src);
+    e.target.src = "/images/car.png";
+  }, []);
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    if (Object.keys(errors).length) {
-      submitRef.current?.focus();
-      return;
-    }
-    setSubmitting(true);
+  const onSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (Object.keys(errors).length) {
+        submitRef.current?.focus();
+        return;
+      }
+      setSubmitting(true);
 
-    try {
-      // Prepare template parameters for company email
-      const companyTemplateParams = {
-        from_name: `${form.firstName} ${form.lastName}`,
-        client_email: form.email,
-        phone: form.phone,
-        message: form.textarea || "Keine Bemerkungen",
-        car_name: car.name,
-        km_per_year: car.kmPerYear,
-        term_months: car.termMonths,
-        price: displayPrice.toLocaleString("de-CH", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
-      };
+      try {
+        const baseTemplateParams = {
+          from_name: `${form.firstName} ${form.lastName}`,
+          client_email: form.email,
+          phone: form.phone,
+          message: form.textarea || "Keine Bemerkungen",
+          car_name: car.name,
+          km_per_year: car.kmPerYear,
+          term_months: car.termMonths,
+          price: displayPrice.toLocaleString("de-CH", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }),
+        };
 
-      // Prepare template parameters for client email
-      const clientTemplateParams = {
-        client_name: `${form.firstName} ${form.lastName}`,
-        client_email: form.email,
-        car_name: car.name,
-        km_per_year: car.kmPerYear,
-        term_months: car.termMonths,
-        price: displayPrice.toLocaleString("de-CH", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }),
-      };
+        const [companyResponse, clientResponse] = await Promise.all([
+          emailjs.send(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_TEMPLATE_COMPANY,
+            baseTemplateParams
+          ),
+          emailjs.send(
+            import.meta.env.VITE_EMAILJS_SERVICE_ID,
+            import.meta.env.VITE_EMAILJS_TEMPLATE_CLIENT,
+            { ...baseTemplateParams, client_name: baseTemplateParams.from_name }
+          ),
+        ]);
 
-      console.log("=== Sending emails ===");
-      console.log("Company template params:", companyTemplateParams);
-      console.log("Client template params:", clientTemplateParams);
+        console.log("✅ Emails sent successfully");
 
-      // Send both emails in parallel
-      const [companyResponse, clientResponse] = await Promise.all([
-        emailjs.send(
-          import.meta.env.VITE_EMAILJS_SERVICE_ID,
-          import.meta.env.VITE_EMAILJS_TEMPLATE_COMPANY,
-          companyTemplateParams
-        ),
-        emailjs.send(
-          import.meta.env.VITE_EMAILJS_SERVICE_ID,
-          import.meta.env.VITE_EMAILJS_TEMPLATE_CLIENT,
-          clientTemplateParams
-        ),
-      ]);
-
-      console.log("✅ Company email sent:", companyResponse);
-      console.log("✅ Client email sent:", clientResponse);
-
-      setSubmitted(true);
-
-      // Navigate to FinalLeaseInquiry page with car data
-      navigate("/reserve-car-2", {
-        state: {
-          car: {
-            id: car.id || 1,
-            name: car.name,
-            image: car.imageUrls?.[0] || car.img || "/images/Image.png",
-            kmPerYear: `${car.kmPerYear?.toLocaleString("de-CH")} km`,
-            duration: `${car.termMonths} Monate`,
-            price: `${displayPrice.toLocaleString("de-CH", {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })} CHF`,
+        navigate("/reserve-car-2", {
+          state: {
+            car: {
+              id: car.id || 1,
+              name: car.name,
+              image: car.imageUrls || car.img || "/images/Image.png",
+              kmPerYear: `${car.kmPerYear?.toLocaleString("de-CH")} km`,
+              duration: `${car.termMonths} Monate`,
+              price: `${displayPrice.toLocaleString("de-CH", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })} CHF`,
+            },
           },
-        },
-      });
-    } catch (error) {
-      console.error("❌ Error sending email:", error);
-      alert(
-        "Es gab ein Problem beim Senden Ihrer Anfrage. Bitte versuchen Sie es erneut."
-      );
-    } finally {
-      setSubmitting(false);
-    }
-  };
+        });
+      } catch (error) {
+        console.error("❌ Error sending email:", error);
+        alert(
+          "Es gab ein Problem beim Senden Ihrer Anfrage. Bitte versuchen Sie es erneut."
+        );
+      } finally {
+        setSubmitting(false);
+      }
+    },
+    [form, errors, car, displayPrice, navigate]
+  );
 
   return (
     <main className="bg-white">
       <section className="mx-auto max-w-6xl px-4 py-10 sm:py-12 lg:py-16">
-        {/* Progress Steps */}
         <div
           className="flex items-center justify-center w-full py-6"
           aria-label="Progress"
         >
-          {steps.map((step, idx) => {
+          {STEPS.map((step, idx) => {
             const isCompleted = idx + 1 < currentStep;
             const isActive = idx + 1 === currentStep;
 
@@ -310,11 +272,11 @@ export default function LeaseInquiry({ car }) {
                     {step.label}
                   </span>
                 </div>
-                {idx < steps.length - 1 && (
+                {idx < STEPS.length - 1 && (
                   <div
                     className="flex-1 border-t border-dashed border-gray-300 mx-2"
                     role="presentation"
-                  ></div>
+                  />
                 )}
               </React.Fragment>
             );
@@ -322,7 +284,6 @@ export default function LeaseInquiry({ car }) {
         </div>
 
         <div className="mt-25 flex lg:flex-row-reverse flex-col justify-between w-full gap-8">
-          {/* Form Section */}
           <form
             onSubmit={onSubmit}
             noValidate
@@ -383,9 +344,6 @@ export default function LeaseInquiry({ car }) {
                 />
               </div>
             </div>
-            <div aria-live="polite" className="sr-only">
-              {Object.values(errors).join(". ")}
-            </div>
 
             <div className="mt-6 sm:mt-8">
               <button
@@ -398,6 +356,7 @@ export default function LeaseInquiry({ car }) {
                 {submitting ? "Wird gesendet..." : "Jetzt Anfrage absenden"}
               </button>
             </div>
+
             <div className="mt-10">
               <hr className="text-gray-300 w-full py-4" />
               <div className="flex flex-row items-center justify-start gap-2">
@@ -409,7 +368,6 @@ export default function LeaseInquiry({ car }) {
             </div>
           </form>
 
-          {/* Sidebar - Car Details */}
           <aside className="lg:max-w-[60%]">
             <div className="flex flex-col items-start gap-[20px]">
               <h1 className="text-[#010101] text-[32px] font-medium">
@@ -425,7 +383,6 @@ export default function LeaseInquiry({ car }) {
               </h1>
             </div>
 
-            {/* Configuration Options Display */}
             <div>
               <div className="mt-10 flex flex-row items-center justify-start gap-10 flex-wrap">
                 <div className="flex flex-col items-start gap-2">
@@ -464,16 +421,12 @@ export default function LeaseInquiry({ car }) {
                 </div>
               </div>
 
-              {/* Car Image */}
               <div className="mt-10">
                 <img
-                  src={car?.imageUrls?.[0] || car?.img || "/images/car.png"}
+                  src={car?.imageUrls || car?.img || "/images/car.png"}
                   alt={car?.name || "Fahrzeug"}
                   className="w-full rounded-xl object-cover"
-                  onError={(e) => {
-                    console.log("Image failed to load:", e.target.src);
-                    e.target.src = "/images/car.png";
-                  }}
+                  onError={handleImageError}
                 />
               </div>
             </div>

@@ -1,11 +1,18 @@
-import { useId, useMemo, useState, useEffect } from "react";
+import React, { useId, useMemo, useState, useEffect, useCallback } from "react";
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import "jspdf-autotable";
 
 const cx = (...c) => c.filter(Boolean).join(" ");
 
 function Dropdown({ name, label, options, value, onChange }) {
   const groupId = useId();
+
+  const handleChange = useCallback(
+    (e) => {
+      onChange(e.target.value);
+    },
+    [onChange]
+  );
 
   return (
     <div className="w-full">
@@ -16,7 +23,7 @@ function Dropdown({ name, label, options, value, onChange }) {
         id={groupId}
         name={name}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={handleChange}
         className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
       >
         {options.map((opt) => (
@@ -36,6 +43,8 @@ function ImageWithFallback({ src, alt, className }) {
     setFailed(false);
   }, [src]);
 
+  const handleError = useCallback(() => setFailed(true), []);
+
   return failed ? (
     <div
       aria-label="image unavailable"
@@ -51,7 +60,7 @@ function ImageWithFallback({ src, alt, className }) {
       src={src}
       alt={alt}
       loading="lazy"
-      onError={() => setFailed(true)}
+      onError={handleError}
       className={cx("h-full w-full object-cover", className)}
     />
   );
@@ -65,14 +74,92 @@ export default function PolestarCard({
   termPricingOptions = [],
   basePrice = 749,
   buttonLabel = "Jetzt wählen",
-  carData, // ✅ Receive car data
+  carData,
   onSelect,
 }) {
-  // ✅ Function to convert image URL to base64
-  const getImageBase64 = (url) => {
+  const [imageIndex, setImageIndex] = useState(0);
+  const [selectedKm, setSelectedKm] = useState(kmPricingOptions[0]?.km || 5000);
+  const [selectedTerm, setSelectedTerm] = useState(
+    termPricingOptions[0]?.months || 24
+  );
+
+  // Memoized image key for dependency tracking
+  const imagesKey = useMemo(
+    () => images.map((img) => img.src).join(","),
+    [images]
+  );
+
+  const gallery = useMemo(() => {
+    if (!images || images.length === 0)
+      return [{ src: "", alt: "placeholder" }];
+    return images;
+  }, [imagesKey]);
+
+  // Reset image index when images change
+  useEffect(() => {
+    setImageIndex(0);
+  }, [imagesKey]);
+
+  // Set default values when options change
+  useEffect(() => {
+    if (kmPricingOptions.length > 0) {
+      setSelectedKm(kmPricingOptions[0].km);
+    }
+  }, [kmPricingOptions]);
+
+  useEffect(() => {
+    if (termPricingOptions.length > 0) {
+      setSelectedTerm(termPricingOptions[0].months);
+    }
+  }, [termPricingOptions]);
+
+  // Price calculations
+  const priceBreakdown = useMemo(() => {
+    const kmValue = Number(selectedKm);
+    const termValue = Number(selectedTerm);
+    const kmOption = kmPricingOptions.find((opt) => Number(opt.km) === kmValue);
+    const termOption = termPricingOptions.find(
+      (opt) => Number(opt.months) === termValue
+    );
+
+    return {
+      base: Number(basePrice) || 0,
+      km: Number(kmOption?.priceModifier) || 0,
+      term: Number(termOption?.priceModifier) || 0,
+    };
+  }, [
+    selectedKm,
+    selectedTerm,
+    kmPricingOptions,
+    termPricingOptions,
+    basePrice,
+  ]);
+
+  const finalPrice = useMemo(() => {
+    const total = priceBreakdown.base + priceBreakdown.km + priceBreakdown.term;
+    return total;
+  }, [priceBreakdown]);
+
+  // Thumbnail logic
+  const thumbnails = useMemo(() => {
+    const len = gallery.length;
+    if (len <= 1) return [];
+
+    const allIndices = Array.from({ length: len }, (_, idx) => idx);
+    const otherIndices = allIndices.filter((idx) => idx !== imageIndex);
+
+    return otherIndices.slice(0, 2).map((idx) => ({
+      idx,
+      ...gallery[idx],
+      uniqueKey: `thumb-${idx}`,
+    }));
+  }, [imageIndex, gallery]);
+
+  // Helper function for PDF image conversion
+  const getImageBase64 = useCallback((url) => {
     return new Promise((resolve, reject) => {
       const img = new Image();
-      img.crossOrigin = "Anonymous"; // Handle CORS
+      img.crossOrigin = "Anonymous";
       img.onload = () => {
         const canvas = document.createElement("canvas");
         canvas.width = img.width;
@@ -85,43 +172,38 @@ export default function PolestarCard({
       img.onerror = () => reject(new Error("Failed to load image"));
       img.src = url;
     });
-  };
+  }, []);
 
-  const handleDownloadPDF = async () => {
+  // PDF Download Handler
+  const handleDownloadPDF = useCallback(async () => {
     const doc = new jsPDF("p", "mm", "a4");
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
 
-    // ===== SMALLER BLUE HEADER =====
+    // Header
     doc.setFillColor(8, 71, 164);
-    doc.rect(0, 0, pageWidth, 30, "F"); // ✅ Reduced from 50 to 30
-
-    // Title on blue background
+    doc.rect(0, 0, pageWidth, 30, "F");
     doc.setTextColor(255, 255, 255);
-    doc.setFontSize(20); // ✅ Slightly smaller
+    doc.setFontSize(20);
     doc.setFont(undefined, "bold");
     doc.text(title, pageWidth / 2, 12, { align: "center" });
-
     doc.setFontSize(11);
     doc.setFont(undefined, "normal");
     doc.text(subtitle, pageWidth / 2, 20, { align: "center" });
-
     doc.setFontSize(8);
-    doc.text("✓ Sofort verfügbar", pageWidth / 2, 26, { align: "center" });
+    doc.text("Sofort verfügbar", pageWidth / 2, 26, { align: "center" });
 
-    // Reset text color
     doc.setTextColor(0, 0, 0);
-
-    // ===== SMALLER CAR IMAGE =====
     let currentY = 38;
+
+    // Add image if available
     try {
       if (images && images.length > 0 && images[0]?.src) {
         const imageData = await getImageBase64(images[0].src);
-        const imgWidth = 120; // ✅ Reduced from 170
-        const imgHeight = 65; // ✅ Reduced from 90
+        const imgWidth = 120;
+        const imgHeight = 65;
         const imgX = (pageWidth - imgWidth) / 2;
 
-        // Add rounded rectangle border around image
         doc.setDrawColor(8, 71, 164);
         doc.setLineWidth(0.5);
         doc.roundedRect(
@@ -132,16 +214,15 @@ export default function PolestarCard({
           3,
           3
         );
-
         doc.addImage(imageData, "JPEG", imgX, currentY, imgWidth, imgHeight);
         currentY += imgHeight + 12;
       }
     } catch (error) {
       console.error("Failed to add image:", error);
-      currentY = 45;
+      currentY += 45;
     }
 
-    // ===== CONFIGURATION SECTION (PRETTY FORMAT) =====
+    // Configuration section
     doc.setFontSize(14);
     doc.setFont(undefined, "bold");
     doc.setTextColor(8, 71, 164);
@@ -149,16 +230,14 @@ export default function PolestarCard({
       align: "center",
     });
 
-    // Light background box for config
     doc.setFillColor(243, 245, 250);
     doc.roundedRect(20, currentY + 3, pageWidth - 40, 32, 2, 2, "F");
-
     currentY += 20;
+
     doc.setFontSize(10);
     doc.setTextColor(50, 50, 50);
     doc.setFont(undefined, "normal");
 
-    // Two-column layout for config
     const leftX = 30;
     const rightX = pageWidth / 2 + 5;
     const valueOffset = 55;
@@ -205,53 +284,46 @@ export default function PolestarCard({
 
     currentY += 25;
 
-    // ===== TECHNICAL SPECIFICATIONS (CLEAN LAYOUT) =====
+    // Technical specifications
     doc.setFontSize(14);
     doc.setFont(undefined, "bold");
     doc.setTextColor(8, 71, 164);
     doc.text("Technische Daten", pageWidth / 2, currentY, { align: "center" });
-
     currentY += 8;
 
-    // Grid layout for specs (3 columns)
     const specs = [
-      { label: "Schaltung", value: carData?.Getriebe || "N/A", icon: "⚙️" },
-      { label: "Reichweite", value: carData?.reichweite || "N/A", icon: "🔋" },
+      { label: "Schaltung", value: carData?.Getriebe || "N/A" },
+      { label: "Reichweite", value: carData?.reichweite || "N/A" },
       {
         label: "Leistung",
         value: carData?.leistung ? `${carData.leistung} PS` : "N/A",
-        icon: "⚡",
       },
       {
         label: "Verbrauch",
         value: carData?.verbrauch ? `${carData.verbrauch} L/100km` : "N/A",
-        icon: "⛽",
       },
-      { label: "Türen", value: carData?.turen || "N/A", icon: "🚪" },
-      { label: "Treibstoff", value: carData?.Treibstoff || "N/A", icon: "🔌" },
+      { label: "Türen", value: carData?.turen || "N/A" },
+      { label: "Treibstoff", value: carData?.Treibstoff || "N/A" },
     ];
 
     const colWidth = (pageWidth - 40) / 3;
     let row = 0;
     let col = 0;
 
-    specs.forEach((spec, index) => {
+    specs.forEach((spec) => {
       const x = 20 + col * colWidth;
       const y = currentY + row * 20;
 
-      // Light box for each spec
       doc.setFillColor(255, 255, 255);
       doc.setDrawColor(220, 220, 220);
       doc.setLineWidth(0.1);
       doc.roundedRect(x, y, colWidth - 5, 16, 1, 1, "FD");
 
-      // Icon and label
       doc.setFontSize(9);
       doc.setTextColor(100, 100, 100);
       doc.setFont(undefined, "normal");
       doc.text(spec.label, x + 3, y + 6);
 
-      // Value
       doc.setFontSize(10);
       doc.setTextColor(0, 0, 0);
       doc.setFont(undefined, "bold");
@@ -264,23 +336,14 @@ export default function PolestarCard({
       }
     });
 
-    currentY += row * 20 + 20;
+    currentY += (row + 1) * 20 + 20;
 
-    // ===== DECORATIVE DIVIDER =====
-    doc.setDrawColor(8, 71, 164);
-    doc.setLineWidth(0.3);
-    doc.line(30, currentY, pageWidth - 30, currentY);
-
-    // ===== FOOTER SECTION =====
-    // ===== IMPROVED FOOTER SECTION =====
-    const footerStartY = pageHeight - 30; // Start footer higher
-
-    // Decorative line above footer
+    // Footer
+    const footerStartY = pageHeight - 30;
     doc.setDrawColor(8, 71, 164);
     doc.setLineWidth(0.3);
     doc.line(20, footerStartY, pageWidth - 20, footerStartY);
 
-    // Footer background box
     doc.setFillColor(243, 245, 250);
     doc.roundedRect(15, footerStartY + 3, pageWidth - 30, 22, 2, 2, "F");
 
@@ -290,17 +353,14 @@ export default function PolestarCard({
       day: "numeric",
     });
 
-    // Line 1: Date and Tax info (more spacing)
     doc.setFontSize(8);
     doc.setTextColor(80, 80, 80);
     doc.setFont(undefined, "normal");
-    doc.text(`Erstellt am: ${date}`, 20, footerStartY + 10);
-
+    doc.text(`Erstellt am ${date}`, 20, footerStartY + 10);
     doc.text("Alle Preise inkl. MwSt.", pageWidth / 2, footerStartY + 10, {
       align: "center",
     });
 
-    // Line 2: Website (properly aligned)
     doc.setTextColor(8, 71, 164);
     doc.setFont(undefined, "bold");
     doc.setFontSize(9);
@@ -308,7 +368,6 @@ export default function PolestarCard({
       align: "right",
     });
 
-    // Line 3: Tagline (separate line with more space)
     doc.setFontSize(7);
     doc.setTextColor(120, 120, 120);
     doc.setFont(undefined, "italic");
@@ -316,93 +375,27 @@ export default function PolestarCard({
       "Ihr zuverlässiger Partner für Elektromobilität",
       pageWidth / 2,
       footerStartY + 18,
-      { align: "center" }
+      {
+        align: "center",
+      }
     );
 
-    // Save PDF
-    const filename = `${title.replace(/\s+/g, "_")}_Datenblatt.pdf`;
+    const filename = `${title.replace(/\s/g, "_")}_Datenblatt.pdf`;
     doc.save(filename);
-  };
-
-  const imagesKey = useMemo(
-    () => images.map((img) => img.src).join("|"),
-    [images]
-  );
-
-  const gallery = useMemo(() => {
-    if (!images || images.length === 0) {
-      return [{ src: "", alt: "placeholder" }];
-    }
-    return images;
-  }, [imagesKey]);
-
-  const [imageIndex, setImageIndex] = useState(0);
-  const [selectedKm, setSelectedKm] = useState(kmPricingOptions[0]?.km || 5000);
-  const [selectedTerm, setSelectedTerm] = useState(
-    termPricingOptions[0]?.months || 24
-  );
-
-  useEffect(() => {
-    setImageIndex(0);
-  }, [imagesKey]);
-
-  useEffect(() => {
-    if (kmPricingOptions.length > 0) {
-      setSelectedKm(kmPricingOptions[0].km);
-    }
-  }, [kmPricingOptions]);
-
-  useEffect(() => {
-    if (termPricingOptions.length > 0) {
-      setSelectedTerm(termPricingOptions[0].months);
-    }
-  }, [termPricingOptions]);
-
-  const priceBreakdown = useMemo(() => {
-    const kmValue = Number(selectedKm);
-    const termValue = Number(selectedTerm);
-
-    const kmOption = kmPricingOptions.find((opt) => Number(opt.km) === kmValue);
-    const termOption = termPricingOptions.find(
-      (opt) => Number(opt.months) === termValue
-    );
-
-    return {
-      base: Number(basePrice) || 0,
-      km: Number(kmOption?.priceModifier) || 0,
-      term: Number(termOption?.priceModifier) || 0,
-    };
   }, [
+    title,
+    subtitle,
+    images,
     selectedKm,
     selectedTerm,
-    kmPricingOptions,
-    termPricingOptions,
     basePrice,
+    finalPrice,
+    carData,
+    getImageBase64,
   ]);
 
-  const finalPrice = useMemo(() => {
-    const total = priceBreakdown.base + priceBreakdown.km + priceBreakdown.term;
-    console.log("PolestarCard finalPrice calculated:", total);
-    return total;
-  }, [priceBreakdown]);
-
-  const thumbnails = useMemo(() => {
-    const i = imageIndex;
-    const len = gallery.length;
-
-    if (len <= 1) return [];
-
-    const allIndices = Array.from({ length: len }, (_, idx) => idx);
-    const otherIndices = allIndices.filter((idx) => idx !== i);
-
-    return otherIndices.slice(0, 2).map((idx) => ({
-      idx,
-      ...gallery[idx],
-      uniqueKey: `thumb-${idx}`,
-    }));
-  }, [imageIndex, gallery]);
-
-  const handleSubmit = () => {
+  // Event handlers
+  const handleSubmit = useCallback(() => {
     const selectionData = {
       kmPerYear: Number(selectedKm),
       termMonths: Number(selectedTerm),
@@ -412,29 +405,37 @@ export default function PolestarCard({
       priceBreakdown: priceBreakdown,
     };
 
-    console.log("PolestarCard handleSubmit:", selectionData);
-    console.log("finalPrice being sent:", finalPrice);
-
     onSelect?.(selectionData);
-  };
+  }, [
+    selectedKm,
+    selectedTerm,
+    imageIndex,
+    finalPrice,
+    basePrice,
+    priceBreakdown,
+    onSelect,
+  ]);
 
-  const next = () => setImageIndex((imageIndex + 1) % gallery.length);
-  const prev = () =>
+  const next = useCallback(() => {
+    setImageIndex((imageIndex + 1) % gallery.length);
+  }, [imageIndex, gallery.length]);
+
+  const prev = useCallback(() => {
     setImageIndex((imageIndex - 1 + gallery.length) % gallery.length);
+  }, [imageIndex, gallery.length]);
 
-  const handleKmChange = (value) => {
-    console.log("KM changed to:", value);
+  const handleKmChange = useCallback((value) => {
     setSelectedKm(Number(value));
-  };
+  }, []);
 
-  const handleTermChange = (value) => {
-    console.log("Term changed to:", value);
+  const handleTermChange = useCallback((value) => {
     setSelectedTerm(Number(value));
-  };
+  }, []);
 
   return (
     <section className="mx-auto rounded-xl container">
       <div className="flex flex-col md:flex-row justify-between">
+        {/* Image Gallery */}
         <div className="md:w-[65%] w-full">
           <div className="grid gap-3 md:grid-cols-1">
             <div className="relative md:cols-span-2">
@@ -454,7 +455,7 @@ export default function PolestarCard({
                     onClick={prev}
                     className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
                   >
-                    ‹
+                    ❮
                   </button>
                   <button
                     type="button"
@@ -462,12 +463,13 @@ export default function PolestarCard({
                     onClick={next}
                     className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
                   >
-                    ›
+                    ❯
                   </button>
                 </div>
               )}
             </div>
 
+            {/* Thumbnails */}
             {thumbnails.length > 0 && (
               <div className="grid grid-cols-2 gap-3 overflow-hidden max-md:hidden">
                 {thumbnails.map((img) => (
@@ -487,6 +489,7 @@ export default function PolestarCard({
           </div>
         </div>
 
+        {/* Configuration Panel */}
         <div className="md:w-[30%] w-full">
           <div className="mt-7 flex flex-col gap-2">
             <p className="text-xs text-[#0847A4] bg-[#0847A41A] py-1 px-4 rounded-xl w-fit">
@@ -500,10 +503,11 @@ export default function PolestarCard({
 
           <hr className="text-gray-300 mt-10" />
 
+          {/* Configuration Options */}
           <div className="grid gap-6 md:grid-cols-1 w-[60%] pt-7 pb-10">
             <Dropdown
               name="km"
-              label="Km / Jahr:"
+              label="Km / Jahr"
               value={selectedKm}
               onChange={handleKmChange}
               options={kmPricingOptions.map((opt) => ({
@@ -513,7 +517,7 @@ export default function PolestarCard({
             />
             <Dropdown
               name="term"
-              label="Laufzeit:"
+              label="Laufzeit"
               value={selectedTerm}
               onChange={handleTermChange}
               options={termPricingOptions.map((opt) => ({
@@ -525,6 +529,7 @@ export default function PolestarCard({
 
           <hr className="text-gray-300 mt-5" />
 
+          {/* Price Display */}
           <div className="mt-6 flex flex-col items-start justify-between gap-4 pt-4">
             <div className="w-full">
               <div className="lg:text-[34px] text-[28px] font-semibold text-[#0847A4] flex flex-col gap-2">
@@ -541,10 +546,11 @@ export default function PolestarCard({
               </div>
             </div>
 
+            {/* Action Buttons */}
             <button
               type="button"
               onClick={handleSubmit}
-              className="inline-flex w-full items-center justify-center rounded-md bg-[#0847A4] px-6 py-3 text-sm font-medium text-white shadow hover:bg-[black] transition"
+              className="inline-flex w-full items-center justify-center rounded-md bg-[#0847A4] px-6 py-3 text-sm font-medium text-white shadow hover:bg-black transition"
             >
               {buttonLabel}
             </button>
@@ -554,7 +560,7 @@ export default function PolestarCard({
               className="inline-flex w-full items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-medium text-[#0847A4] hover:text-white shadow hover:bg-black border transition"
             >
               <img src="/images/pdf.svg" alt="" className="mr-3" />
-              Datenblatt (PDF)
+              Datenblatt PDF
             </button>
           </div>
         </div>

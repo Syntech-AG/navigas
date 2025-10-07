@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from "react";
 import { CarCard } from "./CarCard";
 import { fetchCars } from "./carService";
 import { useDebounce } from "./useDebounce";
@@ -44,28 +50,34 @@ export const CarList = ({ filters }) => {
     }
   }, []);
 
-  useEffect(() => {
-    setPage(1);
-  }, [
-    filters?.fahrzeugart,
-    filters?.treibstoff,
-    filters?.getriebe,
-    debouncedAutoname,
-  ]);
+  // Memoize filter dependencies
+  const filterDeps = useMemo(
+    () => [
+      filters?.fahrzeugart,
+      filters?.treibstoff,
+      filters?.getriebe,
+      debouncedAutoname,
+    ],
+    [
+      filters?.fahrzeugart,
+      filters?.treibstoff,
+      filters?.getriebe,
+      debouncedAutoname,
+    ]
+  );
 
   useEffect(() => {
-    loadCars(page, { ...filters, autoname: debouncedAutoname });
+    setPage(1);
+  }, filterDeps);
+
+  useEffect(() => {
+    const currentFilters = { ...filters, autoname: debouncedAutoname };
+    loadCars(page, currentFilters);
+
     return () => {
       if (inflightRef.current) inflightRef.current.abort();
     };
-  }, [
-    page,
-    filters?.fahrzeugart,
-    filters?.treibstoff,
-    filters?.getriebe,
-    debouncedAutoname,
-    loadCars,
-  ]);
+  }, [page, ...filterDeps, loadCars]);
 
   const goToPrevious = useCallback(
     () => setPage((p) => Math.max(1, p - 1)),
@@ -76,21 +88,25 @@ export const CarList = ({ filters }) => {
     [pageCount]
   );
 
+  if (loading) {
+    return <div className="text-center py-10">Loading cars...</div>;
+  }
+
+  if (cars.length === 0) {
+    return (
+      <div className="text-center py-10 text-gray-500">
+        No cars found matching your criteria.
+      </div>
+    );
+  }
+
   return (
     <div className="w-full">
-      {loading ? (
-        <div className="text-center py-10">Loading cars...</div>
-      ) : cars.length === 0 ? (
-        <div className="text-center py-10 text-gray-500">
-          No cars found matching your criteria.
-        </div>
-      ) : (
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 -m-2">
-          {cars.map((car) => (
-            <CarCard key={car.id} car={car} />
-          ))}
-        </div>
-      )}
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 -m-2">
+        {cars.map((car) => (
+          <CarCard key={car.id} car={car} />
+        ))}
+      </div>
 
       {pageCount > 1 && (
         <div className="pt-10 flex justify-center items-center gap-4">
