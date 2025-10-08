@@ -294,7 +294,7 @@ export default function LeaseInquiry({ car }) {
             </h3>
 
             <div className="mt-5 flex flex-col items-center gap-7">
-              <div className="flex flex-row items-center w-full gap-3">
+              <div className="flex md:flex-row flex-col items-center w-full gap-3">
                 <Input
                   label="Vorname"
                   required

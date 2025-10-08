@@ -4,6 +4,7 @@ import Header from "./components/general/Header";
 import Footer from "./components/general/Footer";
 import { PRICING_TYPE } from "./components/car/Constans";
 import "./App.css";
+import FlexRent from "./pages/FlexRent";
 
 const Home = lazy(() => import("./pages/Home"));
 const About = lazy(() => import("./pages/About"));
@@ -42,6 +43,7 @@ function App() {
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:blogId" element={<BlogsInfo />} />
+          <Route path="/flexRent" element={<FlexRent />} />
         </Routes>
       </Suspense>
       <Footer />

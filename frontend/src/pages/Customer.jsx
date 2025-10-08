@@ -12,7 +12,7 @@ const Customer = () => {
   return (
     <div>
       <AboutStart src="/images/autoBg.png" title="Auto Abo Pro" />
-      <HoverCategories2 />
+      {/* <HoverCategories2 /> */}
       <Effizienz />
       <LogoSlider />
       <Dabei />

@@ -5,13 +5,14 @@ const Effizienz = () => {
     <div className="mt-35 flex flex-col">
       <div className="container mx-auto px-4 py-10">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 md:gap-10">
-          <h1 className="text-[#010101] text-[34px] leading-tight md:text-[44px] lg:text-[54px]">
-            Effizienz für Ihr <br className="hidden md:block" /> Kerngeschäft
+          <h1 className="text-[#010101] text-[34px] leading-tight md:text-[44px] font-medium lg:text-[54px]">
+            Ihre Mobilität.
+            <br className="hidden md:block" /> Unsere Stärke.
           </h1>
-          <p className="text-[#494B4E] text-[16px] md:text-[18px] md:w-1/2">
-            Stärken Sie Ihren strategischen Wettbewerbsvorteil und sparen Sie
-            Kosten und Zeit. Sie konzentrieren sich auf Ihr Kerngeschäft und wir
-            kümmern uns um Ihre Mobilität.
+          <p className="text-[#494B4E] text-[16px] md:text-[18px] leading-10 md:w-1/2">
+            Navigas steht für unkomplizierte, faire und flexible
+            Firmenmobilität.Wir kombinieren moderne Fahrzeuge mit einem
+            Rundum-sorglos-Paket,so bleibt Ihr Unternehmen jederzeit mobil.
           </p>
         </div>
       </div>

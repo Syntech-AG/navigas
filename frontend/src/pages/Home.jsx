@@ -39,7 +39,7 @@ function Home() {
       </button> */}
       <Nachrichten />
 
-      <CarList refreshTrigger={refreshTrigger} />
+      {/* <CarList refreshTrigger={refreshTrigger} /> */}
     </div>
   );
 }
