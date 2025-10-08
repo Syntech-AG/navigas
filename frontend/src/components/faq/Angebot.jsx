@@ -139,7 +139,6 @@ function FaqSection({
   return (
     <div className={`w-full ${className}`}>
       <section className="container mx-auto px-4 py-10 md:py-22">
-        {/* header */}
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 md:gap-20 mb-10 md:mb-20">
           <div className="w-full md:w-[50%]">
             <div className="flex items-center gap-3">
@@ -157,7 +156,6 @@ function FaqSection({
           </p>
         </div>
 
-        {/* content */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-8 md:gap-20">
           <div className="w-full md:w-[50%]">
             <img

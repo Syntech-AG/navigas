@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 
 const items = [
-  { title: "Sportwagen", src: "/images/sportwagen.png", text: "testse" },
-  { title: "SUVs", src: "/images/suv.png", text: "teststestst" },
+  { title: "Kleinwagen", src: "/images/sportwagen.png", text: "testse" },
   {
-    title: "Luxuslimousinen",
+    title: "Kompakt",
     src: "/images/luxuslimousinen.png",
     text: "testsetst",
   },
-  { title: "Vans", src: "/images/vans.png", text: "stesetstes" },
+  { title: "SUVs", src: "/images/suv.png", text: "teststestst" },
+
+  { title: "Elektro", src: "/images/vans.png", text: "stesetstes" },
 ];
 
 export default function HoverCategories() {

@@ -13,6 +13,7 @@ import Blogs from "./pages/Blogs";
 import FilteredCarPage from "./pages/FilteredCarPage";
 import BlogsInfo from "./components/blogs/BlogsInfo";
 import ReserveCar2 from "./pages/ReserveCar2";
+import FlexRent from "./pages/FlexRent";
 
 function App() {
   return (
@@ -30,9 +31,10 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="blogs" element={<Blogs />} />
-          <Route path="/filter" element={<FilteredCarPage />} />
+          <Route path="/privatkunden" element={<FilteredCarPage />} />
           {/* <Route path="/blogsInfo" element={<BlogsInfo />} /> */}
           <Route path="/blogs/:blogId" element={<BlogsInfo />} />
+          <Route path="/flexRent" element={<FlexRent />} />
         </Routes>
         <Footer />
       </BrowserRouter>

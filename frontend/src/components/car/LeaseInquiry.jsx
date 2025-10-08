@@ -333,7 +333,7 @@ export default function LeaseInquiry({ car }) {
             </h3>
 
             <div className="mt-5 flex flex-col items-center gap-7">
-              <div className="flex flex-row items-center w-full gap-3">
+              <div className="flex md:flex-row flex-col items-center w-full gap-3">
                 <Input
                   label="Vorname"
                   required
@@ -426,8 +426,8 @@ export default function LeaseInquiry({ car }) {
             </div>
 
             {/* Configuration Options Display */}
-            <div>
-              <div className="mt-10 flex flex-row items-center justify-start gap-10 flex-wrap">
+            <div className="flex md:flex-col flex-col-reverse">
+              <div className="mt-10 flex flex-row items-center justify-start md:gap-10 gap-5 flex-wrap">
                 <div className="flex flex-col items-start gap-2">
                   <h1 className="text-[#5E83E7] text-[14px] tracking-loose ml-2">
                     Km / Jahr:

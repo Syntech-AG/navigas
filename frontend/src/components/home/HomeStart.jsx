@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const HomeStart = () => {
   return (
@@ -14,7 +15,7 @@ const HomeStart = () => {
         className="w-full h-screen object-cover absolute"
       />
       <div className="container flex justify-center items-center md:h-screen z-999 relative">
-        <div className="flex flex-col gap-6 justify-center mt-50 md:mt-0 items-center">
+        <div className="flex flex-col gap-6 justify-center items-center">
           <h1 className="2xl:text-[100px] lg:text-[80px] md:text-[68px] text-[38px] font-semibold text-white text-center">
             Dein Navigas Auto Abo
           </h1>
@@ -22,11 +23,14 @@ const HomeStart = () => {
             Wählen Sie mit wenigen Klicks Ihr Auto Abo all-inclusive und die
             Dauer und los geht's !
           </p>
-          <button className="text-[14px] mb-50 md:text-[16px] bg-transparent border border-white rounded-lg px-5 py-2 text-white font-medium">
-            Fahrzeuge Entdecken
-          </button>
+          <Link to="/privatkunden">
+            <button className="relative text-[14px] md:text-[16px] hover:cursor-pointer bg-transparent border border-white rounded-lg px-5 py-2 text-white font-medium overflow-hidden group transition-all duration-300">
+              <span className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></span>
+              <span className="relative z-10">Fahrzeuge Entdecken</span>
+            </button>
+          </Link>
         </div>
-        <div className="absolute  flex flex-col md:flex-row w-full backdrop-blur-lg bg-[#1212134D] border border-[#2F2F34] rounded-2xl -bottom-50 md:bottom-20 justify-between  p-5 md:p-0 md:pl-5 ">
+        {/* <div className="absolute  flex flex-col md:flex-row w-full backdrop-blur-lg bg-[#1212134D] border border-[#2F2F34] rounded-2xl -bottom-50 md:bottom-20 justify-between  p-5 md:p-0 md:pl-5 ">
           <input
             placeholder="Autoname"
             className="my-5 text-white hidden md:block"
@@ -64,7 +68,7 @@ const HomeStart = () => {
           <button className="bg-white min-h-full p-3 md:px-5 flex items-center justify-center rounded-2xl md:rounded-[0px] md:rounded-r-2xl">
             <img src="/images/searchIcon.svg" alt="" />
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
