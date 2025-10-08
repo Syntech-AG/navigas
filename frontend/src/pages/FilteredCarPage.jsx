@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { FilterPanel } from "../components/car/FilterPanel";
 import { CarList } from "../components/car/CarList";
+import { PRICING_TYPE } from "../components/car/Constans";
 
 const INITIAL_FILTERS = {
   autoname: "",
@@ -9,7 +10,7 @@ const INITIAL_FILTERS = {
   getriebe: [],
 };
 
-const FilteredCarPage = () => {
+const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
   const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   const memoizedFilters = useMemo(
@@ -27,7 +28,7 @@ const FilteredCarPage = () => {
       <div className="flex flex-col md:flex-row md:gap-8 lg:gap-12 py-30">
         <FilterPanel filters={memoizedFilters} setFilters={setFilters} />
         <div className="flex-1 mt-6 md:mt-0">
-          <CarList filters={memoizedFilters} />
+          <CarList filters={memoizedFilters} pricingType={pricingType} />
         </div>
       </div>
     </div>

@@ -78,7 +78,10 @@
       "type": "string"
     },
     "FuenftausendKilometer": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "max": 0
     },
     "ZehntausendKilometer": {
       "type": "integer"
@@ -93,13 +96,19 @@
       "type": "integer"
     },
     "VierundzwanzigMonate": {
-      "type": "integer"
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "max": 0
     },
     "AchtundvierzigMonate": {
       "type": "integer"
     },
     "SechsunddreissigMonate": {
       "type": "integer"
+    },
+    "PreisFurUnternehmen": {
+      "type": "string"
     }
   }
 }

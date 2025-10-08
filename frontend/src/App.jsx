@@ -2,44 +2,45 @@ import React, { Suspense, lazy } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/general/Header";
 import Footer from "./components/general/Footer";
+import { PRICING_TYPE } from "./components/car/Constans";
 import "./App.css";
 
 const Home = lazy(() => import("./pages/Home"));
-const CarInfo = lazy(() => import("./pages/CarInfo"));
 const About = lazy(() => import("./pages/About"));
+const CarInfo = lazy(() => import("./pages/CarInfo"));
+const FilteredCarPage = lazy(() => import("./pages/FilteredCarPage"));
 const ReserveCar = lazy(() => import("./pages/ReserveCar"));
-const Customer = lazy(() => import("./pages/Customer"));
 const Faq = lazy(() => import("./pages/Faq"));
 const Kontakt = lazy(() => import("./pages/Kontakt"));
 const Blogs = lazy(() => import("./pages/Blogs"));
-const FilteredCarPage = lazy(() => import("./pages/FilteredCarPage"));
 const BlogsInfo = lazy(() => import("./components/blogs/BlogsInfo"));
 
-const LoadingSpinner = () => (
-  <div className="container mx-auto pt-50 text-center py-20">
-    <p className="text-xl">Loading...</p>
-  </div>
+const Loading = () => (
+  <div className="text-center py-20 text-xl">Loading...</div>
 );
 
 function App() {
   return (
     <BrowserRouter>
       <Header />
-      <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/uberUns" element={<About />} />
           <Route path="/api/cars/:id" element={<CarInfo />} />
-          <Route path="/reserve-car" element={<ReserveCar />} />
           <Route
-            path="/reserve-car-2"
-            element={<ReserveCar isFinal={true} />}
+            path="/filter"
+            element={<FilteredCarPage pricingType={PRICING_TYPE.COMPANY} />}
           />
-          <Route path="/geschäftskunden" element={<Customer />} />
+          <Route
+            path="/geschäftskunden"
+            element={<FilteredCarPage pricingType={PRICING_TYPE.COMPANY} />}
+          />
+          <Route path="/reserve-car" element={<ReserveCar />} />
+          <Route path="/reserve-car-2" element={<ReserveCar isFinal />} />
           <Route path="/faq" element={<Faq />} />
           <Route path="/kontakt" element={<Kontakt />} />
           <Route path="/blogs" element={<Blogs />} />
-          <Route path="/filter" element={<FilteredCarPage />} />
           <Route path="/blogs/:blogId" element={<BlogsInfo />} />
         </Routes>
       </Suspense>

@@ -107,6 +107,43 @@ export interface AdminApiTokenPermission extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface AdminAuditLog extends Struct.CollectionTypeSchema {
+  collectionName: 'strapi_audit_logs';
+  info: {
+    displayName: 'Audit Log';
+    pluralName: 'audit-logs';
+    singularName: 'audit-log';
+  };
+  options: {
+    draftAndPublish: false;
+    timestamps: false;
+  };
+  pluginOptions: {
+    'content-manager': {
+      visible: false;
+    };
+    'content-type-builder': {
+      visible: false;
+    };
+  };
+  attributes: {
+    action: Schema.Attribute.String & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    date: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'admin::audit-log'> &
+      Schema.Attribute.Private;
+    payload: Schema.Attribute.JSON;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
+  };
+}
+
 export interface AdminPermission extends Struct.CollectionTypeSchema {
   collectionName: 'admin_permissions';
   info: {
@@ -493,7 +530,15 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
     Fahrzeugart: Schema.Attribute.Enumeration<
       ['Kleinwagen', 'Kompakt', 'Mittelklasse', 'SUV', 'Premium']
     >;
-    FuenftausendKilometer: Schema.Attribute.Integer;
+    FuenftausendKilometer: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 0;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
     FuenfundzwanzigtausendKilometer: Schema.Attribute.Integer;
     FuenfzehntausendKilometer: Schema.Attribute.Integer;
     Getriebe: Schema.Attribute.Enumeration<
@@ -511,6 +556,7 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
     marke: Schema.Attribute.String;
     modell: Schema.Attribute.String;
     preis: Schema.Attribute.String;
+    PreisFurUnternehmen: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     reichweite: Schema.Attribute.String;
     SechsunddreissigMonate: Schema.Attribute.Integer;
@@ -521,7 +567,15 @@ export interface ApiCarCar extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     verbrauch: Schema.Attribute.String;
     verfugbareFarbe: Schema.Attribute.String;
-    VierundzwanzigMonate: Schema.Attribute.Integer;
+    VierundzwanzigMonate: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 0;
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
     ZehntausendKilometer: Schema.Attribute.Integer;
     ZwanzigtausendKilometer: Schema.Attribute.Integer;
   };
@@ -1095,6 +1149,7 @@ declare module '@strapi/strapi' {
     export interface ContentTypeSchemas {
       'admin::api-token': AdminApiToken;
       'admin::api-token-permission': AdminApiTokenPermission;
+      'admin::audit-log': AdminAuditLog;
       'admin::permission': AdminPermission;
       'admin::role': AdminRole;
       'admin::transfer-token': AdminTransferToken;

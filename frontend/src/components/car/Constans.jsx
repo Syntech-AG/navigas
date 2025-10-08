@@ -2,6 +2,11 @@ export const API_BASE = "http://localhost:1337";
 export const PAGE_SIZE = 9;
 export const IMAGE_FIELD = "Image";
 
+export const PRICING_TYPE = {
+  NORMAL: "normal",
+  COMPANY: "company",
+};
+
 export const FILTER_OPTIONS = {
   fahrzeugart: ["Kleinwagen", "Kompakt", "Mittelklasse", "SUV", "Premium"],
   treibstoff: ["Elektrisch", "Hybrid", "Gas"],

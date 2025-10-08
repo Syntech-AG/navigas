@@ -1,30 +1,24 @@
 import React, { useId, useMemo, useState, useEffect, useCallback } from "react";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
+import { PRICING_TYPE } from "./Constans";
 
-const cx = (...c) => c.filter(Boolean).join(" ");
+const cx = (...classes) => classes.filter(Boolean).join(" ");
 
 function Dropdown({ name, label, options, value, onChange }) {
-  const groupId = useId();
-
-  const handleChange = useCallback(
-    (e) => {
-      onChange(e.target.value);
-    },
-    [onChange]
-  );
-
+  const id = useId();
+  const handleChange = useCallback((e) => onChange(e.target.value), [onChange]);
   return (
     <div className="w-full">
-      <label htmlFor={groupId} className="mb-2 block text-sm text-gray-600">
+      <label htmlFor={id} className="mb-2 block text-sm text-gray-600">
         {label}
       </label>
       <select
-        id={groupId}
+        id={id}
         name={name}
         value={value}
         onChange={handleChange}
-        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2"
+        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:ring-2 focus:ring-blue-600"
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -38,13 +32,8 @@ function Dropdown({ name, label, options, value, onChange }) {
 
 function ImageWithFallback({ src, alt, className }) {
   const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    setFailed(false);
-  }, [src]);
-
+  useEffect(() => setFailed(false), [src]);
   const handleError = useCallback(() => setFailed(true), []);
-
   return failed ? (
     <div
       aria-label="image unavailable"
@@ -76,6 +65,7 @@ export default function PolestarCard({
   buttonLabel = "Jetzt wählen",
   carData,
   onSelect,
+  pricingType = PRICING_TYPE.NORMAL,
 }) {
   const [imageIndex, setImageIndex] = useState(0);
   const [selectedKm, setSelectedKm] = useState(kmPricingOptions[0]?.km || 5000);
@@ -83,49 +73,32 @@ export default function PolestarCard({
     termPricingOptions[0]?.months || 24
   );
 
-  // Memoized image key for dependency tracking
-  const imagesKey = useMemo(
-    () => images.map((img) => img.src).join(","),
-    [images]
+  const imagesKey = useMemo(() => images.map((i) => i.src).join(","), [images]);
+  const gallery = useMemo(
+    () => (images.length ? images : [{ src: "", alt: "placeholder" }]),
+    [imagesKey]
   );
 
-  const gallery = useMemo(() => {
-    if (!images || images.length === 0)
-      return [{ src: "", alt: "placeholder" }];
-    return images;
-  }, [imagesKey]);
+  useEffect(() => setImageIndex(0), [imagesKey]);
+  useEffect(
+    () => kmPricingOptions.length && setSelectedKm(kmPricingOptions[0].km),
+    [kmPricingOptions]
+  );
+  useEffect(
+    () =>
+      termPricingOptions.length &&
+      setSelectedTerm(termPricingOptions[0].months),
+    [termPricingOptions]
+  );
 
-  // Reset image index when images change
-  useEffect(() => {
-    setImageIndex(0);
-  }, [imagesKey]);
-
-  // Set default values when options change
-  useEffect(() => {
-    if (kmPricingOptions.length > 0) {
-      setSelectedKm(kmPricingOptions[0].km);
-    }
-  }, [kmPricingOptions]);
-
-  useEffect(() => {
-    if (termPricingOptions.length > 0) {
-      setSelectedTerm(termPricingOptions[0].months);
-    }
-  }, [termPricingOptions]);
-
-  // Price calculations
   const priceBreakdown = useMemo(() => {
-    const kmValue = Number(selectedKm);
-    const termValue = Number(selectedTerm);
-    const kmOption = kmPricingOptions.find((opt) => Number(opt.km) === kmValue);
-    const termOption = termPricingOptions.find(
-      (opt) => Number(opt.months) === termValue
-    );
-
+    const kmOpt = kmPricingOptions.find((o) => o.km === selectedKm) || {};
+    const termOpt =
+      termPricingOptions.find((o) => o.months === selectedTerm) || {};
     return {
-      base: Number(basePrice) || 0,
-      km: Number(kmOption?.priceModifier) || 0,
-      term: Number(termOption?.priceModifier) || 0,
+      base: basePrice,
+      km: kmOpt.priceModifier || 0,
+      term: termOpt.priceModifier || 0,
     };
   }, [
     selectedKm,
@@ -135,257 +108,198 @@ export default function PolestarCard({
     basePrice,
   ]);
 
-  const finalPrice = useMemo(() => {
-    const total = priceBreakdown.base + priceBreakdown.km + priceBreakdown.term;
-    return total;
-  }, [priceBreakdown]);
+  const finalPrice = useMemo(
+    () => priceBreakdown.base + priceBreakdown.km + priceBreakdown.term,
+    [priceBreakdown]
+  );
 
-  // Thumbnail logic
   const thumbnails = useMemo(() => {
     const len = gallery.length;
     if (len <= 1) return [];
+    return gallery
+      .map((_, idx) => idx)
+      .filter((i) => i !== imageIndex)
+      .slice(0, 2)
+      .map((idx) => ({ idx, ...gallery[idx], key: `thumb-${idx}` }));
+  }, [gallery, imageIndex]);
 
-    const allIndices = Array.from({ length: len }, (_, idx) => idx);
-    const otherIndices = allIndices.filter((idx) => idx !== imageIndex);
+  const taxLabel =
+    pricingType === PRICING_TYPE.COMPANY ? "exkl. MwSt." : "inkl. MwSt.";
 
-    return otherIndices.slice(0, 2).map((idx) => ({
-      idx,
-      ...gallery[idx],
-      uniqueKey: `thumb-${idx}`,
-    }));
-  }, [imageIndex, gallery]);
+  const handleSubmit = useCallback(() => {
+    onSelect({
+      kmPerYear: selectedKm,
+      termMonths: selectedTerm,
+      imageIndex,
+      finalPrice,
+    });
+  }, [onSelect, selectedKm, selectedTerm, imageIndex, finalPrice]);
 
-  // Helper function for PDF image conversion
+  const next = () => setImageIndex((i) => (i + 1) % gallery.length);
+  const prev = () =>
+    setImageIndex((i) => (i - 1 + gallery.length) % gallery.length);
+
+  const handleKmChange = (v) => setSelectedKm(Number(v));
+  const handleTermChange = (v) => setSelectedTerm(Number(v));
+
   const getImageBase64 = useCallback((url) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((res, rej) => {
       const img = new Image();
       img.crossOrigin = "Anonymous";
       img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-        const dataURL = canvas.toDataURL("image/jpeg", 0.8);
-        resolve(dataURL);
+        const c = document.createElement("canvas");
+        c.width = img.width;
+        c.height = img.height;
+        c.getContext("2d").drawImage(img, 0, 0);
+        res(c.toDataURL("image/jpeg", 0.8));
       };
-      img.onerror = () => reject(new Error("Failed to load image"));
+      img.onerror = () => rej("Image load failed");
       img.src = url;
     });
   }, []);
 
-  // PDF Download Handler
   const handleDownloadPDF = useCallback(async () => {
     const doc = new jsPDF("p", "mm", "a4");
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-
-    // Header
+    const w = doc.internal.pageSize.getWidth();
+    const h = doc.internal.pageSize.getHeight();
     doc.setFillColor(8, 71, 164);
-    doc.rect(0, 0, pageWidth, 30, "F");
+    doc.rect(0, 0, w, 30, "F");
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(20);
     doc.setFont(undefined, "bold");
-    doc.text(title, pageWidth / 2, 12, { align: "center" });
+    doc.text(title, w / 2, 12, { align: "center" });
     doc.setFontSize(11);
     doc.setFont(undefined, "normal");
-    doc.text(subtitle, pageWidth / 2, 20, { align: "center" });
+    doc.text(subtitle, w / 2, 20, { align: "center" });
     doc.setFontSize(8);
-    doc.text("Sofort verfügbar", pageWidth / 2, 26, { align: "center" });
-
-    doc.setTextColor(0, 0, 0);
-    let currentY = 38;
-
-    // Add image if available
+    doc.text("Sofort verfügbar", w / 2, 26, { align: "center" });
+    let y = 38;
     try {
-      if (images && images.length > 0 && images[0]?.src) {
-        const imageData = await getImageBase64(images[0].src);
-        const imgWidth = 120;
-        const imgHeight = 65;
-        const imgX = (pageWidth - imgWidth) / 2;
-
-        doc.setDrawColor(8, 71, 164);
-        doc.setLineWidth(0.5);
-        doc.roundedRect(
-          imgX - 2,
-          currentY - 2,
-          imgWidth + 4,
-          imgHeight + 4,
-          3,
-          3
-        );
-        doc.addImage(imageData, "JPEG", imgX, currentY, imgWidth, imgHeight);
-        currentY += imgHeight + 12;
-      }
-    } catch (error) {
-      console.error("Failed to add image:", error);
-      currentY += 45;
+      const data = await getImageBase64(gallery[0].src);
+      const imgW = 120,
+        imgH = 65,
+        x = (w - imgW) / 2;
+      doc.setDrawColor(8, 71, 164).setLineWidth(0.5);
+      doc.roundedRect(x - 2, y - 2, imgW + 4, imgH + 4, 3, 3);
+      doc.addImage(data, "JPEG", x, y, imgW, imgH);
+      y += imgH + 12;
+    } catch {
+      y += 45;
     }
-
-    // Configuration section
-    doc.setFontSize(14);
-    doc.setFont(undefined, "bold");
-    doc.setTextColor(8, 71, 164);
-    doc.text("Ihre Konfiguration", pageWidth / 2, currentY, {
-      align: "center",
-    });
-
-    doc.setFillColor(243, 245, 250);
-    doc.roundedRect(20, currentY + 3, pageWidth - 40, 32, 2, 2, "F");
-    currentY += 20;
-
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    doc.setFont(undefined, "normal");
-
-    const leftX = 30;
-    const rightX = pageWidth / 2 + 5;
-    const valueOffset = 55;
-
-    // Left column
-    doc.text("Kilometer pro Jahr:", leftX, currentY);
-    doc.setFont(undefined, "bold");
-    doc.setTextColor(8, 71, 164);
-    doc.text(
-      `${selectedKm.toLocaleString("de-CH")} km`,
-      leftX + valueOffset,
-      currentY
-    );
-
-    doc.setFont(undefined, "normal");
-    doc.setTextColor(50, 50, 50);
-    doc.text("Grundpreis:", leftX, currentY + 8);
-    doc.setFont(undefined, "bold");
-    doc.setTextColor(8, 71, 164);
-    doc.text(`CHF ${basePrice.toFixed(2)}`, leftX + valueOffset, currentY + 8);
-
-    // Right column
-    doc.setFont(undefined, "normal");
-    doc.setTextColor(50, 50, 50);
-    doc.text("Vertragslaufzeit:", rightX, currentY);
-    doc.setFont(undefined, "bold");
-    doc.setTextColor(8, 71, 164);
-    doc.text(`${selectedTerm} Monate`, rightX + valueOffset, currentY);
-
-    doc.setFont(undefined, "normal");
-    doc.setTextColor(50, 50, 50);
-    doc.text("Monatlicher Preis:", rightX, currentY + 8);
-    doc.setFont(undefined, "bold");
-    doc.setFontSize(11);
-    doc.text(
-      finalPrice.toLocaleString("de-CH", {
-        style: "currency",
-        currency: "CHF",
-        minimumFractionDigits: 2,
-      }),
-      rightX + valueOffset,
-      currentY + 8
-    );
-
-    currentY += 25;
-
-    // Technical specifications
-    doc.setFontSize(14);
-    doc.setFont(undefined, "bold");
-    doc.setTextColor(8, 71, 164);
-    doc.text("Technische Daten", pageWidth / 2, currentY, { align: "center" });
-    currentY += 8;
-
+    doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
+    doc.text("Ihre Konfiguration", w / 2, y, { align: "center" });
+    doc
+      .setFillColor(243, 245, 250)
+      .roundedRect(20, y + 3, w - 40, 32, 2, 2, "F");
+    y += 20;
+    doc.setFontSize(10).setFont(undefined, "normal").setTextColor(50, 50, 50);
+    const left = 30,
+      right = w / 2 + 5,
+      off = 55;
+    doc
+      .text("Kilometer pro Jahr:", left, y)
+      .setFont(undefined, "bold")
+      .setTextColor(8, 71, 164)
+      .text(`${selectedKm.toLocaleString("de-CH")} km`, left + off, y)
+      .setFont(undefined, "normal")
+      .setTextColor(50, 50, 50)
+      .text("Grundpreis:", left, y + 8)
+      .setFont(undefined, "bold")
+      .setTextColor(8, 71, 164)
+      .text(`CHF ${basePrice.toFixed(2)}`, left + off, y + 8);
+    doc
+      .setFont(undefined, "normal")
+      .setTextColor(50, 50, 50)
+      .text("Vertragslaufzeit:", right, y)
+      .setFont(undefined, "bold")
+      .setTextColor(8, 71, 164)
+      .text(`${selectedTerm} Monate`, right + off, y)
+      .setFont(undefined, "normal")
+      .setTextColor(50, 50, 50)
+      .text("Monatlicher Preis:", right, y + 8)
+      .setFont(undefined, "bold")
+      .setFontSize(11)
+      .text(
+        finalPrice.toLocaleString("de-CH", {
+          style: "currency",
+          currency: "CHF",
+          minimumFractionDigits: 2,
+        }),
+        right + off,
+        y + 8
+      );
+    y += 25;
+    doc.setFontSize(14).setFont(undefined, "bold").setTextColor(8, 71, 164);
+    doc.text("Technische Daten", w / 2, y, { align: "center" });
+    y += 8;
     const specs = [
-      { label: "Schaltung", value: carData?.Getriebe || "N/A" },
-      { label: "Reichweite", value: carData?.reichweite || "N/A" },
-      {
-        label: "Leistung",
-        value: carData?.leistung ? `${carData.leistung} PS` : "N/A",
-      },
-      {
-        label: "Verbrauch",
-        value: carData?.verbrauch ? `${carData.verbrauch} L/100km` : "N/A",
-      },
-      { label: "Türen", value: carData?.turen || "N/A" },
-      { label: "Treibstoff", value: carData?.Treibstoff || "N/A" },
+      { label: "Schaltung", val: carData.Getriebe },
+      { label: "Reichweite", val: carData.reichweite },
+      { label: "Leistung", val: `${carData.leistung} PS` },
+      { label: "Verbrauch", val: `${carData.verbrauch} L/100km` },
+      { label: "Türen", val: carData.turen },
+      { label: "Treibstoff", val: carData.Treibstoff },
     ];
-
-    const colWidth = (pageWidth - 40) / 3;
-    let row = 0;
-    let col = 0;
-
-    specs.forEach((spec) => {
-      const x = 20 + col * colWidth;
-      const y = currentY + row * 20;
-
-      doc.setFillColor(255, 255, 255);
-      doc.setDrawColor(220, 220, 220);
-      doc.setLineWidth(0.1);
-      doc.roundedRect(x, y, colWidth - 5, 16, 1, 1, "FD");
-
-      doc.setFontSize(9);
-      doc.setTextColor(100, 100, 100);
-      doc.setFont(undefined, "normal");
-      doc.text(spec.label, x + 3, y + 6);
-
-      doc.setFontSize(10);
-      doc.setTextColor(0, 0, 0);
-      doc.setFont(undefined, "bold");
-      doc.text(spec.value, x + 3, y + 12);
-
+    const colW = (w - 40) / 3;
+    let row = 0,
+      col = 0;
+    specs.forEach((s) => {
+      const x = 20 + col * colW,
+        yy = y + row * 20;
+      doc
+        .setFillColor(255, 255, 255)
+        .setDrawColor(220, 220, 220)
+        .setLineWidth(0.1)
+        .roundedRect(x, yy, colW - 5, 16, 1, 1, "FD")
+        .setFontSize(9)
+        .setTextColor(100, 100, 100)
+        .setFont(undefined, "normal")
+        .text(s.label, x + 3, yy + 6)
+        .setFontSize(10)
+        .setTextColor(0, 0, 0)
+        .setFont(undefined, "bold")
+        .text(s.val || "N/A", x + 3, yy + 12);
       col++;
       if (col === 3) {
         col = 0;
         row++;
       }
     });
-
-    currentY += (row + 1) * 20 + 20;
-
-    // Footer
-    const footerStartY = pageHeight - 30;
-    doc.setDrawColor(8, 71, 164);
-    doc.setLineWidth(0.3);
-    doc.line(20, footerStartY, pageWidth - 20, footerStartY);
-
-    doc.setFillColor(243, 245, 250);
-    doc.roundedRect(15, footerStartY + 3, pageWidth - 30, 22, 2, 2, "F");
-
+    y += (row + 1) * 20 + 20;
+    const fy = h - 30;
+    doc
+      .setDrawColor(8, 71, 164)
+      .setLineWidth(0.3)
+      .line(20, fy, w - 20, fy);
+    doc
+      .setFillColor(243, 245, 250)
+      .roundedRect(15, fy + 3, w - 30, 22, 2, 2, "F");
     const date = new Date().toLocaleDateString("de-CH", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-
-    doc.setFontSize(8);
-    doc.setTextColor(80, 80, 80);
-    doc.setFont(undefined, "normal");
-    doc.text(`Erstellt am ${date}`, 20, footerStartY + 10);
-    doc.text("Alle Preise inkl. MwSt.", pageWidth / 2, footerStartY + 10, {
-      align: "center",
-    });
-
-    doc.setTextColor(8, 71, 164);
-    doc.setFont(undefined, "bold");
-    doc.setFontSize(9);
-    doc.text("www.ihrewebsite.ch", pageWidth - 20, footerStartY + 10, {
-      align: "right",
-    });
-
-    doc.setFontSize(7);
-    doc.setTextColor(120, 120, 120);
-    doc.setFont(undefined, "italic");
-    doc.text(
-      "Ihr zuverlässiger Partner für Elektromobilität",
-      pageWidth / 2,
-      footerStartY + 18,
-      {
+    doc
+      .setFontSize(8)
+      .setTextColor(80, 80, 80)
+      .setFont(undefined, "normal")
+      .text(`Erstellt am ${date}`, 20, fy + 10)
+      .text("Alle Preise inkl. MwSt.", w / 2, fy + 10, { align: "center" })
+      .setFont(undefined, "bold")
+      .setFontSize(9)
+      .setTextColor(8, 71, 164)
+      .text("www.ihrewebsite.ch", w - 20, fy + 10, { align: "right" })
+      .setFont(undefined, "italic")
+      .setFontSize(7)
+      .setTextColor(120, 120, 120)
+      .text("Ihr zuverlässiger Partner für Elektromobilität", w / 2, fy + 18, {
         align: "center",
-      }
-    );
-
-    const filename = `${title.replace(/\s/g, "_")}_Datenblatt.pdf`;
-    doc.save(filename);
+      });
+    doc.save(`${title.replace(/\s/g, "_")}_Datenblatt.pdf`);
   }, [
     title,
     subtitle,
-    images,
+    gallery,
     selectedKm,
     selectedTerm,
     basePrice,
@@ -393,44 +307,6 @@ export default function PolestarCard({
     carData,
     getImageBase64,
   ]);
-
-  // Event handlers
-  const handleSubmit = useCallback(() => {
-    const selectionData = {
-      kmPerYear: Number(selectedKm),
-      termMonths: Number(selectedTerm),
-      imageIndex: imageIndex,
-      finalPrice: finalPrice,
-      basePrice: Number(basePrice),
-      priceBreakdown: priceBreakdown,
-    };
-
-    onSelect?.(selectionData);
-  }, [
-    selectedKm,
-    selectedTerm,
-    imageIndex,
-    finalPrice,
-    basePrice,
-    priceBreakdown,
-    onSelect,
-  ]);
-
-  const next = useCallback(() => {
-    setImageIndex((imageIndex + 1) % gallery.length);
-  }, [imageIndex, gallery.length]);
-
-  const prev = useCallback(() => {
-    setImageIndex((imageIndex - 1 + gallery.length) % gallery.length);
-  }, [imageIndex, gallery.length]);
-
-  const handleKmChange = useCallback((value) => {
-    setSelectedKm(Number(value));
-  }, []);
-
-  const handleTermChange = useCallback((value) => {
-    setSelectedTerm(Number(value));
-  }, []);
 
   return (
     <section className="mx-auto rounded-xl container">
@@ -441,19 +317,18 @@ export default function PolestarCard({
             <div className="relative md:cols-span-2">
               <div className="aspect-[5/3] overflow-hidden rounded-lg bg-gray-100">
                 <ImageWithFallback
-                  src={gallery[imageIndex]?.src}
-                  alt={gallery[imageIndex]?.alt || title}
+                  src={gallery[imageIndex].src}
+                  alt={gallery[imageIndex].alt}
                   className="h-full w-full object-cover"
                 />
               </div>
-
               {gallery.length > 1 && (
-                <div className="pointer-events-none absolute flex items-center justify-center gap-4 px-2 w-fit bottom-8 right-6">
+                <div className="absolute bottom-8 right-6 flex gap-4 pointer-events-none px-2">
                   <button
                     type="button"
                     aria-label="Previous image"
                     onClick={prev}
-                    className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
+                    className="pointer-events-auto flex h-10 w-13 items-center justify-center bg-[#0847A4] text-white rounded-full hover:bg-transparent transition"
                   >
                     ❮
                   </button>
@@ -461,26 +336,24 @@ export default function PolestarCard({
                     type="button"
                     aria-label="Next image"
                     onClick={next}
-                    className="pointer-events-auto hover:cursor-pointer flex h-10 w-13 text-[26px] justify-center items-center place-items-center rounded-full bg-[#0847A4] hover:bg-transparent text-white backdrop-blur transition"
+                    className="pointer-events-auto flex h-10 w-13 items-center justify-center bg-[#0847A4] text-white rounded-full hover:bg-transparent transition"
                   >
                     ❯
                   </button>
                 </div>
               )}
             </div>
-
             {/* Thumbnails */}
             {thumbnails.length > 0 && (
-              <div className="grid grid-cols-2 gap-3 overflow-hidden max-md:hidden">
-                {thumbnails.map((img) => (
+              <div className="grid grid-cols-2 gap-3 max-md:hidden">
+                {thumbnails.map((t) => (
                   <button
-                    type="button"
-                    key={img.uniqueKey}
-                    onClick={() => setImageIndex(img.idx)}
+                    key={t.key}
+                    onClick={() => setImageIndex(t.idx)}
                     className="overflow-hidden rounded-lg ring-1 ring-gray-200 hover:ring-gray-300 transition"
                   >
                     <div className="aspect-[4/3]">
-                      <ImageWithFallback src={img.src} alt={img.alt} />
+                      <ImageWithFallback src={t.src} alt={t.alt} />
                     </div>
                   </button>
                 ))}
@@ -500,19 +373,16 @@ export default function PolestarCard({
             </h1>
             <p className="text-[20px] text-black">{subtitle}</p>
           </div>
-
           <hr className="text-gray-300 mt-10" />
-
-          {/* Configuration Options */}
-          <div className="grid gap-6 md:grid-cols-1 w-[60%] pt-7 pb-10">
+          <div className="grid gap-6 w-[60%] pt-7 pb-10">
             <Dropdown
               name="km"
               label="Km / Jahr"
               value={selectedKm}
               onChange={handleKmChange}
-              options={kmPricingOptions.map((opt) => ({
-                value: opt.km,
-                label: `${opt.km.toLocaleString("de-CH")} km`,
+              options={kmPricingOptions.map((o) => ({
+                value: o.km,
+                label: `${o.km.toLocaleString("de-CH")} km`,
               }))}
             />
             <Dropdown
@@ -520,44 +390,33 @@ export default function PolestarCard({
               label="Laufzeit"
               value={selectedTerm}
               onChange={handleTermChange}
-              options={termPricingOptions.map((opt) => ({
-                value: opt.months,
-                label: `${opt.months} Monate`,
+              options={termPricingOptions.map((o) => ({
+                value: o.months,
+                label: `${o.months} Monate`,
               }))}
             />
           </div>
-
           <hr className="text-gray-300 mt-5" />
-
-          {/* Price Display */}
-          <div className="mt-6 flex flex-col items-start justify-between gap-4 pt-4">
-            <div className="w-full">
-              <div className="lg:text-[34px] text-[28px] font-semibold text-[#0847A4] flex flex-col gap-2">
-                <h1>
-                  {finalPrice.toLocaleString("de-CH", {
-                    style: "currency",
-                    currency: "CHF",
-                    minimumFractionDigits: 2,
-                  })}
-                </h1>
-                <span className="text-[14px] font-light text-black">
-                  pro Monat inkl. MwSt.
-                </span>
-              </div>
+          <div className="mt-6 flex flex-col gap-4 pt-4 w-full">
+            <div className="text-[#0847A4] font-semibold text-[28px] lg:text-[34px]">
+              {finalPrice.toLocaleString("de-CH", {
+                style: "currency",
+                currency: "CHF",
+                minimumFractionDigits: 2,
+              })}
             </div>
-
-            {/* Action Buttons */}
+            <div className="text-[14px] font-light text-black">
+              pro Monat {taxLabel}
+            </div>
             <button
-              type="button"
               onClick={handleSubmit}
-              className="inline-flex w-full items-center justify-center rounded-md bg-[#0847A4] px-6 py-3 text-sm font-medium text-white shadow hover:bg-black transition"
+              className="mt-4 w-full rounded-md bg-[#0847A4] px-6 py-3 text-sm font-medium text-white hover:bg-black transition"
             >
               {buttonLabel}
             </button>
             <button
-              type="button"
               onClick={handleDownloadPDF}
-              className="inline-flex w-full items-center justify-center rounded-md bg-white px-6 py-3 text-sm font-medium text-[#0847A4] hover:text-white shadow hover:bg-black border transition"
+              className="mt-2 w-full rounded-md border border-[#0847A4] px-6 py-3 text-sm font-medium text-[#0847A4] hover:bg-black hover:text-white transition inline-flex items-center justify-center"
             >
               <img src="/images/pdf.svg" alt="" className="mr-3" />
               Datenblatt PDF

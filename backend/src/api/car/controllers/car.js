@@ -34,9 +34,8 @@ module.exports = createCoreController("api::car.car", ({ strapi }) => ({
 
           Autokategorien:
             (r.Autokategorien ?? r.autokategorien)?.trim() ?? null,
-          Fahrzeugtypen: (r.Fahrzeugtypen ?? r.fahrzeugtypen)?.trim() ?? null,
-          Spezifikationen:
-            (r.Spezifikationen ?? r.spezifikationen)?.trim() ?? null,
+          Treibstoff: (r.Treibstoff ?? r.treibstoff)?.trim() ?? null,
+          Getriebe: (r.Getriebe ?? r.getriebe)?.trim() ?? null,
         };
 
         try {
