@@ -31,21 +31,21 @@ export default function VehicleDetails({
       label: "Reichweite",
       value: "596km",
     },
-    {
-      icon: <img src="/images/fahrzeug3.svg" alt="" />,
-      label: "Kraftstoff",
-      value: "Elektrisch",
-    },
+    // {
+    //   icon: <img src="/images/fahrzeug3.svg" alt="" />,
+    //   label: "Kraftstoff",
+    //   value: "Elektrisch",
+    // },
     {
       icon: <img src="/images/fahrzeug4.svg" alt="" />,
       label: "Year",
       value: "2023",
     },
-    {
-      icon: <img src="/images/fahrzeug5.svg" alt="" />,
-      label: "CO2 category",
-      value: "A",
-    },
+    // {
+    //   icon: <img src="/images/fahrzeug5.svg" alt="" />,
+    //   label: "CO2 category",
+    //   value: "A",
+    // },
     {
       icon: <img src="/images/fahrzeug6.svg" alt="" />,
       label: "Sitze",

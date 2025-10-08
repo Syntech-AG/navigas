@@ -1,21 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import LeaseInquiry from "../components/car/LeaseInquiry";
+import FinalLeaseInquiry from "../components/car/FinalLeaseInqurity";
 import Abonnieren from "../components/general/Abonnieren";
 import Nachrichten from "../components/about/Nachrichten";
 
-const ReserveCar = () => {
+const ReserveCar = ({ isFinal = false }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const carData = location.state?.car;
+  const carData = useMemo(() => location.state?.car, [location.state?.car]);
 
   useEffect(() => {
     if (!carData) {
       console.warn("No car data provided, redirecting to home");
       navigate("/", { replace: true });
     }
-  }, [carData, navigate, location.state]);
+  }, [carData, navigate]);
 
   if (!carData) {
     return (
@@ -25,9 +26,11 @@ const ReserveCar = () => {
     );
   }
 
+  const LeaseComponent = isFinal ? FinalLeaseInquiry : LeaseInquiry;
+
   return (
     <div className="md:pt-30 pt-20">
-      <LeaseInquiry car={carData} />
+      <LeaseComponent car={carData} />
       <Abonnieren />
       <Nachrichten />
     </div>

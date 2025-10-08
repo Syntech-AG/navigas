@@ -1,12 +1,16 @@
-import React, { memo } from "react";
+import React, { memo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const CarCard = memo(function CarCard({ car }) {
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     navigate(`/api/cars/${car.documentId}`);
-  };
+  }, [navigate, car.documentId]);
+
+  const handleImageError = useCallback((e) => {
+    e.target.src = "/images/car.png";
+  }, []);
 
   return (
     <div className="p-2 cursor-pointer" onClick={handleClick}>
@@ -18,6 +22,7 @@ export const CarCard = memo(function CarCard({ car }) {
             alt={`${car.marke} ${car.modell}`}
             loading="lazy"
             decoding="async"
+            onError={handleImageError}
           />
           <div className="absolute w-[90%] bottom-5 flex flex-row translate-x-[-50%] left-1/2 justify-start gap-1 items-end">
             <h1 className="text-[24px] text-white font-medium tracking-[2px]">

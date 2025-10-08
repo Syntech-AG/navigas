@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import PolestarCard from "../components/car/PolestarCard";
 import VehicleDetails from "../components/car/VehicleDetails";
@@ -18,8 +18,8 @@ const CarInfo = () => {
     const loadCar = async () => {
       try {
         setLoading(true);
+        setError(null);
         const carData = await fetchCarById(documentId);
-        console.log("CarInfo loaded car data:", carData);
         setCar(carData);
       } catch (err) {
         console.error("Failed to fetch car:", err);
@@ -29,11 +29,13 @@ const CarInfo = () => {
       }
     };
 
-    loadCar();
+    if (documentId) {
+      loadCar();
+    }
   }, [documentId]);
 
   const images = useMemo(() => {
-    if (!car?.imageUrls || !Array.isArray(car.imageUrls)) return [];
+    if (!car?.imageUrls?.length) return [];
 
     return car.imageUrls.map((url, idx) => ({
       src: url,
@@ -45,25 +47,71 @@ const CarInfo = () => {
     return transformPricingOptions(car);
   }, [car]);
 
-  const handleCarSelect = (selection) => {
-    const carState = {
-      name: `${car.marke} ${car.modell}`,
-      img: car.imageUrls?.[0] || "/images/car.png",
-      kmPerYear: selection.kmPerYear,
-      termMonths: selection.termMonths,
-      price: parseInt(car.preis) || 749,
-      finalPrice: selection.finalPrice,
-      marke: car.marke,
-      modell: car.modell,
-      imageUrls: car.imageUrls,
-    };
+  const handleCarSelect = useCallback(
+    (selection) => {
+      const carState = {
+        name: `${car.marke} ${car.modell}`,
+        img: car.imageUrls || "/images/car.png",
+        kmPerYear: selection.kmPerYear,
+        termMonths: selection.termMonths,
+        price: parseInt(car.preis) || 749,
+        finalPrice: selection.finalPrice,
+        marke: car.marke,
+        modell: car.modell,
+        imageUrls: car.imageUrls,
+      };
 
-    console.log("CarInfo navigating with carState:", carState);
+      navigate("/reserve-car", { state: { car: carState } });
+    },
+    [car, navigate]
+  );
 
-    navigate("/reserve-car", {
-      state: { car: carState },
-    });
-  };
+  const vehicleInfo = useMemo(
+    () => [
+      {
+        icon: <img src="/images/fahrzeug1.svg" alt="" />,
+        label: "Schaltung",
+        value: car?.Getriebe || "N/A",
+      },
+      {
+        icon: <img src="/images/fahrzeug2.svg" alt="" />,
+        label: "Reichweite",
+        value: car?.reichweite || "N/A",
+      },
+      {
+        icon: <img src="/images/fahrzeug4.svg" alt="" />,
+        label: "Leistung",
+        value: car?.leistung ? `${car.leistung} PS` : "N/A",
+      },
+      {
+        icon: <img src="/images/fahrzeug6.svg" alt="" />,
+        label: "Verbrauch",
+        value: car?.verbrauch ? `${car.verbrauch} L/100km` : "N/A",
+      },
+      {
+        icon: <img src="/images/fahrzeug7.svg" alt="" />,
+        label: "Türen",
+        value: car?.turen || "N/A",
+      },
+      {
+        icon: <img src="/images/fahrzeug8.svg" alt="" />,
+        label: "Treibstoff",
+        value: car?.Treibstoff || "N/A",
+      },
+    ],
+    [car]
+  );
+
+  const description = useMemo(() => {
+    if (!car) return "";
+    return `Der ${car.marke} ${car.modell} ist ein ${
+      car.Fahrzeugart || "Fahrzeug"
+    } mit ${car.Getriebe} Getriebe. Mit einer Leistung von ${
+      car.leistung
+    } PS und einem Verbrauch von ${
+      car.verbrauch
+    } L/100km bietet er eine hervorragende Balance zwischen Leistung und Effizienz.`;
+  }, [car]);
 
   if (loading) {
     return (
@@ -99,47 +147,7 @@ const CarInfo = () => {
         carData={car}
         onSelect={handleCarSelect}
       />
-      <VehicleDetails
-        info={[
-          {
-            icon: <img src="/images/fahrzeug1.svg" alt="" />,
-            label: "Schaltung",
-            value: car.Getriebe || "N/A",
-          },
-          {
-            icon: <img src="/images/fahrzeug2.svg" alt="" />,
-            label: "Reichweite",
-            value: car.reichweite || "N/A",
-          },
-          {
-            icon: <img src="/images/fahrzeug4.svg" alt="" />,
-            label: "Leistung",
-            value: `${car.leistung} PS` || "N/A",
-          },
-          {
-            icon: <img src="/images/fahrzeug6.svg" alt="" />,
-            label: "Verbrauch",
-            value: `${car.verbrauch} L/100km` || "N/A",
-          },
-          {
-            icon: <img src="/images/fahrzeug7.svg" alt="" />,
-            label: "Türen",
-            value: car.turen || "N/A",
-          },
-          {
-            icon: <img src="/images/fahrzeug8.svg" alt="" />,
-            label: "Treibstoff",
-            value: car.Treibstoff || "N/A",
-          },
-        ]}
-        description={`Der ${car.marke} ${car.modell} ist ein ${
-          car.Fahrzeugart || "Fahrzeug"
-        } mit ${car.Getriebe} Getriebe. Mit einer Leistung von ${
-          car.leistung
-        } PS und einem Verbrauch von ${
-          car.verbrauch
-        } L/100km bietet er eine hervorragende Balance zwischen Leistung und Effizienz.`}
-      />
+      <VehicleDetails info={vehicleInfo} description={description} />
     </div>
   );
 };
