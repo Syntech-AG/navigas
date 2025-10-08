@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/general/Header";
 import Footer from "./components/general/Footer";
 import "./App.css";
+import FlexRent from "./pages/FlexRent";
 
 const Home = lazy(() => import("./pages/Home"));
 const CarInfo = lazy(() => import("./pages/CarInfo"));
