@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const data = [
   {
@@ -36,18 +37,75 @@ const data = [
 ];
 
 const ServicesType2 = () => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, scale: 0.8, y: 20 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <div>
-      <div className="container grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-y-14 gap-x-6 py-23">
+      <motion.div
+        className="container grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-y-14 gap-x-6 py-23"
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+      >
         {data.map((item, index) => (
-          <div key={index} className="flex flex-col items-center gap-3">
-            <div className="bg-[#E8EBF2] rounded-full p-10">
-              <img className="w-[50px] h-[50px]" src={item.image} alt="" />
-            </div>
-            <h1 className="text-[24px] font-semibold">{item.title}</h1>
-          </div>
+          <motion.div
+            key={index}
+            className="flex flex-col items-center gap-3 cursor-pointer"
+            variants={itemVariants}
+            whileHover={{ y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            <motion.div
+              className="bg-[#E8EBF2] rounded-full p-10"
+              whileHover={{
+                scale: 1.1,
+                backgroundColor: "#d9e2f2",
+                boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            >
+              <motion.img
+                className="w-[50px] h-[50px]"
+                src={item.image}
+                alt=""
+                whileHover={{ rotate: [0, -10, 10, -10, 0], scale: 1.1 }}
+                transition={{ duration: 0.5 }}
+              />
+            </motion.div>
+            <motion.h1
+              className="text-[24px] font-semibold text-center"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+            >
+              {item.title}
+            </motion.h1>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 };

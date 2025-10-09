@@ -32,9 +32,13 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-  const navLinks = [
+  // Split navigation items for positioning
+  const firstNavLinks = [
     { label: "Home", href: "/" },
-    { label: "Privatkunden", href: "/privatkunden" },
+    { label: "Privatkunden", href: "/filter" },
+  ];
+
+  const secondNavLinks = [
     { label: "Über uns", href: "/uberuns" },
     { label: "FAQ", href: "faq" },
   ];
@@ -65,58 +69,52 @@ const Header = () => {
               aria-label="Main navigation"
             >
               <ul className="flex items-center gap-5 xl:gap-6">
-                {navLinks.map((link) => (
+                {/* First group of nav links */}
+                {firstNavLinks.map((link) => (
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-white font-medium text-sm xl:text-base hover:text-blue-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-transparent rounded px-2 py-1"
+                      className="text-white font-medium text-sm xl:text-base hover:text-blue-300 transition-colors duration-200  rounded px-2 py-1"
                     >
                       {link.label}
                     </a>
                   </li>
                 ))}
 
-                {/* Geschäftskunden with Dropdown */}
+                {/* Geschäftskunden with Dropdown - IN THE MIDDLE */}
                 <li
-                  className="relative"
-                  onMouseEnter={() => setIsDropdownOpen(true)}
-                  onMouseLeave={() => setIsDropdownOpen(false)}
+                  className="relative text-white flex flex-row items-center"
+                  onClick={() => setIsDropdownOpen((prev) => !prev)}
                 >
-                  <a
-                    href="/geschaeftskunden"
-                    className="text-white font-medium text-sm xl:text-base hover:text-blue-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-transparent rounded px-2 py-1 flex items-center gap-1"
+                  Geschäftskunden
+                  <svg
+                    className={`w-4 h-4 transition-transform duration-200 ${
+                      isDropdownOpen ? "rotate-180" : ""
+                    }`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    Geschäftskunden
-                    <svg
-                      className={`w-4 h-4 transition-transform duration-200 ${
-                        isDropdownOpen ? "rotate-180" : ""
-                      }`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </a>
-
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
                   {/* Dropdown Menu */}
                   <div
-                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-[#0A1424] border border-blue-400/20 rounded-lg shadow-xl overflow-hidden transition-all duration-200 ${
+                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-11.5  w-48  roundedb-b-lg shadow-xl overflow-hidden transition-all duration-200 ${
                       isDropdownOpen
                         ? "opacity-100 visible translate-y-0"
                         : "opacity-0 invisible -translate-y-2 pointer-events-none"
                     }`}
                   >
-                    <ul className="py-2">
+                    <div className="py-2  bg-[#0A1424]/30    ">
                       <li>
                         <a
-                          href="/auto-abo-pro"
-                          className="block px-4 py-2 text-white text-sm hover:bg-[#0847A4] transition-colors duration-200"
+                          href="/autoAboPro"
+                          className="block px-4 py-2 text-white text-sm  transition-colors duration-200"
                         >
                           Auto Abo Pro
                         </a>
@@ -124,21 +122,33 @@ const Header = () => {
                       <li>
                         <a
                           href="/flexrent"
-                          className="block px-4 py-2 text-white text-sm hover:bg-[#0847A4] transition-colors duration-200"
+                          className="block px-4 py-2 text-white text-sm  transition-colors duration-200"
                         >
                           FlexRent
                         </a>
                       </li>
-                    </ul>
+                    </div>
                   </div>
                 </li>
+
+                {/* Second group of nav links */}
+                {secondNavLinks.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-white font-medium text-sm xl:text-base hover:text-blue-300 transition-colors duration-200 rounded px-2 py-1"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </nav>
 
             <div className="hidden md:flex items-center gap-4 lg:gap-6 xl:gap-8">
               <a
                 href="tel:+41417803133"
-                className="text-white text-sm lg:text-base hover:text-blue-300 transition-colors duration-200 whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-transparent rounded px-2 py-1"
+                className="text-white text-sm lg:text-base hover:text-blue-300 transition-colors duration-200 whitespace-nowrap rounded px-2 py-1"
                 aria-label="Call us at +41 41 780 31 33"
               >
                 + (0)41 780 31 33
@@ -199,10 +209,11 @@ const Header = () => {
           aria-label="Mobile navigation"
         >
           <ul className="flex flex-col items-center gap-6 mb-12">
-            {navLinks.map((link, index) => (
+            {/* First group mobile */}
+            {firstNavLinks.map((link, index) => (
               <li
                 key={link.label}
-                className={`transition-all duration-300 delay-${index * 75}`}
+                className={`transition-all duration-300`}
                 style={{
                   transitionDelay: isMenuOpen ? `${index * 75}ms` : "0ms",
                   opacity: isMenuOpen ? 1 : 0,
@@ -218,27 +229,24 @@ const Header = () => {
                 </a>
               </li>
             ))}
-            {/* Mobile Geschäftskunden Links */}
+
+            {/* Mobile Geschäftskunden Links - IN THE MIDDLE */}
             <li
               className="transition-all duration-300"
               style={{
                 transitionDelay: isMenuOpen
-                  ? `${navLinks.length * 75}ms`
+                  ? `${firstNavLinks.length * 75}ms`
                   : "0ms",
                 opacity: isMenuOpen ? 1 : 0,
                 transform: isMenuOpen ? "translateY(0)" : "translateY(-20px)",
               }}
             >
-              <a
-                href="/geschaeftskunden"
-                onClick={closeMenu}
-                className="text-white text-2xl font-medium hover:text-blue-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-3 py-2"
-              >
+              <a className="text-white text-2xl font-medium hover:text-blue-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-3 py-2">
                 Geschäftskunden
               </a>
               <div className="flex flex-col items-center gap-3 mt-3">
                 <a
-                  href="/auto-abo-pro"
+                  href="/autoAboPro"
                   onClick={closeMenu}
                   className="text-white text-lg hover:text-blue-300 transition-colors duration-200"
                 >
@@ -253,6 +261,29 @@ const Header = () => {
                 </a>
               </div>
             </li>
+
+            {/* Second group mobile */}
+            {secondNavLinks.map((link, index) => (
+              <li
+                key={link.label}
+                className={`transition-all duration-300`}
+                style={{
+                  transitionDelay: isMenuOpen
+                    ? `${(firstNavLinks.length + 1 + index) * 75}ms`
+                    : "0ms",
+                  opacity: isMenuOpen ? 1 : 0,
+                  transform: isMenuOpen ? "translateY(0)" : "translateY(-20px)",
+                }}
+              >
+                <a
+                  href={link.href}
+                  onClick={closeMenu}
+                  className="text-white text-2xl font-medium hover:text-blue-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded px-3 py-2"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
           </ul>
           <div className="flex flex-col items-center gap-6">
             <a

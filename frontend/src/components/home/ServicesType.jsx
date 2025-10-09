@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const data = [
   {
@@ -48,15 +49,27 @@ const ServicesType = () => {
     <div>
       <div className="container grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-y-14 gap-x-6 py-23">
         {data.map((item, index) => (
-          <div key={index} className="flex flex-col items-center gap-3">
-            <div className="bg-[#E8EBF2] rounded-full p-8">
+          <motion.div
+            key={index}
+            className="flex flex-col items-center gap-3"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+            whileHover={{ y: -8 }}
+          >
+            <motion.div
+              className="bg-[#E8EBF2] rounded-full p-8"
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              transition={{ type: "spring", stiffness: 300, damping: 15 }}
+            >
               <img className="w-[50px] h-[50px]" src={item.image} alt="" />
-            </div>
+            </motion.div>
             <h1 className="text-[24px] font-semibold">{item.title}</h1>
             <p className="text-center text-[#494B4E] text-[16px] max-md:max-w-[80%]">
               {item.text}
             </p>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

@@ -7,6 +7,7 @@ import {
   transformPricingOptions,
 } from "../components/car/carService";
 import { PRICING_TYPE } from "../components/car/Constans";
+import AboutStart from "../components/about/AboutStart";
 
 const CarInfo = () => {
   const { id } = useParams();
@@ -131,19 +132,26 @@ const CarInfo = () => {
     );
 
   return (
-    <div className="pt-50">
-      <PolestarCard
-        title={`${car.marke} ${car.modell}`}
-        subtitle={car.Fahrzeugart || "Electric Vehicle"}
-        images={images}
-        basePrice={car.displayPrice}
-        kmPricingOptions={pricingOpts.kmOptions}
-        termPricingOptions={pricingOpts.termOptions}
-        carData={car}
-        onSelect={handleSelect}
-        pricingType={pricingType}
-      />
-      <VehicleDetails info={info} description={description} />
+    <div>
+      {/* <AboutStart
+        src="images/filter.png "
+        title="Privatkunden"
+        mobileSrc="images/filterMobile.png"
+      /> */}
+      <div className="pt-50">
+        <PolestarCard
+          title={`${car.marke} ${car.modell}`}
+          subtitle={car.Fahrzeugart || "Electric Vehicle"}
+          images={images}
+          basePrice={car.displayPrice}
+          kmPricingOptions={pricingOpts.kmOptions}
+          termPricingOptions={pricingOpts.termOptions}
+          carData={car}
+          onSelect={handleSelect}
+          pricingType={pricingType}
+        />
+        <VehicleDetails info={info} description={description} />
+      </div>
     </div>
   );
 };

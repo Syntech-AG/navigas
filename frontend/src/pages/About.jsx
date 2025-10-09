@@ -7,7 +7,11 @@ import Nachrichten from "../components/about/Nachrichten";
 const About = () => {
   return (
     <div>
-      <AboutStart src="/images/aboutStart.png" title="Über uns" />
+      <AboutStart
+        src="/images/aboutStart.png"
+        title="Über uns"
+        mobileSrc="/images/aboutMobile.png"
+      />
       <UnsereMission />
       <Car />
       <Verantwortung />

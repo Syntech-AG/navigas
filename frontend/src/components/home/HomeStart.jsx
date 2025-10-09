@@ -9,19 +9,25 @@ const HomeStart = () => {
         src="/images/Gradient.png"
         alt=""
       />
-      <img
-        src="/images/homeBg.png"
-        alt=""
+      <video
+        src="/images/videoNav.mov"
+        autoPlay
+        loop
+        muted
+        playsInline
         className="w-full h-screen object-cover absolute"
-      />
-      <div className="container flex justify-center items-center md:h-screen z-999 relative">
+      ></video>
+
+      <div className="container flex justify-center items-center md:h-screen z-999 top-80 md:top-0 relative">
         <div className="flex flex-col gap-6 justify-center items-center">
-          <h1 className="2xl:text-[100px] lg:text-[80px] md:text-[68px] text-[38px] font-semibold text-white text-center">
-            Dein Navigas Auto Abo
+          <h1 className="2xl:text-[80px] lg:text-[70px] md:text-[65px] text-[38px] font-semibold text-white text-center">
+            Navigas Auto Abo: <br />
+            Service-Plus zum besten Preis
           </h1>
           <p className="2xl:text-[24px] lg:text-[20px] md:text-[18px] text-[14px] font-medium text-white text-center">
-            Wählen Sie mit wenigen Klicks Ihr Auto Abo all-inclusive und die
-            Dauer und los geht's !
+            Das Rundum-sorglos-Paket: Top-Versicherung, Wartung, Ersatzfahrzeug
+            und europaweite Assistance. Alles inklusive und direkt vor Ihre
+            Haustüre geliefert.
           </p>
           <Link to="/privatkunden">
             <button className="relative text-[14px] md:text-[16px] hover:cursor-pointer bg-transparent border border-white rounded-lg px-5 py-2 text-white font-medium overflow-hidden group transition-all duration-300">

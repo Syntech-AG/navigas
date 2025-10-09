@@ -7,17 +7,23 @@ import Dabei from "../components/costumer/Dabei";
 import ServicesType from "../components/home/ServicesType";
 import Funktioniert from "../components/costumer/Funktioniert";
 import Nachrichten from "../components/about/Nachrichten";
+import Effizienz2 from "../components/costumer/Effizienz2";
 
 const Customer = () => {
   return (
     <div>
-      <AboutStart src="/images/autoBg.png" title="Auto Abo Pro" />
+      <AboutStart
+        src="/images/autoBg.png"
+        title="Auto Abo Pro"
+        mobileSrc="images/mobileAuto.png"
+      />
       {/* <HoverCategories2 /> */}
       <Effizienz />
       <LogoSlider />
       <Dabei />
+      <Effizienz2 />
       <ServicesType />
-      <Funktioniert />
+      {/* <Funktioniert /> */}
       <Nachrichten />
     </div>
   );

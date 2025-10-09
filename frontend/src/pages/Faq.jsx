@@ -5,7 +5,11 @@ import AboutStart from "../components/about/AboutStart";
 const Faq = () => {
   return (
     <div>
-      <AboutStart src="/images/faqPhoto.png" title="FAQ" />
+      <AboutStart
+        src="/images/faqPhoto.png"
+        title="FAQ"
+        mobileSrc="/images/mobileFaq.png"
+      />
       <Angebot />
     </div>
   );
