@@ -47,7 +47,6 @@ const Verantwortung = () => {
 
   return (
     <div className="container mx-auto mt-10 md:mt-[150px] flex flex-col lg:flex-row justify-between items-center gap-[80px]">
-      {/* Left Column - Images */}
       <motion.div
         className="flex flex-col items-center justify-between gap-5 w-full lg:w-1/2"
         initial={{ opacity: 0, x: -100 }}
@@ -127,7 +126,6 @@ const Verantwortung = () => {
         </motion.div>
       </motion.div>
 
-      {/* Right Column - Content */}
       <motion.div
         className="w-full lg:w-1/2 flex flex-col items-start justify-between"
         initial={{ opacity: 0, x: 100 }}

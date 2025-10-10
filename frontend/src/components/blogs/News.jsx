@@ -73,7 +73,6 @@ const News = () => {
 
   return (
     <div className="relative top-0 flex flex-col lg:flex-row items-center justify-between md:gap-0 gap-8 px-4 md:px-0">
-      {/* Left Section - Text */}
       <motion.div
         className="flex flex-col items-center lg:items-start justify-between gap-10 md:gap-10 lg:gap-[150px] ml-0 md:ml-10 lg:ml-50 w-full md:w-auto md:mt-10 lg:mt-0"
         initial={{ opacity: 0, x: -50 }}
@@ -104,7 +103,6 @@ const News = () => {
         </motion.h1>
       </motion.div>
 
-      {/* Right Section - Carousel */}
       <motion.div
         className="w-full lg:w-[50%] flex flex-col-reverse md:flex-col"
         initial={{ opacity: 0, x: 50 }}
@@ -112,7 +110,6 @@ const News = () => {
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        {/* Controls Header */}
         <motion.div
           className="flex flex-row items-center justify-between border-[#D3D3D3] border py-8 md:py-0 px-0"
           initial={{ opacity: 0, y: -20 }}
@@ -151,7 +148,6 @@ const News = () => {
           </div>
         </motion.div>
 
-        {/* Carousel Container */}
         <div className="overflow-x-auto md:overflow-hidden -mx-4 md:mx-0">
           <motion.div
             className="flex"

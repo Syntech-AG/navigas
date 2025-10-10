@@ -5,7 +5,6 @@ const UnsereMission = () => {
   return (
     <div className="container mx-auto">
       <div className="flex flex-col md:flex-row items-start justify-between py-10 md:py-[170px] w-full md:gap-5 lg:gap-0">
-        {/* Left Column */}
         <motion.div
           className="text-[#050505] flex flex-col w-full md:w-[60%] mt-10 md:mt-0"
           initial={{ opacity: 0, x: -100 }}
@@ -46,7 +45,6 @@ const UnsereMission = () => {
           />
         </motion.div>
 
-        {/* Right Column */}
         <motion.div
           className="text-[#494B4E] flex flex-col items-start md:items-end w-full md:w-[40%] mt-12 md:mt-0"
           initial={{ opacity: 0, x: 100 }}
@@ -95,7 +93,6 @@ const UnsereMission = () => {
         </motion.div>
       </div>
 
-      {/* Bottom Mission Statement */}
       <motion.div
         className="flex flex-col items-center justify-center font-bold"
         initial={{ opacity: 0, y: 50 }}

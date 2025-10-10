@@ -5,7 +5,6 @@ const Auto = () => {
   return (
     <div className="lg:py-25 py-16">
       <div className="container grid grid-cols-1 lg:grid-cols-[9fr_11fr] gap-10 items-end">
-        {/* Left Column - Content */}
         <motion.div
           className="max-lg:order-2"
           initial={{ opacity: 0, x: -100 }}
@@ -61,7 +60,6 @@ const Auto = () => {
           />
         </motion.div>
 
-        {/* Right Column - Image */}
         <motion.img
           className="max-lg:order-1 rounded-lg"
           src="/images/auto2.png"

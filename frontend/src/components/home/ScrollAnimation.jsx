@@ -3,7 +3,6 @@ import React from "react";
 const ScrollAnimation = () => {
   return (
     <div className="lg:py-30 py-20 max-lg:flex max-lg:items-center max-lg:gap-15 max-lg:flex-col lg:relative">
-      {/* Section 1 */}
       <div className="grid lg:min-h-screen max-lg:max-h-screen max-lg:pb-[10vh] grid-cols-1 lg:grid-cols-2 items-center bg-white sticky top-0">
         <img
           className="max-h-screen lg:h-full max-lg:w-full max-lg:mx-auto"
@@ -29,7 +28,6 @@ const ScrollAnimation = () => {
         </div>
       </div>
 
-      {/* Section 2 */}
       <div className="grid lg:min-h-screen max-lg:max-h-screen max-lg:pb-[10vh] grid-cols-1 lg:grid-cols-2 items-center bg-white sticky top-0 z-[99]">
         <img
           className="max-h-screen lg:h-full max-lg:w-full max-lg:mx-auto"
@@ -55,7 +53,6 @@ const ScrollAnimation = () => {
         </div>
       </div>
 
-      {/* Section 3 */}
       <div className="grid lg:min-h-screen max-lg:max-h-screen max-lg:pb-[10vh] grid-cols-1 lg:grid-cols-2 items-center bg-white sticky top-0 z-[999]">
         <img
           className="max-h-screen lg:h-full max-lg:w-full  max-lg:mx-auto"

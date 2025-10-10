@@ -311,7 +311,6 @@ export default function PolestarCard({
   return (
     <section className="mx-auto rounded-xl container">
       <div className="flex flex-col md:flex-row justify-between">
-        {/* Image Gallery */}
         <div className="md:w-[65%] w-full">
           <div className="grid gap-3 md:grid-cols-1">
             <div className="relative md:cols-span-2">
@@ -343,7 +342,6 @@ export default function PolestarCard({
                 </div>
               )}
             </div>
-            {/* Thumbnails */}
             {thumbnails.length > 0 && (
               <div className="grid grid-cols-2 gap-3 max-md:hidden">
                 {thumbnails.map((t) => (
@@ -362,7 +360,6 @@ export default function PolestarCard({
           </div>
         </div>
 
-        {/* Configuration Panel */}
         <div className="md:w-[30%] w-full">
           <div className="mt-7 flex flex-col gap-2">
             <p className="text-xs text-[#0847A4] bg-[#0847A41A] py-1 px-4 rounded-xl w-fit">

@@ -9,13 +9,11 @@ import {
 } from "./Constans";
 import { normalizeCarData } from "./ImageHelpers";
 
-// Normalize enum value helper
 const normalizeEnumValue = (key, val) => {
   if (key === "getriebe" && val === "Allrad (4x4)") return "Allrad";
   return val;
 };
 
-// Transform pricing options (km and term)
 export const transformPricingOptions = (car) => {
   if (!car) return { kmOptions: [], termOptions: [] };
 
@@ -36,7 +34,6 @@ export const transformPricingOptions = (car) => {
   return { kmOptions, termOptions };
 };
 
-// Get correct base price based on pricing type
 export const getPrice = (car, pricingType = PRICING_TYPE.NORMAL) => {
   if (pricingType === PRICING_TYPE.COMPANY) {
     return parseInt(car.PreisFurUnternehmen || car.preis) || 0;
@@ -44,7 +41,6 @@ export const getPrice = (car, pricingType = PRICING_TYPE.NORMAL) => {
   return parseInt(car.preis) || 0;
 };
 
-// Fetch paginated cars list
 export const fetchCars = async (
   page,
   filters,
@@ -103,7 +99,6 @@ export const fetchCars = async (
   };
 };
 
-// Fetch single car by ID
 export const fetchCarById = async (id, pricingType = PRICING_TYPE.NORMAL) => {
   const query = qs.stringify(
     { populate: { [IMAGE_FIELD]: { fields: ["url", "formats"] } } },

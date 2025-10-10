@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 const Subscribe = () => {
   return (
     <div className="container mx-auto flex flex-col md:flex-row items-stretch gap-6 md:gap-[30px] h-auto md:h-[500px] mb-20 px-0 md:px-0">
-      {/* Image Section */}
       <motion.div
         className="border border-[#D3D3D3] p-4 md:p-[20px] w-full md:w-1/2 flex-1 flex flex-col overflow-hidden"
         initial={{ opacity: 0, x: -50 }}
@@ -21,7 +20,6 @@ const Subscribe = () => {
         />
       </motion.div>
 
-      {/* Content Section */}
       <motion.div
         className="border border-[#D3D3D3] p-6 md:p-[30px] flex-1 flex flex-col items-start justify-between gap-[50px] 2xl:gap-[100px] w-full md:w-1/2"
         initial={{ opacity: 0, x: 50 }}

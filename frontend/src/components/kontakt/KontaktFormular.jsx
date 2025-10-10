@@ -3,14 +3,12 @@ import { motion } from "framer-motion";
 export default function KontaktSection() {
   return (
     <section className="relative w-full">
-      {/* Desktop Background Image */}
       <img
         src="/images/KontaktBgg.png"
         alt=""
         className="hidden md:block h-[1200px] lg:h-[1100px] w-full xl:h-auto"
       />
 
-      {/* Mobile Background Image */}
       <img
         src="/images/form-mobile.png"
         alt=""
@@ -20,7 +18,6 @@ export default function KontaktSection() {
       <div className="absolute inset-0">
         <div className="mx-auto flex h-full w-full container flex-col justify-center gap-10 p-6 md:p-10">
           <div className="grid grid-cols-1 items-center gap-10 md:gap-40 lg:grid-cols-2">
-            {/* Opening Hours Section */}
             <motion.div
               className="flex flex-col items-start"
               initial={{ opacity: 0, x: -50 }}
@@ -62,7 +59,6 @@ export default function KontaktSection() {
               </motion.div>
             </motion.div>
 
-            {/* Header Section */}
             <motion.div
               className="flex flex-col items-start"
               initial={{ opacity: 0, x: 50 }}
@@ -105,7 +101,6 @@ export default function KontaktSection() {
             </motion.div>
           </div>
 
-          {/* Form Section */}
           <motion.div
             className="rounded-3xl bg-[#000815CC]/90 p-6 backdrop-blur-xl ring-1 ring-white/10 md:p-8 lg:p-10"
             initial={{ opacity: 0, y: 40 }}

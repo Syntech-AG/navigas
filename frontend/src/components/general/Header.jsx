@@ -32,7 +32,6 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-  // Split navigation items for positioning
   const firstNavLinks = [
     { label: "Home", href: "/" },
     { label: "Privatkunden", href: "/filter" },
@@ -69,7 +68,6 @@ const Header = () => {
               aria-label="Main navigation"
             >
               <ul className="flex items-center gap-5 xl:gap-6">
-                {/* First group of nav links */}
                 {firstNavLinks.map((link) => (
                   <li key={link.label}>
                     <a
@@ -81,7 +79,6 @@ const Header = () => {
                   </li>
                 ))}
 
-                {/* Geschäftskunden with Dropdown - IN THE MIDDLE */}
                 <li
                   className="relative text-white flex flex-row items-center"
                   onClick={() => setIsDropdownOpen((prev) => !prev)}
@@ -102,7 +99,6 @@ const Header = () => {
                       d="M19 9l-7 7-7-7"
                     />
                   </svg>
-                  {/* Dropdown Menu */}
                   <div
                     className={`absolute top-full left-1/2 -translate-x-1/2 mt-11.5  w-48  roundedb-b-lg shadow-xl overflow-hidden transition-all duration-200 ${
                       isDropdownOpen
@@ -131,7 +127,6 @@ const Header = () => {
                   </div>
                 </li>
 
-                {/* Second group of nav links */}
                 {secondNavLinks.map((link) => (
                   <li key={link.label}>
                     <a
@@ -209,7 +204,6 @@ const Header = () => {
           aria-label="Mobile navigation"
         >
           <ul className="flex flex-col items-center gap-6 mb-12">
-            {/* First group mobile */}
             {firstNavLinks.map((link, index) => (
               <li
                 key={link.label}
@@ -230,7 +224,6 @@ const Header = () => {
               </li>
             ))}
 
-            {/* Mobile Geschäftskunden Links - IN THE MIDDLE */}
             <li
               className="transition-all duration-300"
               style={{
@@ -262,7 +255,6 @@ const Header = () => {
               </div>
             </li>
 
-            {/* Second group mobile */}
             {secondNavLinks.map((link, index) => (
               <li
                 key={link.label}

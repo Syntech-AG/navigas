@@ -19,27 +19,23 @@ export const normalizeCarData = (arr) =>
   (arr || []).map((item) => {
     const attrs = item?.attributes ? item.attributes : item || {};
 
-    // Handle Strapi v5 media field structure
     let mediaNode = attrs?.[IMAGE_FIELD];
 
-    // If wrapped in { data: [...] }, unwrap it
     if (mediaNode && mediaNode.data) {
       mediaNode = mediaNode.data;
     }
 
-    // Ensure it's an array
     const files = Array.isArray(mediaNode)
       ? mediaNode
       : mediaNode && typeof mediaNode === "object"
       ? [mediaNode]
       : [];
 
-    // Get unique URLs - filter out nulls and duplicates
     const imageUrls = files
-      .filter((f) => f) // Remove null/undefined
+      .filter((f) => f)
       .map(pickBestUrl)
-      .filter(Boolean) // Remove empty strings
-      .filter((url, index, self) => self.indexOf(url) === index); // Remove duplicates
+      .filter(Boolean)
+      .filter((url, index, self) => self.indexOf(url) === index);
 
     return {
       id: item?.id,
