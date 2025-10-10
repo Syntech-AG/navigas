@@ -26,8 +26,8 @@ const HomeStart = () => {
           </h1>
           <p className="2xl:text-[24px] lg:text-[20px] md:text-[18px] text-[14px] font-medium text-white text-center">
             Das Rundum-sorglos-Paket: Top-Versicherung, Wartung, Ersatzfahrzeug
-            und europaweite Assistance. Alles inklusive und direkt vor Ihre
-            Haustüre geliefert.
+            und europaweite Assistance. <br />
+            Alles inklusive und direkt vor Ihre Haustüre geliefert.
           </p>
           <Link to="/privatkunden">
             <button className="relative text-[14px] md:text-[16px] hover:cursor-pointer bg-transparent border border-white rounded-lg px-5 py-2 text-white font-medium overflow-hidden group transition-all duration-300">
