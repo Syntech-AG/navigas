@@ -7,7 +7,7 @@ const UnsereMission = () => {
       <div className="flex flex-col md:flex-row items-start justify-between py-10 md:py-[170px] w-full md:gap-5 lg:gap-0">
         {/* Left Column */}
         <motion.div
-          className="text-[#050505] flex flex-col w-full md:w-[60%] mt-50 md:mt-0"
+          className="text-[#050505] flex flex-col w-full md:w-[60%] mt-10 md:mt-0"
           initial={{ opacity: 0, x: -100 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, amount: 0.2 }}

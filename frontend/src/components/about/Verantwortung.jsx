@@ -46,7 +46,7 @@ const Verantwortung = () => {
   };
 
   return (
-    <div className="container mx-auto mt-[150px] flex flex-col lg:flex-row justify-between items-center gap-[80px]">
+    <div className="container mx-auto mt-10 md:mt-[150px] flex flex-col lg:flex-row justify-between items-center gap-[80px]">
       {/* Left Column - Images */}
       <motion.div
         className="flex flex-col items-center justify-between gap-5 w-full lg:w-1/2"
@@ -70,7 +70,7 @@ const Verantwortung = () => {
               className="w-full h-full object-cover"
               alt="joniIdea"
             />
-            <div className="absolute inset-0 flex flex-col justify-between p-6">
+            <div className="absolute inset-0 flex flex-col justify-around xl:gap-10  p-6">
               <motion.h1
                 className="text-[14px] text-white font-semibold uppercase"
                 initial={{ opacity: 0, y: -20 }}
@@ -81,7 +81,7 @@ const Verantwortung = () => {
                 Treffen Sie eine Wahl
               </motion.h1>
               <motion.h1
-                className="text-[#FFFEFE] font-semibold text-[30px]"
+                className="text-[#FFFEFE] font-semibold text-[28px] sm:text-[50px] md:text-[33px] lg:text-[18px] xl:text-[24px]"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -136,7 +136,7 @@ const Verantwortung = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <motion.h1
-          className="text-[#0A1424] font-semibold text-[48px]"
+          className="text-[#0A1424] font-semibold text-[22px] md:text-[35px] 2xl:text-[48px] "
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -156,7 +156,7 @@ const Verantwortung = () => {
         </motion.h1>
 
         <motion.p
-          className="text-[#494B4E] text-[16px]"
+          className="text-[#494B4E] text-[16px] mt-5 md:mt-2"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

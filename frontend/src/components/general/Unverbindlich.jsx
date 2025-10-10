@@ -26,7 +26,7 @@ const Unverbindlich = () => {
 
   return (
     <div className="py-16 ">
-      <div className=" bg-[#0847A4] rounded-xl py-[50px] px-[50px] md:py-[100px] md:px-[65px] container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+      <div className=" bg-[#0847A4] rounded-xl py-[50px] px-[20px] md:py-[100px] md:px-[65px] container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
         <div className="text-white">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-medium mb-2">
             Jetzt unverbindlich

@@ -51,7 +51,7 @@ const Flexible = () => {
   return (
     <div className="w-full bg-[#F5F8FD]">
       <motion.div
-        className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[30px] py-[150px] sm:py-[100px] lg:py-[150px] px-4 sm:px-6 lg:px-0"
+        className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[30px] py-[40px] sm:py-[100px] lg:py-[150px] px-4 sm:px-6 lg:px-0"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"

@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const Nachrichten = () => {
   const newsItems = [
@@ -29,32 +30,72 @@ const Nachrichten = () => {
   ];
 
   return (
-    <div className="flex flex-col items-start justify-between mt-[110px] relative pb-5 md:pb-100">
+    <div className="flex flex-col items-start justify-between mt-10 md:mt-[110px]  relative pb-5 md:pb-100">
       <img
         src="/images/banesa.png"
         alt="banesa"
         className="absolute bottom-0 right-0 h-auto select-none pointer-events-none hidden md:block"
       />
 
-      <div className="flex flex-col items-start justify-between container mx-auto">
-        <motion.h1
-          className="text-[#050505] font-bold text-[14px] tracking-[2px] uppercase"
+      <div className="flex flex-col md:flex-row items-start gap-10 md:gap-0 md:items-center justify-between w-full container">
+        <div className="flex flex-col items-start justify-between ">
+          <motion.h1
+            className="text-[#050505] font-bold text-[14px] tracking-[2px] uppercase"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            Newsroom
+          </motion.h1>
+
+          <motion.h1
+            className="font-semibold text-[54px] text-[#050505]"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            Neueste Nachrichten
+          </motion.h1>
+        </div>
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
         >
-          Newsroom
-        </motion.h1>
-        <motion.h1
-          className="font-semibold text-[54px] text-[#050505]"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Neueste Nachrichten
-        </motion.h1>
+          <Link to="/blogs">
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                backgroundColor: "#0A58D0",
+                boxShadow: "0px 6px 15px rgba(8, 71, 164, 0.3)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-[#0847A4] text-white text-[13px] rounded-xl px-8 py-3 font-medium tracking-wide flex items-center gap-2 transition-all duration-300 whitespace-nowrap"
+            >
+              <span className="flex items-center gap-2">
+                Alle anzeigen
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </span>
+            </motion.button>
+          </Link>
+        </motion.div>
       </div>
 
       <div className="flex flex-col md:flex-row items-start justify-between mt-[45px] gap-6 w-full container mx-auto">

@@ -75,9 +75,11 @@ const Footer = () => {
                 <span className="text-[#E8EBF1]">Navigas Services GmbH</span> ©
                 2025. Alle Rechte vorbehalten.
               </h1>
-              <h1 className="text-[#8E8E8E] text-sm md:text-base">
-                Entworfen von: SyntechSolutions AG
-              </h1>
+              <a href="https://syn-tech.ch/">
+                <h1 className="text-[#8E8E8E] text-sm md:text-base hover:text-white">
+                  Entworfen von: SyntechSolutions AG
+                </h1>
+              </a>
             </div>
             <div className="text-[#8E8E8E] flex flex-row items-center justify-center md:justify-end gap-5 text-sm md:text-base">
               <h1 className="cursor-pointer hover:text-[#E8EBF1]">

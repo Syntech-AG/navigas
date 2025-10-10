@@ -29,7 +29,7 @@ const Fragen = () => {
   };
 
   return (
-    <div className="container mx-auto flex flex-col md:flex-row items-center justify-between pt-[50px] md:pt-[180px] pb-[110px]">
+    <div className="container mx-auto flex flex-col md:flex-row items-center justify-between pt-[30px] md:pt-[180px] pb-[40px] md:pb-[110px]">
       <div>
         <h1 className="text-[#010101] text-[48px]">Häufig Fragen</h1>
       </div>

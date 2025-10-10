@@ -158,7 +158,7 @@ function FaqSection({
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <img src="/images/line.svg" alt="" />
-              <h2 className="text-[#0847A4] text-[12px] md:text-[15px] uppercase tracking-[4px] md:tracking-[5px]">
+              <h2 className="text-[#0847A4] text-[12px]  md:text-[15px] uppercase tracking-[4px] md:tracking-[5px] py-10 md:py-auto">
                 Häufig gestellte Fragen
               </h2>
             </motion.div>
@@ -194,7 +194,7 @@ function FaqSection({
             <motion.img
               src={image}
               alt=""
-              className="w-full h-48 md:h-auto object-contain rounded-lg"
+              className="w-full h-78 md:h-auto object-contain rounded-lg"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.4 }}
             />

@@ -7,7 +7,7 @@ const AboutStart2 = ({ src, mobileSrc, title, paragraph }) => {
       <img
         src={src}
         alt=""
-        className="hidden sm:block sm:h-[600px] max-lg:h-auto"
+        className="hidden sm:block sm:h-[600px] w-full max-lg:h-auto"
       />
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] w-full ">
         <h1 className="text-white text-center z-[99] lg:text-[80px] md:text-[64px] text-[52px] font-medium">
