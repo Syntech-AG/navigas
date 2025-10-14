@@ -21,7 +21,7 @@ const Effizienz = () => {
         <img
           src="/images/imagee.png"
           alt="Effizienz Illustration"
-          className="w-full h-100 md:h-auto object-cover"
+          className="w-full  md:h-auto object-contain"
         />
       </div>
     </div>

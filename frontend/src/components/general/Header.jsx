@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  // const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -39,18 +39,15 @@ const Header = () => {
 
   const secondNavLinks = [
     { label: "Über uns", href: "/uberuns" },
-    { label: "FAQ", href: "faq" },
+    { label: "FAQ", href: "/faq" },
   ];
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full transition-all duration-300 z-9999999 ${
-          isScrolled
-            ? "backdrop-blur-lg bg-[#0A14241A]"
-            : "backdrop-blur-lg bg-[#0A14241A]"
-        }`}
+        className={`fixed top-0 left-0 w-full transition-all duration-300 z-9999999 `}
       >
+        <div className="w-full h-full absolute inset-0 bg-[#0A14241A] backdrop-blur-lg z-[-1]"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-4 md:py-6 lg:py-9">
             <div className="flex-shrink-0">
@@ -72,7 +69,7 @@ const Header = () => {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-white font-medium text-sm xl:text-base hover:text-blue-300 transition-colors duration-200  rounded px-2 py-1"
+                      className="text-white font-medium text-sm xl:text-base hover:border-b-2   px-2 py-1"
                     >
                       {link.label}
                     </a>
@@ -106,11 +103,11 @@ const Header = () => {
                         : "opacity-0 invisible -translate-y-2 pointer-events-none"
                     }`}
                   >
-                    <div className="py-2  bg-[#0A1424]/30    ">
+                    <div className="py-2 backdrop-blur-lg bg-[#0A14241A]  ">
                       <li>
                         <a
                           href="/autoAboPro"
-                          className="block px-4 py-2 text-white text-sm  transition-colors duration-200"
+                          className="block px-4 py-2 text-white text-sm "
                         >
                           Auto Abo Pro
                         </a>
@@ -131,7 +128,7 @@ const Header = () => {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-white font-medium text-sm xl:text-base hover:text-blue-300 transition-colors duration-200 rounded px-2 py-1"
+                      className="text-white font-medium text-sm xl:text-base hover:border-b-2  px-2 py-1"
                     >
                       {link.label}
                     </a>

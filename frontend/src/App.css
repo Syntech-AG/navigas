@@ -6,7 +6,9 @@
     width: 90%;
   }
 }
-
+.body {
+  overflow-x: clip;
+}
 @font-face {
   font-family: "Manrope";
   src: url("/font/Manrope-Regular.ttf") format("truetype");

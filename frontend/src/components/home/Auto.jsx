@@ -48,27 +48,14 @@ const Auto = () => {
             Ihrer Wahl.
           </motion.p>
 
-          <motion.img
-            className="w-full rounded-lg"
-            src="/images/auto1.png"
-            alt=""
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.5 }}
-            whileHover={{ scale: 1.03 }}
-          />
+          <img className="w-full rounded-lg" src="/images/auto1.png" alt="" />
         </motion.div>
 
-        <motion.img
+        <img
           className="max-lg:order-1 rounded-lg"
           src="/images/auto2.png"
           alt=""
-          initial={{ opacity: 0, x: 100 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          whileHover={{ scale: 1.05 }}
+          style={{ transform: "none !important" }}
         />
       </div>
     </div>

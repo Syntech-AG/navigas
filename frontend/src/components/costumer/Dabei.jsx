@@ -14,7 +14,7 @@ const Dabei = () => {
           className="hidden md:block w-full h-auto"
         />
         <img
-          src="/images/car-mobile.png"
+          src="/images/car-mobile.webp"
           alt="Auto Abo Pro Mobile"
           className="block md:hidden w-full h-auto"
         />
