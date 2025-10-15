@@ -112,8 +112,14 @@ const Nachrichten = () => {
             <div className="overflow-hidden rounded-lg">
               <motion.img
                 src={item.image}
-                alt=""
-                className="w-full"
+                srcSet={`${item.image} 1x, ${item.image.replace(
+                  ".png",
+                  "@2x.png"
+                )} 2x, ${item.image.replace(".png", "@3x.png")} 3x`}
+                alt={item.title}
+                className="w-full h-auto object-cover transition-transform duration-500"
+                loading="lazy"
+                decoding="async"
                 whileHover={{ scale: 1.1 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
               />

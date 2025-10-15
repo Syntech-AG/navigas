@@ -426,12 +426,13 @@ const Deinem = () => {
           </div>
         </div>
 
-        <div className="relative w-full h-[600px] overflow-hidden rounded-lg lg:w-1/2">
+        <div className="relative w-full   lg:w-1/2 ">
           <video
             ref={videoRef}
             loop
-            src="/images/faqVideo.mp4"
-            className="absolute bottom-[-550px] cursor-pointer"
+            preload="metadata"
+            src="/images/faqVideo1.mp4"
+            className="rounded-b-2xl"
             onClick={handleToggle}
           />
 

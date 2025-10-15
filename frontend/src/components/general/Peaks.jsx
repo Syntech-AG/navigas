@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+
+    const onChange = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    mql.addEventListener("change", onChange);
+    setIsMobile(window.innerWidth < 768);
+
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+
+  return isMobile;
+};
+
 const Peaks = () => {
+  const isMobile = useIsMobile();
+
   const peaksData = [
     {
       id: 1,
@@ -42,68 +63,94 @@ const Peaks = () => {
               isEven ? "md:flex-row-reverse" : "md:flex-row"
             }`}
           >
-            <motion.div
-              className="w-full md:w-1/2"
-              initial={{ opacity: 0, x: isEven ? 100 : -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              <motion.img
-                src={item.image}
-                alt=""
-                className="w-full"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.4 }}
-              />
-            </motion.div>
-
-            <motion.div
-              className="flex flex-col items-start justify-between gap-4 md:gap-5 w-full md:w-1/2"
-              initial={{ opacity: 0, x: isEven ? -100 : 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-            >
-              <motion.h1
-                className="text-4xl md:text-5xl lg:text-[54px] text-[#020106] font-semibold"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+            {/* Image Section - No motion on mobile */}
+            {isMobile ? (
+              <div className="w-full md:w-1/2">
+                <img src={item.image} alt="" className="w-full" />
+              </div>
+            ) : (
+              <motion.div
+                className="w-full md:w-1/2"
+                initial={{ opacity: 0, x: isEven ? 100 : -100 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
               >
-                {item.title} <br />{" "}
-                <span className="text-gray-500">{item.subtitle}</span>
-              </motion.h1>
+                <motion.img
+                  src={item.image}
+                  alt=""
+                  className="w-full"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.4 }}
+                />
+              </motion.div>
+            )}
 
-              <motion.p
-                className="text-base md:text-lg text-[#494B4E]"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-              >
-                {item.description}
-              </motion.p>
+            {/* Text Section - No motion on mobile */}
+            {isMobile ? (
+              <div className="flex flex-col items-start justify-between gap-4 md:gap-5 w-full md:w-1/2">
+                <h1 className="text-4xl md:text-5xl lg:text-[54px] text-[#020106] font-semibold">
+                  {item.title} <br />{" "}
+                  <span className="text-gray-500">{item.subtitle}</span>
+                </h1>
 
-              <motion.p
-                className="text-sm md:text-base text-[#020106] uppercase font-semibold cursor-pointer group"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                whileHover={{ x: 10 }}
+                <p className="text-base md:text-lg text-[#494B4E]">
+                  {item.description}
+                </p>
+
+                <p className="text-sm md:text-base text-[#020106] uppercase font-semibold cursor-pointer group">
+                  {item.cta}
+                  <span className="inline-block ml-2">→</span>
+                </p>
+              </div>
+            ) : (
+              <motion.div
+                className="flex flex-col items-start justify-between gap-4 md:gap-5 w-full md:w-1/2"
+                initial={{ opacity: 0, x: isEven ? -100 : 100 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               >
-                {item.cta}
-                <motion.span
-                  className="inline-block ml-2"
-                  initial={{ x: 0 }}
-                  whileHover={{ x: 5 }}
+                <motion.h1
+                  className="text-4xl md:text-5xl lg:text-[54px] text-[#020106] font-semibold"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
                 >
-                  →
-                </motion.span>
-              </motion.p>
-            </motion.div>
+                  {item.title} <br />{" "}
+                  <span className="text-gray-500">{item.subtitle}</span>
+                </motion.h1>
+
+                <motion.p
+                  className="text-base md:text-lg text-[#494B4E]"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  {item.description}
+                </motion.p>
+
+                <motion.p
+                  className="text-sm md:text-base text-[#020106] uppercase font-semibold cursor-pointer group"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                  whileHover={{ x: 10 }}
+                >
+                  {item.cta}
+                  <motion.span
+                    className="inline-block ml-2"
+                    initial={{ x: 0 }}
+                    whileHover={{ x: 5 }}
+                  >
+                    →
+                  </motion.span>
+                </motion.p>
+              </motion.div>
+            )}
           </div>
         );
       })}

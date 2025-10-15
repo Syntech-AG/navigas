@@ -21,7 +21,6 @@ const Auto = () => {
           >
             EIN PREIS. ALLES DRIN.
           </motion.h2>
-
           <motion.h1
             className="2xl:text-[54px] lg:text-[46px] text-[38px] font-semibold xl:max-w-[80%] 2xl:w-[70%] leading-[1.3]"
             initial={{ opacity: 0, y: 30 }}
@@ -31,7 +30,6 @@ const Auto = () => {
           >
             Was ist alles dabei im Auto-Abo?
           </motion.h1>
-
           <motion.p
             className="text-[14px] lg:text-[16px] text-[#494B4E] font-normal leading-[1.9] my-5"
             initial={{ opacity: 0, y: 20 }}
@@ -47,15 +45,26 @@ const Auto = () => {
             ist inklusive. Service erfolgt bei offiziellen Markenvertretungen
             Ihrer Wahl.
           </motion.p>
-
-          <img className="w-full rounded-lg" src="/images/auto1.png" alt="" />
+          <img
+            className="w-full rounded-lg"
+            src="/images/auto.png"
+            srcSet="/images/auto1.png 1x, /images/auto1@2x.png 2x, /images/auto1@3x.png 3x"
+            sizes="(max-width: 768px) 100vw, 45vw"
+            alt="Auto example 1"
+            loading="lazy"
+            decoding="async"
+          />{" "}
         </motion.div>
 
         <img
           className="max-lg:order-1 rounded-lg"
           src="/images/auto2.png"
-          alt=""
-          style={{ transform: "none !important" }}
+          srcSet="/images/auto2.png 1x, /images/auto2@2x.png 2x, /images/auto2@3x.png 3x"
+          sizes="(max-width: 768px) 100vw, 55vw"
+          alt="Auto example 2"
+          loading="lazy"
+          decoding="async"
+          style={{ transform: "none" }}
         />
       </div>
     </div>

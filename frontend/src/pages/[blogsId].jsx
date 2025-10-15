@@ -2,7 +2,7 @@ import React from "react";
 
 const BlogsId = ({ headings, data, paragraph, images }) => {
   return (
-    <div className="container mx-auto px-4">
+    <div className="container pt-20 mx-auto px-4 ">
       <div className="bg-[#E8EBF1] px-6 py-1 w-fit rounded-lg mt-[60px] md:mt-[100px]">
         <h1 className="text-[#0453C8]">{headings[0]}</h1>
       </div>

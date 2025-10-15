@@ -1,15 +1,34 @@
 import React, { useState } from "react";
 
 const items = [
-  { title: "Kleinwagen", src: "/images/sportwagen.png", text: "testse" },
+  {
+    title: "Kleinwagen",
+    src: "/images/sportwagen.png",
+    src2x: "/images/sportwagen@2x.png",
+    src3x: "/images/sportwagen@3x.png",
+    text: "",
+  },
   {
     title: "Kompakt",
     src: "/images/luxuslimousinen.png",
-    text: "testsetst",
+    src2x: "/images/luxuslimousinen@2x.png",
+    src3x: "/images/luxuslimousinen@3x.png",
+    text: "",
   },
-  { title: "SUVs", src: "/images/suv.png", text: "teststestst" },
-
-  { title: "Elektro", src: "/images/vans.png", text: "stesetstes" },
+  {
+    title: "SUVs",
+    src: "/images/suv.png",
+    src2x: "/images/suv@2x.png",
+    src3x: "/images/suv@3x.png",
+    text: "",
+  },
+  {
+    title: "Elektro",
+    src: "/images/vans.png",
+    src2x: "/images/vans@2x.png",
+    src3x: "/images/vans@3x.png",
+    text: "",
+  },
 ];
 
 export default function HoverCategories() {
@@ -23,34 +42,43 @@ export default function HoverCategories() {
         return (
           <div
             key={item.title}
-            className="relative cursor-pointer overflow-hidden"
+            className="relative cursor-pointer overflow-hidden aspect-[2/3] group"
             onMouseEnter={() => setHoveredIndex(i)}
             onMouseLeave={() => setHoveredIndex(null)}
             onFocus={() => setHoveredIndex(i)}
             onBlur={() => setHoveredIndex(null)}
             tabIndex={0}
           >
+            {/* Background image */}
             <img
               src="/images/blueBg.png"
               alt=""
-              className={`block w-full h-auto transition-opacity duration-500 ${
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
                 isHovered ? "opacity-0" : "opacity-100"
               }`}
               loading="eager"
+              decoding="async"
+              srcSet="/images/blueBg.png"
+              sizes="(max-width: 768px) 10vw, 25vw"
             />
 
+            {/* Main image */}
             <img
               src={item.src}
+              srcSet={`${item.src} 1x, ${item.src2x} 2x, ${item.src3x} 3x`}
+              sizes="(max-width: 768px) 100vw, 25vw"
               alt={item.title}
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
                 isHovered ? "opacity-100" : "opacity-0"
               }`}
               loading="eager"
+              decoding="async"
             />
 
-            <div className="absolute bottom-10 left-1/2 translate-x-[-50%] w-[90%]">
+            {/* Text overlay */}
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] z-10">
               <div className="flex flex-col gap-2 transition-all duration-300">
-                <div className="flex flex-row justify-between">
+                <div className="flex flex-row justify-between items-center">
                   <h1 className="text-white xl:text-[26px] text-[20px] font-medium">
                     {item.title}
                   </h1>
@@ -58,14 +86,15 @@ export default function HoverCategories() {
                     className="max-w-[31px]"
                     src="/images/whiteArrow.svg"
                     alt=""
+                    loading="lazy"
                   />
                 </div>
 
-                {isHovered ? (
+                {isHovered && (
                   <p className="text-white/80 transition-opacity duration-300">
                     {item.text}
                   </p>
-                ) : null}
+                )}
               </div>
             </div>
           </div>

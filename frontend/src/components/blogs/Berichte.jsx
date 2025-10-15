@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+
+// Custom hook to detect mobile screens
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+
+    const onChange = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    mql.addEventListener("change", onChange);
+    setIsMobile(window.innerWidth < 768);
+
+    return () => mql.removeEventListener("change", onChange);
+  }, []);
+
+  return isMobile;
+};
 
 const reports = [
   {
@@ -67,6 +87,10 @@ const reports = [
 ];
 
 const Berichte = () => {
+  const isMobile = useIsMobile();
+  const MotionDiv = isMobile ? "div" : motion.div;
+  const MotionImg = isMobile ? "img" : motion.img;
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -91,44 +115,52 @@ const Berichte = () => {
 
   return (
     <div className="container mx-auto py-[100px]">
-      <motion.div
+      <MotionDiv
         className="text-center text-black mb-10 max-w-3xl mx-auto"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        {...(!isMobile && {
+          initial: { opacity: 0, y: 20 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true },
+          transition: { duration: 0.6 },
+        })}
       >
         <h1 className="text-[50px]">Alle Berichte</h1>
         <p className="text-[22px]">
           Werden Sie Teil unserer Lesergemeinschaft und entdecken Sie
           inspirierende Geschichten
         </p>
-      </motion.div>
+      </MotionDiv>
 
-      <motion.div
+      <MotionDiv
         className="grid grid-cols-1 md:grid-cols-2 gap-0"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
+        {...(!isMobile && {
+          variants: containerVariants,
+          initial: "hidden",
+          whileInView: "visible",
+          viewport: { once: true, amount: 0.1 },
+        })}
       >
         {reports.map(
           (
             { img, title, description, date, comments, link, category },
             index
           ) => (
-            <motion.div
+            <MotionDiv
               key={index}
               className="flex flex-col justify-between gap-6 py-6 px-4 border border-[#D3D3D3] group"
-              variants={cardVariants}
+              {...(!isMobile && {
+                variants: cardVariants,
+              })}
             >
               <div className="relative overflow-hidden rounded-lg">
-                <motion.img
+                <MotionImg
                   src={img}
                   alt={title}
                   className="w-full"
-                  whileHover={{ scale: 1.05, opacity: 0.9 }}
-                  transition={{ duration: 0.4 }}
+                  {...(!isMobile && {
+                    whileHover: { scale: 1.05, opacity: 0.9 },
+                    transition: { duration: 0.4 },
+                  })}
                 />
                 <div className="absolute top-4 left-4 border-white rounded-xl bg-white px-7 py-1">
                   <h1 className="font-medium">{category}</h1>
@@ -146,23 +178,25 @@ const Berichte = () => {
                 </div>
 
                 <Link to={link}>
-                  <motion.div
+                  <MotionDiv
                     className="bg-[#E8EBF1] p-3 rounded flex items-center justify-center"
-                    whileHover={{ backgroundColor: "#D8DBE6" }}
-                    transition={{ duration: 0.2 }}
+                    {...(!isMobile && {
+                      whileHover: { backgroundColor: "#D8DBE6" },
+                      transition: { duration: 0.2 },
+                    })}
                   >
                     <img
                       src="/images/rightArroww.svg"
                       alt="arrow icon"
                       className="h-3"
                     />
-                  </motion.div>
+                  </MotionDiv>
                 </Link>
               </div>
-            </motion.div>
+            </MotionDiv>
           )
         )}
-      </motion.div>
+      </MotionDiv>
     </div>
   );
 };

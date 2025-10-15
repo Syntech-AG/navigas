@@ -8,7 +8,11 @@ const ScrollAnimation = () => {
         <img
           className="w-full h-auto lg:max-h-screen lg:h-full object-cover"
           src="/images/auswahlen.png"
+          srcSet="/images/auswahlen.png 1x, /images/auswahlen@2x.png 2x, /images/auswahlen@3x.png 3x"
+          sizes="(max-width: 768px) 100vw, 50vw"
           alt="Auswählen"
+          loading="lazy"
+          decoding="async"
         />
         <div className="lg:w-[80%] w-full mx-auto p-6 lg:p-4">
           <h2 className="xl:text-[14px] text-[12px] font-semibold tracking-widest uppercase">
@@ -34,7 +38,11 @@ const ScrollAnimation = () => {
         <img
           className="w-full h-auto lg:max-h-screen lg:h-full object-cover"
           src="/images/bestatigen.png"
-          alt="Online bestellen"
+          srcSet="/images/bestatigen.png 1x, /images/bestatigen@2x.png 2x, /images/bestatigen@3x.png 3x"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          alt="bestatigen"
+          loading="lazy"
+          decoding="async"
         />
         <div className="lg:w-[80%] w-full mx-auto p-6 lg:p-4">
           <h2 className="xl:text-[14px] text-[12px] font-semibold tracking-widest uppercase">
@@ -58,7 +66,11 @@ const ScrollAnimation = () => {
         <img
           className="w-full h-auto lg:max-h-screen lg:h-full object-cover"
           src="/images/losfahren.png"
+          srcSet="/images/losfahren.png 1x, /images/losfahren@2x.png 2x, /images/losfahren@3x.png 3x"
+          sizes="(max-width: 768px) 100vw, 50vw"
           alt="Losfahren"
+          loading="lazy"
+          decoding="async"
         />
         <div className="lg:w-[80%] w-full mx-auto p-6 lg:p-4">
           <h2 className="xl:text-[14px] text-[12px] font-semibold tracking-widest uppercase">
