@@ -9,6 +9,7 @@ import ScrollAnimation from "../components/home/ScrollAnimation";
 import Video from "../components/home/Video";
 import Nachrichten from "../components/about/Nachrichten";
 import Abonnieren from "../components/general/Abonnieren";
+import ScrollToTop from "../components/general/ScrollToTop";
 
 function Home() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -19,6 +20,7 @@ function Home() {
 
   return (
     <div className="">
+      <ScrollToTop />
       <HomeStart />
       <LogoSlider />
       <hr className="w-full h-[1px] text-[#d2d0d0]" />

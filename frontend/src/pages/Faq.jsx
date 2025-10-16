@@ -2,10 +2,12 @@ import React from "react";
 import Angebot from "../components/faq/Angebot";
 import AboutStart from "../components/about/AboutStart";
 import Deinem from "../components/faq/Deinem";
+import ScrollToTop from "../components/general/ScrollToTop";
 
 const Faq = () => {
   return (
     <div>
+      <ScrollToTop />
       <AboutStart
         src="/images/faqPhoto.png"
         title="FAQ"

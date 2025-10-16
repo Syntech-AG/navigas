@@ -4,6 +4,7 @@ import { FilterPanel } from "../components/car/FilterPanel";
 import { CarList } from "../components/car/CarList";
 import { PRICING_TYPE } from "../components/car/Constans";
 import AboutStart from "../components/about/AboutStart";
+import ScrollToTop from "../components/general/ScrollToTop";
 
 const INITIAL_FILTERS = {
   autoname: "",
@@ -38,6 +39,7 @@ const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
 
   return (
     <div>
+      <ScrollToTop />
       <AboutStart
         src="images/filter.png "
         title="Privatkunden"

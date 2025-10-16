@@ -16,6 +16,8 @@ import Blogs from "./pages/Blogs";
 import BlogsInfo from "./components/blogs/BlogsInfo";
 import FlexRent from "./pages/FlexRent";
 import Customer from "./pages/Customer";
+import Datenschutz from "./pages/Datenschutz";
+import Impressum from "./pages/Impressum";
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
         <Route path="/blogs/:blogId" element={<BlogsInfo />} />
         <Route path="/flexRent" element={<FlexRent />} />
         <Route path="/autoAboPro" element={<Customer />} />
+        <Route path="/datenschutz" element={<Datenschutz />} />
+        <Route path="/impressum" element={<Impressum />} />
       </Routes>
       <Footer />
     </BrowserRouter>

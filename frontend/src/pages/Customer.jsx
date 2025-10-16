@@ -8,10 +8,12 @@ import ServicesType from "../components/home/ServicesType";
 import Funktioniert from "../components/costumer/Funktioniert";
 import Nachrichten from "../components/about/Nachrichten";
 import Effizienz2 from "../components/costumer/Effizienz2";
+import ScrollToTop from "../components/general/ScrollToTop";
 
 const Customer = () => {
   return (
     <div>
+      <ScrollToTop />
       <AboutStart
         src="/images/autoBg.png"
         title="Auto Abo Pro"

@@ -8,10 +8,12 @@ import Fragen from "../components/general/Fragen";
 import Unverbindlich from "../components/general/Unverbindlich";
 import Abonnieren from "../components/general/Abonnieren";
 import Nachrichten from "../components/about/Nachrichten";
+import ScrollToTop from "../components/general/ScrollToTop";
 
 const FlexRent = () => {
   return (
     <div>
+      <ScrollToTop />
       <AboutStart2
         src="/images/VideoBG.png"
         mobileSrc="/images/mobileFlex.png"
