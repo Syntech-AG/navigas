@@ -5,7 +5,6 @@ import Footer from "./components/general/Footer";
 import { PRICING_TYPE } from "./components/car/Constans";
 import "./App.css";
 
-// Direct imports (no lazy loading)
 import Home from "./pages/Home";
 import About from "./pages/About";
 import CarInfo from "./pages/CarInfo";

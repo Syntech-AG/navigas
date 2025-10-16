@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { FilterPanel } from "../components/car/FilterPanel";
 import { CarList } from "../components/car/CarList";
 import { PRICING_TYPE } from "../components/car/Constans";
@@ -12,7 +13,18 @@ const INITIAL_FILTERS = {
 };
 
 const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
+  const [searchParams] = useSearchParams();
   const [filters, setFilters] = useState(INITIAL_FILTERS);
+
+  useEffect(() => {
+    const fahrzeugart = searchParams.get("fahrzeugart");
+    if (fahrzeugart) {
+      setFilters((prev) => ({
+        ...prev,
+        fahrzeugart: [fahrzeugart],
+      }));
+    }
+  }, [searchParams]);
 
   const memoizedFilters = useMemo(
     () => filters,
