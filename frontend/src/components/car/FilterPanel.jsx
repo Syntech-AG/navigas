@@ -76,7 +76,7 @@ export const FilterPanel = ({ filters, setFilters }) => {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        <span className="font-semibold text-gray-700">Filter by</span>
+        <span className="font-semibold text-gray-700">Filtern nach</span>
         <motion.svg
           className="w-6 h-6"
           fill="none"

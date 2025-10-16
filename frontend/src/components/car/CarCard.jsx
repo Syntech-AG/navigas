@@ -77,7 +77,7 @@ export const CarCard = memo(({ car, pricingType = PRICING_TYPE.NORMAL }) => {
           {[
             { icon: "/images/psIcon.svg", text: `${car.leistung} PS` },
             { icon: "/images/pumpIcon.svg", text: car.Treibstoff },
-            { icon: "/images/typeIcon.svg", text: `${car.verbrauch} L/100km` },
+            { icon: "/images/typeIcon.svg", text: `${car.Getriebe} ` },
           ].map((stat, index) => (
             <motion.div
               key={index}

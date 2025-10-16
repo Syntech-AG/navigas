@@ -70,20 +70,6 @@ const Footer = () => {
             <img src="/images/navigasLogo.svg" alt="" />
           </Link>
           <div className="flex flex-col items-center md:items-start gap-5">
-<<<<<<< Updated upstream
-            <h1 className="text-[19px] font-medium text-white text-center">
-              Standort
-            </h1>
-            <p className="text-[#727578] font-regular text-center md:text-start text-[17px]">
-              Navigas Services GmbH
-              <br />
-              Chüsseberg 19
-              <br />
-              CH-3267 Seedorf BE
-            </p>
-            <p className="text-[#E8EBF1]">contact@navigas-mobility.ch</p>
-            <p className="text-[#E8EBF1]">+ (0)41 780 31 33</p>
-=======
             <a
               href="https://www.google.com/maps/search/Ch%C3%BCsseberg+19,+3267+Seedorf,+Switzerland/@47.0356538,7.3126262,698m/data=!3m2!1e3!4b1?entry=ttu&g_ep=EgoyMDI1MTAxMy4wIKXMDSoASAFQAw%3D%3D"
               className="group"
@@ -112,7 +98,6 @@ const Footer = () => {
                 + (0)41 780 31 33
               </p>
             </a>
->>>>>>> Stashed changes
           </div>
           <div className="text-[#E8EBF1] flex flex-col gap-5 text-center md:text-start">
             <h1 className="font-semibold">Schnellzugriffe</h1>

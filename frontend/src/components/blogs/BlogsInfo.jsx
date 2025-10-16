@@ -3,6 +3,7 @@ import BlogsId from "../../pages/[blogsId]";
 import { useParams } from "react-router-dom";
 import Subscribe from "./Subscribe";
 import BerichteShuffle from "./BerichteShuffle";
+import ScrollToTop from "../general/ScrollToTop";
 
 const blogContent = {
   blog1: {
@@ -70,13 +71,14 @@ const BlogsInfo = () => {
   if (!content) {
     return (
       <div className="text-black container mx-auto text-center text-2xl py-100">
-        Blog content not found.
+        Blog-Inhalt nicht gefunden.
       </div>
     );
   }
 
   return (
     <div>
+      <ScrollToTop />
       <BlogsId
         headings={content.headings}
         data={content.data}

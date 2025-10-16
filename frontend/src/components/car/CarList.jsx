@@ -19,6 +19,17 @@ export const CarList = ({ filters, pricingType = PRICING_TYPE.NORMAL }) => {
   const inflightRef = useRef(null);
   const debouncedAutoname = useDebounce(filters.autoname || "", 500);
 
+  const handlePageChange = (pageNumber) => {
+    setPage(pageNumber);
+
+    setTimeout(() => {
+      window.scrollTo({
+        top: 500,
+        behavior: "smooth",
+      });
+    }, 100);
+  };
+
   const loadCars = useCallback(async (pageNum, currentFilters, type) => {
     if (inflightRef.current) inflightRef.current.abort();
     const controller = new AbortController();
@@ -71,14 +82,11 @@ export const CarList = ({ filters, pricingType = PRICING_TYPE.NORMAL }) => {
     return () => inflightRef.current?.abort();
   }, [page, ...deps, loadCars]);
 
-  const prevPage = () => setPage((p) => Math.max(1, p - 1));
-  const nextPage = () => setPage((p) => Math.min(pageCount, p + 1));
-
-  if (loading) return <div className="text-center py-10">Loading cars...</div>;
+  if (loading) return <div className="text-center py-10">Autos laden...</div>;
   if (!cars.length)
     return (
       <div className="text-center py-10 text-gray-500">
-        No cars found matching your criteria.
+        Es wurden keine Fahrzeuge gefunden, die Ihren Kriterien entsprechen.
       </div>
     );
 
@@ -90,24 +98,24 @@ export const CarList = ({ filters, pricingType = PRICING_TYPE.NORMAL }) => {
         ))}
       </div>
       {pageCount > 1 && (
-        <div className="pt-10 flex justify-center items-center gap-4">
-          <button
-            onClick={prevPage}
-            disabled={page === 1}
-            className="bg-black text-white px-4 py-2 rounded-lg disabled:bg-gray-400"
-          >
-            Previous
-          </button>
-          <span>
-            Page {page} of {pageCount}
-          </span>
-          <button
-            onClick={nextPage}
-            disabled={page === pageCount}
-            className="bg-black text-white px-4 py-2 rounded-lg disabled:bg-gray-400"
-          >
-            Next
-          </button>
+        <div className="pt-10 flex justify-center items-center gap-2">
+          <div className="flex flex-start w-full gap-2">
+            {Array.from({ length: pageCount }, (_, i) => i + 1).map(
+              (pageNumber) => (
+                <button
+                  key={pageNumber}
+                  onClick={() => handlePageChange(pageNumber)}
+                  className={`w-10 h-10 rounded-lg font-medium transition-all duration-300 ${
+                    page === pageNumber
+                      ? "bg-[#0A1424] text-white"
+                      : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              )
+            )}
+          </div>
         </div>
       )}
     </div>

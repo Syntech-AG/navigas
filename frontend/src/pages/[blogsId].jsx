@@ -31,11 +31,19 @@ const BlogsId = ({ headings, data, paragraph, images }) => {
           <p className="text-[15px] md:text-[18px]">{paragraph[1]}</p>
         </div>
         <div className="flex flex-row md:flex-col items-center justify-between gap-3 md:gap-[15px] mt-6 md:mt-0">
-          <h1>share</h1>
-          <img src="/images/fb-blue.svg" alt="facebook" />
-          <img src="/images/x-blue.svg" alt="x" />
-          <img src="/images/in-blue.svg" alt="linkedin" />
-          <img src="/images/insta-blue.svg" alt="instagram" />
+          <h1>teilen</h1>
+          <a href="https://www.facebook.com/navigasmobility">
+            <img src="/images/fb-blue.svg" alt="facebook" />
+          </a>
+          <a href="https://x.com/navigasmobility">
+            <img src="/images/x-blue.svg" alt="x" />
+          </a>
+          <a href="https://www.linkedin.com/showcase/navigas-mobility">
+            <img src="/images/in-blue.svg" alt="linkedin" />
+          </a>
+          <a href="https://www.instagram.com/navigas_mobility">
+            <img src="/images/insta-blue.svg" alt="instagram" />
+          </a>
         </div>
       </div>
 

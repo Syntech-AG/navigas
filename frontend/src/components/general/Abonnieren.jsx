@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Abonnieren() {
   return (
@@ -26,9 +27,11 @@ function Abonnieren() {
                   <input type="checkbox" />
                   <h1 className="text-[#879EC0] text-[10px] md:text-[14px]">
                     Ich stimme zu, dass die{" "}
-                    <span className="text-[#CAD9EF] underline">
-                      Datenschutzrichtlinie .
-                    </span>
+                    <Link to="/datenschutz">
+                      <span className="text-[#CAD9EF] underline">
+                        Datenschutzrichtlinie .
+                      </span>
+                    </Link>
                   </h1>
                 </div>
               </div>
