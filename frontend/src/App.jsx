@@ -24,6 +24,7 @@ const Loading = () => (
 function App() {
   return (
     <BrowserRouter>
+      2
       <Header />
       <Suspense fallback={<Loading />}>
         <Routes>
@@ -31,12 +32,12 @@ function App() {
           <Route path="/uberUns" element={<About />} />
           <Route path="/api/cars/:id" element={<CarInfo />} />
           <Route
-            path="/filter"
+            path="/firmenkunden"
             element={<FilteredCarPage pricingType={PRICING_TYPE.COMPANY} />}
           />
           <Route
-            path="/geschäftskunden"
-            element={<FilteredCarPage pricingType={PRICING_TYPE.COMPANY} />}
+            path="/privatkunden"
+            element={<FilteredCarPage pricingType={PRICING_TYPE.NORMAL} />}
           />
           <Route path="/reserve-car" element={<ReserveCar />} />
           <Route path="/reserve-car-2" element={<ReserveCar isFinal />} />

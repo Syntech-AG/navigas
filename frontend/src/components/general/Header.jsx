@@ -34,7 +34,7 @@ const Header = () => {
 
   const firstNavLinks = [
     { label: "Home", href: "/" },
-    { label: "Privatkunden", href: "/filter" },
+    { label: "Privatkunden", href: "/privatkunden" },
   ];
 
   const secondNavLinks = [

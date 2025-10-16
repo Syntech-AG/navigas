@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 // Custom hook to detect mobile screens
 const useIsMobile = () => {
@@ -180,21 +181,23 @@ const TopKategorien = () => {
               transition: { duration: 0.6, delay: 0.4 },
             })}
           >
-            <MotionButton
-              className="text-[#0453C8] bg-white px-6 py-3 rounded-2xl shadow-md transition-all duration-300"
-              {...(!isMobile && {
-                whileHover: {
-                  scale: 1.05,
-                  backgroundColor: "#0453C8",
-                  color: "#ffffff",
-                  boxShadow: "0 10px 30px rgba(4, 83, 200, 0.3)",
-                },
-                whileTap: { scale: 0.95 },
-                transition: { type: "spring", stiffness: 300, damping: 20 },
-              })}
-            >
-              Factsheet herunterladen
-            </MotionButton>
+            <Link to="/firmenkunden">
+              <MotionButton
+                className="text-[#0453C8] bg-white px-6 py-3 rounded-2xl shadow-md transition-all duration-300"
+                {...(!isMobile && {
+                  whileHover: {
+                    scale: 1.05,
+                    backgroundColor: "#0453C8",
+                    color: "#ffffff",
+                    boxShadow: "0 10px 30px rgba(4, 83, 200, 0.3)",
+                  },
+                  whileTap: { scale: 0.95 },
+                  transition: { type: "spring", stiffness: 300, damping: 20 },
+                })}
+              >
+                Factsheet herunterladen
+              </MotionButton>
+            </Link>
           </MotionDiv>
         </div>
       </div>
