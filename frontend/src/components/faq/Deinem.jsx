@@ -431,6 +431,7 @@ const Deinem = () => {
             ref={videoRef}
             loop
             preload="metadata"
+            poster="/images/faqVideo-thumbnail.png"
             src="/images/faqVideo1.mp4"
             className="rounded-b-2xl"
             onClick={handleToggle}
