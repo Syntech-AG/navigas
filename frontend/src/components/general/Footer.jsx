@@ -25,7 +25,9 @@ const Footer = () => {
         <div className="grid xl:grid-cols-4 md:grid-cols-4 grid-cols-1 gap-12 md:gap-8 py-[100px] justify-items-center">
           <img src="/images/navigasLogo.svg" alt="" />
           <div className="flex flex-col items-center md:items-start gap-5">
-            <h1 className="text-[19px] font-medium text-white">Standort</h1>
+            <h1 className="text-[19px] font-medium text-white text-center">
+              Standort
+            </h1>
             <p className="text-[#727578] font-regular text-center md:text-start text-[17px]">
               Navigas Services GmbH
               <br />
