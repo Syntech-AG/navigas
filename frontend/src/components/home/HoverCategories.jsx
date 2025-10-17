@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const items = [
@@ -38,26 +38,63 @@ const items = [
 
 export default function HoverCategories() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [showImages, setShowImages] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1000);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Pulse effect for mobile - automatically toggle images
+  useEffect(() => {
+    if (!isMobile) return;
+
+    const pulseInterval = setInterval(() => {
+      setShowImages((prev) => !prev);
+    }, 2000); // Change every 3 seconds
+
+    return () => clearInterval(pulseInterval);
+  }, [isMobile]);
 
   const handleCategoryClick = (category) => {
     navigate(`/privatkunden?fahrzeugart=${category}`);
+  };
+
+  const handleInteraction = (index) => {
+    if (isMobile) {
+      if (hoveredIndex === index) {
+        handleCategoryClick(items[index].title2);
+      } else {
+        setHoveredIndex(index);
+      }
+    }
   };
 
   return (
     <div className="grid lg:grid-cols-4 grid-cols-1 sm:grid-cols-2 w-full overflow-y-visible h-full">
       {items.map((item, i) => {
         const isHovered = hoveredIndex === i;
+        const shouldShowImage = isMobile ? showImages : isHovered;
 
         return (
           <div
             key={item.title}
             className="relative cursor-pointer overflow-hidden aspect-[2/3] group"
-            onMouseEnter={() => setHoveredIndex(i)}
-            onMouseLeave={() => setHoveredIndex(null)}
+            onMouseEnter={() => !isMobile && setHoveredIndex(i)}
+            onMouseLeave={() => !isMobile && setHoveredIndex(null)}
             onFocus={() => setHoveredIndex(i)}
             onBlur={() => setHoveredIndex(null)}
-            onClick={() => handleCategoryClick(item.title2)}
+            onClick={() =>
+              isMobile ? handleInteraction(i) : handleCategoryClick(item.title2)
+            }
             tabIndex={0}
             role="button"
             onKeyDown={(e) =>
@@ -67,8 +104,8 @@ export default function HoverCategories() {
             <img
               src="/images/blueBg.png"
               alt=""
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
-                isHovered ? "opacity-0" : "opacity-100"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                shouldShowImage ? "opacity-0" : "opacity-100"
               }`}
               loading="eager"
               decoding="async"
@@ -81,12 +118,16 @@ export default function HoverCategories() {
               srcSet={`${item.src} 1x, ${item.src2x} 2x, ${item.src3x} 3x`}
               sizes="(max-width: 768px) 100vw, 25vw"
               alt={item.title}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-                isHovered ? "opacity-100" : "opacity-0"
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
+                shouldShowImage ? "opacity-100" : "opacity-0"
               }`}
               loading="eager"
               decoding="async"
             />
+
+            {isMobile && !isHovered && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none" />
+            )}
 
             <div className="absolute bottom-10 left-1/2 -translate-x-1/2 w-[90%] z-10">
               <div className="flex flex-col gap-2 transition-all duration-300">

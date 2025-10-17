@@ -181,7 +181,7 @@ const TopKategorien = () => {
               transition: { duration: 0.6, delay: 0.4 },
             })}
           >
-            <Link to="/firmenkunden">
+            <a href="/firmenKunden">
               <MotionButton
                 className="text-[#0453C8] bg-white px-6 py-3 rounded-2xl shadow-md transition-all duration-300"
                 {...(!isMobile && {
@@ -197,7 +197,7 @@ const TopKategorien = () => {
               >
                 Factsheet herunterladen
               </MotionButton>
-            </Link>
+            </a>
           </MotionDiv>
         </div>
       </div>

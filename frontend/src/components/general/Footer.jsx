@@ -74,7 +74,7 @@ const Footer = () => {
               href="https://www.google.com/maps/search/Ch%C3%BCsseberg+19,+3267+Seedorf,+Switzerland/@47.0356538,7.3126262,698m/data=!3m2!1e3!4b1?entry=ttu&g_ep=EgoyMDI1MTAxMy4wIKXMDSoASAFQAw%3D%3D"
               className="group"
             >
-              <h1 className="text-[19px] font-medium text-white transition-colors duration-300 ">
+              <h1 className="text-[19px] font-medium text-white transition-colors text-center md:text-start duration-300 ">
                 Standort
               </h1>
               <p className="text-[#727578] font-regular text-center md:text-start text-[17px] transition-colors duration-300 group-hover:text-[#2860B7]">
@@ -101,11 +101,11 @@ const Footer = () => {
           </div>
           <div className="text-[#E8EBF1] flex flex-col gap-5 text-center md:text-start">
             <h1 className="font-semibold">Schnellzugriffe</h1>
-            <Link to="/privatkunden" className="group">
+            <a href="/privatkunden" className="group">
               <p className="transition-all duration-300 group-hover:text-[#2860B7] group-hover:translate-x-1">
                 Privatkunden
               </p>
-            </Link>
+            </a>
             <Link to="/autoAboPro" className="group">
               <p className="transition-all duration-300 group-hover:text-[#2860B7] group-hover:translate-x-1">
                 Auto Abo Pro

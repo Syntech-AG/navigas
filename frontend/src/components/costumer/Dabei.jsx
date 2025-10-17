@@ -21,12 +21,14 @@ const Dabei = () => {
       </div>
 
       <div className="flex flex-row justify-center -mt-17 md:-mt-25">
-        <button
-          className="rounded-xl bg-gradient-to-r text-[14px] md:text-[16px] from-[#0847A4] to-[#0a6fff] px-10 py-4 text-white
+        <a href="/privatkunden">
+          <button
+            className="rounded-xl bg-gradient-to-r text-[14px] md:text-[16px] from-[#0847A4] to-[#0a6fff] px-10 py-4 text-white
                shadow-md transition-transform duration-300 hover:scale-105 hover:shadow-lg"
-        >
-          Fahrzeuge entdecken
-        </button>
+          >
+            Fahrzeuge entdecken
+          </button>
+        </a>
       </div>
     </div>
   );

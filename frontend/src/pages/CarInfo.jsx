@@ -132,12 +132,13 @@ const CarInfo = () => {
     );
 
   return (
-    <div>
+    <div className="relative ">
       {/* <AboutStart
         src="images/filter.png "
         title="Privatkunden"
         mobileSrc="images/filterMobile.png"
       /> */}
+
       <div className="pt-50">
         <PolestarCard
           title={`${car.marke} ${car.modell}`}

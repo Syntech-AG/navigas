@@ -1,17 +1,34 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const location = useLocation();
+
+  const shouldShowScrollEffect = [
+    "/",
+    "/uberUns",
+    "/firmenkunden",
+    "/privatkunden",
+    "/faq",
+    "/kontakt",
+    "/flexRent",
+    "/autoAboPro",
+    "/datenschutz",
+    "/impressum",
+  ].includes(location.pathname);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      if (shouldShowScrollEffect) {
+        setIsScrolled(window.scrollY > 10);
+      }
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [shouldShowScrollEffect]);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -45,7 +62,13 @@ const Header = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 w-full transition-all duration-300 z-9999999 `}
+        className={`fixed top-0 left-0 w-full transition-all duration-300 z-9999999 ${
+          !shouldShowScrollEffect
+            ? "bg-[#0A1424]"
+            : isScrolled
+            ? "bg-[#0A1424]"
+            : "bg-transparent"
+        }`}
       >
         <div className="w-full h-full absolute inset-0 bg-[#0A14241A] backdrop-blur-lg z-[-1]"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -69,7 +92,7 @@ const Header = () => {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-white font-medium text-sm xl:text-base hover:border-b-2   px-2 py-1"
+                      className="text-white font-medium text-sm xl:text-base hover:border-b-2 px-2 py-1"
                     >
                       {link.label}
                     </a>
@@ -77,7 +100,7 @@ const Header = () => {
                 ))}
 
                 <li
-                  className="relative text-white flex flex-row items-center"
+                  className="relative text-white flex flex-row items-center cursor-pointer"
                   onClick={() => setIsDropdownOpen((prev) => !prev)}
                 >
                   Geschäftskunden
@@ -97,29 +120,33 @@ const Header = () => {
                     />
                   </svg>
                   <div
-                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-11.5  w-48  roundedb-b-lg shadow-xl overflow-hidden transition-all duration-200 ${
+                    className={`absolute top-full left-1/2 -translate-x-1/2 mt-11.5 w-48 roundedb-b-lg shadow-xl overflow-hidden transition-all duration-200 ${
                       isDropdownOpen
                         ? "opacity-100 visible translate-y-0"
                         : "opacity-0 invisible -translate-y-2 pointer-events-none"
                     }`}
                   >
-                    <div className="py-2 backdrop-blur-lg bg-[#0A14241A]  ">
-                      <li>
-                        <a
-                          href="/autoAboPro"
-                          className="block px-4 py-2 text-white text-sm "
-                        >
-                          Auto Abo Pro
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          href="/flexrent"
-                          className="block px-4 py-2 text-white text-sm  transition-colors duration-200"
-                        >
-                          FlexRent
-                        </a>
-                      </li>
+                    <div
+                      className={`py-2 backdrop-blur-lg ${
+                        !shouldShowScrollEffect
+                          ? "bg-[#0A1424]"
+                          : isScrolled
+                          ? "bg-[#0A1424]"
+                          : "bg-transparent"
+                      }`}
+                    >
+                      <a
+                        href="/autoAboPro"
+                        className="block px-4 py-2 text-white text-sm"
+                      >
+                        Auto Abo Pro
+                      </a>
+                      <a
+                        href="/flexrent"
+                        className="block px-4 py-2 text-white text-sm transition-colors duration-200"
+                      >
+                        FlexRent
+                      </a>
                     </div>
                   </div>
                 </li>
@@ -128,7 +155,7 @@ const Header = () => {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-white font-medium text-sm xl:text-base hover:border-b-2  px-2 py-1"
+                      className="text-white font-medium text-sm xl:text-base hover:border-b-2 px-2 py-1"
                     >
                       {link.label}
                     </a>

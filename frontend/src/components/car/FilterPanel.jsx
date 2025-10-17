@@ -69,7 +69,7 @@ export const FilterPanel = ({ filters, setFilters }) => {
   );
 
   return (
-    <div className="w-full md:w-72 lg:w-80 flex-shrink-0">
+    <div className="w-full xl:w-90 flex-shrink-0">
       <motion.button
         onClick={toggleOpen}
         className="md:hidden w-full bg-white p-3 rounded-lg shadow-md flex justify-between items-center mb-4"

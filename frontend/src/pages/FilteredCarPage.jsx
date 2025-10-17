@@ -39,14 +39,14 @@ const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
 
   return (
     <div>
-      <ScrollToTop />
+      {/* <ScrollToTop /> */}
       <AboutStart
         src="images/filter.png "
         title="Privatkunden"
         mobileSrc="images/filterMobile.png"
       />
       <div className="container mx-auto p-4 md:p-8">
-        <div className="flex flex-col md:flex-row md:gap-8 lg:gap-12 py-30">
+        <div className="flex flex-col xl:flex-row md:gap-8 lg:gap-12 py-30">
           <FilterPanel filters={memoizedFilters} setFilters={setFilters} />
           <div className="flex-1 mt-6 md:mt-0">
             <CarList filters={memoizedFilters} pricingType={pricingType} />

@@ -12,11 +12,11 @@ import Abonnieren from "../components/general/Abonnieren";
 import ScrollToTop from "../components/general/ScrollToTop";
 
 function Home() {
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  // const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  const handleUploadSuccess = () => {
-    setRefreshTrigger((prev) => prev + 1);
-  };
+  // const handleUploadSuccess = () => {
+  //   setRefreshTrigger((prev) => prev + 1);
+  // };
 
   return (
     <div className="">
