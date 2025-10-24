@@ -81,7 +81,7 @@ const News = () => {
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
         <motion.h1
-          className="text-black text-[16px] md:text-[20px] leading-snug md:leading-normal"
+          className="text-black text-[16px] md:text-[20px] leading-snug md:leading-normal  "
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -92,7 +92,7 @@ const News = () => {
         </motion.h1>
 
         <motion.h1
-          className="text-[32px] md:text-[40px] xl:text-[50px] 2xl:text-[70px] text-black mb-20"
+          className="text-[32px] md:text-[40px] xl:text-[50px] 2xl:text-[70px] text-black "
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

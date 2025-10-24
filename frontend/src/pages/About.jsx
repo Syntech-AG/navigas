@@ -5,6 +5,7 @@ import Car from "../components/about/Car";
 import Verantwortung from "../components/about/Verantwortung";
 import Nachrichten from "../components/about/Nachrichten";
 import ScrollToTop from "../components/general/ScrollToTop";
+import Abonnieren from "../components/general/Abonnieren";
 const About = () => {
   return (
     <div>
@@ -17,6 +18,7 @@ const About = () => {
       <UnsereMission />
       <Car />
       <Verantwortung />
+      <Abonnieren />
       <Nachrichten />
     </div>
   );

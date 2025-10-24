@@ -34,13 +34,13 @@ const data = [
   },
   {
     image: "/images/service7.svg",
-    title: "Zulassung",
-    text: "Einfach starten. Null Startgebühr, null Wertverlust - volle Flexibilität ohne finanzielle Hürde.",
+    title: "Keine Anzahlung",
+    text: "Sie zahlen erste Monatsrate nach Lieferung. Keine Anzahlung, keine versteckten Kosten.",
   },
   {
     image: "/images/service8.svg",
-    title: "Fahrzeugnutzung",
-    text: "Wählen Sie von 5'000 bis 70'000 km/Jahr. Anpassung jederzeit kostenlos möglich.",
+    title: "Flexible Anpassung",
+    text: "Wählen Sie zwischen 5’000 und 50’000 km pro Jahr. Anpassungen sind jederzeit kostenlos möglich.",
   },
 ];
 

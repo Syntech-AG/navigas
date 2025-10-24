@@ -9,7 +9,7 @@ const Header = () => {
 
   const shouldShowScrollEffect = [
     "/",
-    "/uberUns",
+    "/uberuns",
     "/firmenkunden",
     "/privatkunden",
     "/faq",
@@ -170,7 +170,7 @@ const Header = () => {
                 className="text-white text-sm lg:text-base hover:text-blue-300 transition-colors duration-200 whitespace-nowrap rounded px-2 py-1"
                 aria-label="Call us at +41 41 780 31 33"
               >
-                + (0)41 780 31 33
+                +41 (0) 41 780 31 33
               </a>
               <a
                 href="/kontakt"

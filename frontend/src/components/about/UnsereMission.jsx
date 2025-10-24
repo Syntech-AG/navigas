@@ -24,14 +24,13 @@ const UnsereMission = () => {
           </motion.h1>
 
           <motion.h1
-            className="font-semibold text-[24px] md:text-[34px] xl:text-[64px]"
+            className="font-semibold text-[24px] md:text-[34px] xl:text-[64px] tracking-tight"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            On-Demand-Autos per Klick <br className="hidden lg:block" />{" "}
-            einfach, sicher, flexibel.
+            Ihre Mobilität. <br className="hidden lg:block" /> Unser Anspruch.
           </motion.h1>
 
           <motion.img
@@ -81,15 +80,11 @@ const UnsereMission = () => {
             transition={{ duration: 0.6, delay: 0.6 }}
           >
             <p className="text-[#494B4E] text-[14px] md:text-[16px] xl:text-[20px] mt-6 md:mt-[40px] leading-8">
-              Wir wollen den traditionellen Autobesitz transformieren, indem wir
-              mit nur wenigen Klicks Zugang zum On-Demand-Automobil bieten. Dank
-              eines flexiblen Abonnements und einer Auswahl von Fahrzeugen, die
-              ständig erneuert werden, finden Sie ein Angebot, das Ihren
-              Bedürfnissen entspricht. Wir verbessern unsere digitalen Prozesse
-              Tag für Tag, um Ihr Kundenerlebnis zu verbessern. So sparen wir
-              Ihnen nicht nur Zeit und Mühe, sondern garantieren Ihnen
-              Sicherheit, Gelassenheit und Einsparungen während der
-              Vertragsdauer.
+              Bei Navigas glauben wir, dass Mobilität einfach und erstklassig
+              sein muss. Darum arbeiten wir mit allen offiziellen
+              Markenvertretungen und grossen Servicepartnern zusammen, um
+              Premium-Fahrzeuge zu Top-Konditionen anzubieten. Unser Ziel: Das
+              beste Fahrerlebnis – flexibel, digital und nah am Kunden.
             </p>
           </motion.div>
         </motion.div>
@@ -114,7 +109,7 @@ const UnsereMission = () => {
         </motion.h1>
 
         <motion.h1
-          className="text-[#0505054D] font-semibold uppercase text-center text-[32px] md:text-[57px]"
+          className="text-[#0505054D] font-bold tracking-tighter uppercase text-center text-[32px] md:text-[57px]"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

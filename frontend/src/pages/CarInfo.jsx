@@ -8,6 +8,8 @@ import {
 } from "../components/car/carService";
 import { PRICING_TYPE } from "../components/car/Constans";
 import AboutStart from "../components/about/AboutStart";
+import Abonnieren from "../components/general/Abonnieren";
+import Nachrichten from "../components/about/Nachrichten";
 
 const CarInfo = () => {
   const { id } = useParams();
@@ -152,6 +154,8 @@ const CarInfo = () => {
           pricingType={pricingType}
         />
         <VehicleDetails info={info} description={description} />
+        <Abonnieren />
+        <Nachrichten />
       </div>
     </div>
   );

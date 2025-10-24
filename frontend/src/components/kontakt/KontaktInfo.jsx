@@ -24,9 +24,8 @@ const KontaktInfo = () => {
           </p>
         </div>
         <div className="flex flex-col items-start justify-between gap-6 lg:gap-[24px] w-full">
-          {/* Phone Link with Hover Effect */}
           <a
-            href="tel:+41780313333"
+            href="tel:+417803133"
             className="flex flex-row items-start justify-start gap-4 group transition-all duration-300 hover:translate-x-2"
           >
             <div className="transition-transform duration-300 group-hover:scale-110">
@@ -37,7 +36,7 @@ const KontaktInfo = () => {
                 Telefon
               </h2>
               <p className="text-[#010101] text-[18px] sm:text-[20px] group-hover:text-[#0847A4] transition-colors duration-300">
-                +41 780 31 33
+                +41 (0) 41 780 31 33
               </p>
             </div>
           </a>
@@ -63,7 +62,7 @@ const KontaktInfo = () => {
         <div className="w-full">
           <hr className="text-[#B4B6BC] w-full" />
           <a
-            href="https://www.google.com/maps/search/Ch%C3%BCsseberg+19,+3267+Seedorf,+Switzerland/@47.0356538,7.3126262,698m/data=!3m2!1e3!4b1?entry=ttu&g_ep=EgoyMDI1MTAxMy4wIKXMDSoASAFQAw%3D%3D"
+            href="https://www.google.com/maps/place/Navigas+Services+GmbH/@47.0356537,7.3126262,1397m/data=!3m1!1e3!4m10!1m2!2m1!1sCh%C3%BCsseberg+19,+3267+Seedorf,+Switzerland!3m6!1s0x479000492f8060ef:0xf5db510a1153c7fd!8m2!3d47.0356502!4d7.3152065!15sCilDaMO8c3NlYmVyZyAxOSwgMzI2NyBTZWVkb3JmLCBTd2l0emVybGFuZJIBC2F1dG9fbWFya2V04AEA!16s%2Fg%2F11hzvdrc9_?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D"
             className=""
           >
             <h2 className="text-[#494B4E]  text-[13px] sm:text-[14px] lg:text-[15px] uppercase mt-4 lg:mt-[20px]">

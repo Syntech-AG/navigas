@@ -5,19 +5,21 @@ const Verantwortung = () => {
   const steps = [
     {
       icon: "/images/Icon.svg",
-      title: "Auto online auswählen",
+      title: "Auto Abo auswählen",
       description:
-        "Fahrzeugtyp, Laufzeit und Kilometer wählen. Alles bequem digital.",
+        "Ihr Wunschauto in wenigen Klicks: Modell, Laufzeit und Kilometer flexibel bestimmen.",
     },
     {
       icon: "/images/Icon2.svg",
-      title: "Bonitätsprüfung & Vertrag",
-      description: "Schnell & sicher – mit wenigen Klicks. Kein Papierkram.",
+      title: "Online bestellen",
+      description:
+        "Bestellung und Bonitätsprüfung in wenigen Minuten erledigt. Ohne Papierkram, ohne Anzahlung.",
     },
     {
       icon: "/images/Icon3.svg",
-      title: "Fahrzeug übernehmen & losfahren",
-      description: "Ihr Auto wird vorbereitet – Sie übernehmen es sorgenfrei.",
+      title: "Übernehmen & losfahren",
+      description:
+        "Ihr Auto wird an Ihre Wunschadresse schweizweit geliefert. Einsteigen und sorgenfrei fahren.",
     },
   ];
 
@@ -46,7 +48,7 @@ const Verantwortung = () => {
   };
 
   return (
-    <div className="container mx-auto mt-10 md:mt-[150px] flex flex-col lg:flex-row justify-between items-center gap-[80px]">
+    <div className="container mx-auto mt-10 md:mt-[150px] mb-10 md:mb-[150px] flex flex-col lg:flex-row justify-between items-center gap-[80px]">
       {/* Left Section - Images */}
       <motion.div
         className="flex flex-col items-center justify-between gap-5 w-full lg:w-1/2"
@@ -87,8 +89,8 @@ const Verantwortung = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.6 }}
               >
-                Wir begleiten Sie von <br /> der Auswahl bis zur <br />{" "}
-                Fahrzeugübernahme.
+                Auswählen, bestellen, geliefert bekommen – so einfach ist
+                Autofahren heute.
               </motion.h1>
             </div>
           </motion.div>
@@ -142,7 +144,7 @@ const Verantwortung = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          Unsere Verantwortung für morgen
+          Mobilität mit <br /> Verantwortung
         </motion.h1>
 
         <motion.h1
@@ -162,10 +164,10 @@ const Verantwortung = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          Navigas denkt Mobilität weiter – auch fürs Klima. Gemeinsam mit
-          unserem Partner ARVAL setzen wir auf Fahrzeuge mit alternativen
-          Antrieben und reduzieren aktiv CO₂-Emissionen. Denn moderne Mobilität
-          bedeutet für uns nicht nur Komfort, sondern auch Verantwortung.
+          Bei Navigas verbinden wir Fahrspass mit Verantwortung. Gemeinsam mit
+          Partnern setzen wir auf moderne elektrische Antriebe, weniger CO₂ und
+          Premium-Service. Weil Mobilität nicht nur bequem, sondern auch
+          nachhaltig sein muss.
         </motion.p>
 
         <div className="mt-[60px] w-full">

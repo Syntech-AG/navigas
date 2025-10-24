@@ -61,7 +61,7 @@ const ServicesType2 = () => {
   };
 
   return (
-    <div>
+    <div className="bg-[#F5F8FD]">
       <motion.div
         className="container grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-y-14 gap-x-6 py-23"
         variants={containerVariants}

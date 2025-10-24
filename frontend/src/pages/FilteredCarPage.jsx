@@ -5,6 +5,8 @@ import { CarList } from "../components/car/CarList";
 import { PRICING_TYPE } from "../components/car/Constans";
 import AboutStart from "../components/about/AboutStart";
 import ScrollToTop from "../components/general/ScrollToTop";
+import Nachrichten from "../components/about/Nachrichten";
+import Abonnieren from "../components/general/Abonnieren";
 
 const INITIAL_FILTERS = {
   autoname: "",
@@ -53,6 +55,8 @@ const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
           </div>
         </div>
       </div>
+      <Abonnieren />
+      <Nachrichten />
     </div>
   );
 };

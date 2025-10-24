@@ -3,6 +3,8 @@ import Angebot from "../components/faq/Angebot";
 import AboutStart from "../components/about/AboutStart";
 import Deinem from "../components/faq/Deinem";
 import ScrollToTop from "../components/general/ScrollToTop";
+import Abonnieren from "../components/general/Abonnieren";
+import Nachrichten from "../components/about/Nachrichten";
 
 const Faq = () => {
   return (
@@ -15,6 +17,8 @@ const Faq = () => {
       />
       {/* <Angebot /> */}
       <Deinem />
+      <Abonnieren />
+      <Nachrichten />
     </div>
   );
 };

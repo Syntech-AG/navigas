@@ -37,7 +37,7 @@ export const FilterPanel = ({ filters, setFilters }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-3">
               {title}
             </h3>
             <div className="space-y-2">
@@ -97,33 +97,36 @@ export const FilterPanel = ({ filters, setFilters }) => {
       <AnimatePresence>
         {(isOpen || window.innerWidth >= 768) && (
           <motion.div
-            className="bg-white p-6 rounded-lg shadow-md md:block"
+            className="bg-[#F6F6F6] p-6 rounded-lg shadow-md md:block"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
+            <div className="px-2 mb-2 hidden md:block">
+              <h1 className="text-[#010101] font-semibold ">Filtern nach</h1>
+            </div>
             <motion.input
               type="text"
               placeholder="Autoname"
               value={filters.autoname || ""}
               onChange={handleSearchChange}
-              className="w-full p-2 mb-6 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+              className="w-full p-2 mb-6 rounded-full px-5 border placeholder:text-[#2F2F34] border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
               whileFocus={{ scale: 1.02 }}
               transition={{ duration: 0.2 }}
             />
             <FilterGroup
-              title="Fahrzeugart"
+              title="Autokategorien:"
               category="fahrzeugart"
               options={FILTER_OPTIONS.fahrzeugart}
             />
             <FilterGroup
-              title="Treibstoff"
+              title="Fahrzeugtypen"
               category="treibstoff"
               options={FILTER_OPTIONS.treibstoff}
             />
             <FilterGroup
-              title="Getriebe"
+              title="Spezifikationen:"
               category="getriebe"
               options={FILTER_OPTIONS.getriebe}
             />

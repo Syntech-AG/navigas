@@ -51,7 +51,7 @@ const AnimatedCounter = ({ end, suffix = "", duration = 2 }) => {
 const Car = () => {
   const stats = [
     { label: "Partnergaragen", value: 1000, suffix: "+" },
-    { label: "Verfügbarkeit", value: "Ganze CH" },
+    { label: "Verfügbarkeit", value: "GANZE CH" },
     { label: "Jahre tätig", value: 7, suffix: "+" },
   ];
 
@@ -107,7 +107,7 @@ const Car = () => {
               transition={{ duration: 0.3 }}
             >
               <motion.h1
-                className="text-xs sm:text-sm md:text-base font-bold text-white uppercase"
+                className="text-xs sm:text-sm md:text-base font-bold tracking-widest text-white uppercase"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

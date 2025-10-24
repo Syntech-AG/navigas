@@ -50,7 +50,7 @@ const Nachrichten = () => {
           </motion.h1>
 
           <motion.h1
-            className="font-semibold text-[54px] text-[#050505]"
+            className="font-semibold text-[34px] md:text-[54px] text-[#050505]"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -78,7 +78,7 @@ const Nachrichten = () => {
             >
               <span className="flex items-center gap-2">
                 Alle anzeigen
-                <svg
+                {/* <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
                   fill="none"
@@ -91,7 +91,7 @@ const Nachrichten = () => {
                     strokeLinejoin="round"
                     d="M9 5l7 7-7 7"
                   />
-                </svg>
+                </svg> */}
               </span>
             </motion.button>
           </Link>

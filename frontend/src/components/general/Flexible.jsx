@@ -10,19 +10,19 @@ const Flexible = () => {
     },
     {
       image: "/images/bg2.png",
-      title: "Schnelle Verfugbarkeit",
+      title: "Schnelle Verfügbarkeit",
       description: "Keine langen Wartezeiten, einsteigen und losfahren.",
     },
     {
       image: "/images/bg3.png",
-      title: "Fahrzeugтausch moglich",
-      description: "Modell wechseln, wenn sich der Einsatz andert.",
+      title: "Fahrzeugtausch moglich",
+      description: "Modell wechseln, wenn sich der Einsatz ändert.",
     },
     {
       image: "/images/bg4.png",
       title: "Lieferung",
       description:
-        "Ihr Fahrzeug wird innerhalb 48 Stunden an Wunschort geliefert.",
+        "SatzbauIhr wird innerhalb 48 Stunden an ihren Wunschort geliefert",
     },
   ];
 

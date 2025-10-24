@@ -41,7 +41,7 @@ function Abonnieren() {
                 className="flex flex-row items-center justify-center gap-3 px-5 py-3 bg-transparent text-white font-semibold text-[14px] whitespace-nowrap mt-2 sm:mt-0"
               >
                 <img
-                  src="images/airoplani.svg"
+                  src="/images/airoplani.svg"
                   alt="Subscribe"
                   className="w-8 h-8 md:w-5 md:h-5"
                 />

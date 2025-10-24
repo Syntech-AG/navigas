@@ -3,6 +3,7 @@ import AboutStart from "../components/about/AboutStart";
 import KontaktInfo from "../components/kontakt/KontaktInfo";
 import KontaktFormular from "../components/kontakt/KontaktFormular";
 import ScrollToTop from "../components/general/ScrollToTop";
+import Abonnieren from "../components/general/Abonnieren";
 
 const Kontakt = () => {
   return (
@@ -15,6 +16,7 @@ const Kontakt = () => {
       />
       <KontaktInfo />
       <KontaktFormular />
+      <Abonnieren />
     </div>
   );
 };

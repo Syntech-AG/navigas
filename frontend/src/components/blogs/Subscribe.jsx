@@ -54,7 +54,7 @@ const Subscribe = () => {
       </Container>
 
       <Container
-        className="border border-[#D3D3D3] p-6 md:p-[30px] flex-1 flex flex-col items-start justify-between gap-[50px] 2xl:gap-[100px] w-full md:w-1/2"
+        className="border border-[#D3D3D3] p-6 md:p-[30px] flex-1 flex flex-col items-start justify-between gap-[50px] 2xl:gap-[60px] w-full md:w-1/2"
         {...(!isMobile && {
           initial: { opacity: 0, x: 50 },
           whileInView: { opacity: 1, x: 0 },
@@ -85,14 +85,16 @@ const Subscribe = () => {
               transition: { duration: 0.6, delay: 0.3 },
             })}
           >
-            Entdecken Sie die Welt der modernen Mobilität <br /> — mit aktuellen
-            News, spannenden Trends und praktischen Tipps, die <br />
-            informieren, inspirieren und den Blick in die Zukunft öffnen.
+            Entdecken Sie die Welt der modernen Mobilität <br />
+            —mit aktuellen News, spannenden Trends und praktischen Tipps, die{" "}
+            <br />
+            informieren, inspirieren und den Blick in die Zukunft ermöglichen
+            anstatt öffnen.
           </Paragraph>
         </div>
 
         <InputWrapper
-          className="flex flex-col sm:flex-row items-start gap-5 md:gap-2 md:items-center justify-between w-full 2xl:w-[70%]"
+          className="flex flex-col sm:flex-row items-start gap-5 md:gap-2 md:items-center justify-between w-full 2xl:w-[70%] "
           {...(!isMobile && {
             initial: { opacity: 0, y: 30 },
             whileInView: { opacity: 1, y: 0 },
@@ -112,7 +114,7 @@ const Subscribe = () => {
 
           <Button
             type="button"
-            className="rounded-md px-8 py-3 bg-[#0A1424] text-white md:text-[10px] lg:text-[15px] xl:text-lg font-normal transition-colors"
+            className="rounded-md px-8 py-3 bg-[#0A1424] text-white md:text-[10px] lg:text-[15px] xl:text-lg font-normal transition-colors "
             {...(!isMobile && {
               whileHover: {
                 backgroundColor: "#1a2534",

@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <div className="bg-[#0A1424]">
-      <div className="flex flex-row items-center justify-around w-full bg-[#2860B7] text-xs md:text-sm text-white ">
+      <hr className="w-full text-[#2860B7]" />
+      <div className="flex flex-row items-center justify-around w-full bg-[#0847A4] text-xs md:text-sm text-white ">
         <div className=" px-full py-[40px]   w-full">
           <a
             href="https://www.facebook.com/navigasmobility"
@@ -19,7 +20,7 @@ const Footer = () => {
           </a>
         </div>
 
-        <div className=" px-full py-[40px] border-gray-500 border-r border-l w-full">
+        <div className=" px-full py-[40px] border-[#2860B7] border-r border-l w-full">
           <a
             href="https://x.com/navigasmobility"
             className="flex flex-row items-center justify-center transition-all duration-300 hover:scale-105 hover:opacity-80"
@@ -71,7 +72,7 @@ const Footer = () => {
           </Link>
           <div className="flex flex-col items-center md:items-start gap-5">
             <a
-              href="https://www.google.com/maps/search/Ch%C3%BCsseberg+19,+3267+Seedorf,+Switzerland/@47.0356538,7.3126262,698m/data=!3m2!1e3!4b1?entry=ttu&g_ep=EgoyMDI1MTAxMy4wIKXMDSoASAFQAw%3D%3D"
+              href="https://www.google.com/maps/place/Navigas+Services+GmbH/@47.0356537,7.3126262,1397m/data=!3m1!1e3!4m10!1m2!2m1!1sCh%C3%BCsseberg+19,+3267+Seedorf,+Switzerland!3m6!1s0x479000492f8060ef:0xf5db510a1153c7fd!8m2!3d47.0356502!4d7.3152065!15sCilDaMO8c3NlYmVyZyAxOSwgMzI2NyBTZWVkb3JmLCBTd2l0emVybGFuZJIBC2F1dG9fbWFya2V04AEA!16s%2Fg%2F11hzvdrc9_?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D"
               className="group"
             >
               <h1 className="text-[19px] font-medium text-white transition-colors text-center md:text-start duration-300 ">
@@ -95,7 +96,7 @@ const Footer = () => {
             </a>
             <a href="tel:+41417803133" className="group text-[#E8EBF1]">
               <p className="transition-colors duration-300 group-hover:text-[#2860B7]">
-                + (0)41 780 31 33
+                +41 (0) 41 780 31 33
               </p>
             </a>
           </div>
