@@ -9,11 +9,11 @@ const Kontakt = () => {
   return (
     <div>
       <ScrollToTop />
-      <AboutStart
+      {/* <AboutStart
         src="/images/kontaktPhoto.png"
         title="Kontakt"
         mobileSrc="/images/mobileKontakt.png"
-      />
+      /> */}
       <KontaktInfo />
       <KontaktFormular />
       <Abonnieren />

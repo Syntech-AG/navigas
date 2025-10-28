@@ -29,13 +29,13 @@ const Deinem = () => {
           id: "was-ist-auto-abo",
           question: "Was ist ein Auto Abo?",
           answer:
-            "Ein Auto Abo ist die moderne und flexible Alternative zum klassischen Autokauf oder Leasing. Du zahlst eine monatliche Fixrate und fährst ein neues Auto, ohne dich um Versicherung, Wartung, Reifenwechsel, Steuern oder Pannenhilfe kümmern zu müssen, alles ist inklusive und gilt bei Navigas europaweit. So bleibst du jederzeit mobil, planbar und rundum sorglos unterwegs.",
+            "Ein Auto Abo ist die moderne und flexible Alternative zum klassischen Autokauf oder Leasing. Sie zahlen eine monatliche Fixrate und fahren ein neues Auto, ohne sich um Versicherung, Wartung, Reifenwechsel, Steuern oder Pannenhilfe kümmern zu müssen. Alles ist inklusive und gilt bei Navigas europaweit. So bleiben Sie jederzeit mobil, planbar und rundum sorglos unterwegs.",
         },
         {
           id: "wie-funktioniert",
           question: "Wie funktiert das Auto Abo?",
           answer:
-            "Ein Navigas Auto Abo funktioniert ganz einfach: Du wählst dein Wunschauto online aus, bestimmst die gewünschte Laufzeit und Kilometerleistung, und schon kannst du bald losfahren. Keine Anzahlung, keine versteckten Kosten und volle Transparenz bei allen Leistungen.",
+            "Ein Navigas Auto Abo funktioniert ganz einfach: Sie wählen Ihr Wunschauto online aus, bestimmen die gewünschte Laufzeit und Kilometerleistung, und schon können Sie bald losfahren. Keine Anzahlung, keine versteckten Kosten und volle Transparenz bei allen Leistungen.",
         },
         {
           id: "fuer-wen",
@@ -47,7 +47,7 @@ const Deinem = () => {
           id: "unterschied-leasing",
           question: "Was unterscheidet das Auto Abo vom Leasing?",
           answer:
-            "Beim Auto Abo zahlst du eine monatliche All-Inclusive-Rate ohne Restwertrisiko oder separate Zusatzkosten. Im Gegensatz zum Leasing musst du dich nicht um Versicherung, Service oder Reifen kümmern. Du bleibst flexibel und dein Auto passt sich deinem Bedarf an.",
+            "Beim Auto Abo zahlen Sie eine monatliche All-Inclusive-Rate ohne Restwertrisiko oder separate Zusatzkosten. Im Gegensatz zum Leasing müssen Sie sich nicht um Versicherung, Service oder Reifen kümmern. Sie bleiben flexibel und Ihr Auto passt sich Ihrem Bedarf an.",
         },
       ],
     },
@@ -58,37 +58,37 @@ const Deinem = () => {
           id: "welche-fahrzeuge",
           question: "Wie kann ich ein Auto Abo abschliessen?",
           answer:
-            "Das Abschliessen eines Auto Abos ist einfach: Wähle dein Wunschfahrzeug, bestimme Laufzeit und Kilometerleistung. Für die Bestellung füllst du deine Angaben online aus. Alles läuft transparent, ohne versteckte Kosten und ohne Anzahlung, so bist du in wenigen Schritten startklar.",
+            "Das Abschliessen eines Auto Abos ist einfach: Wählen Sie Ihr Wunschfahrzeug, bestimmen Sie Laufzeit und Kilometerleistung und füllen Sie Ihre Angaben online aus. Alles läuft transparent, ohne versteckte Kosten und ohne Anzahlung – so sind Sie in wenigen Schritten startklar.",
         },
         {
           id: "wie-abschliessen",
           question: "Welche Fahrzeuge stehen zur Auswahl?",
           answer:
-            "Wir bieten brandneue Autos vieler Marken, von wendigen Stadtflitzern bis zu geräumigen Familien-SUVs. Alle Modelle sind nach Schweizer Normen hochwertig ausgestattet und erfüllen höchste Ansprüche an Sicherheit und Komfort. Dank grösserer Bestellmengen profitieren unsere Kunden von attraktiven Preisen und modernen Fahrzeugen, ob Elektro-, Hybrid- oder Modelle mit klassischem Antrieb.",
+            "Wir bieten brandneue Autos vieler Marken, von wendigen Stadtflitzern bis zu geräumigen Familien-SUVs. Alle Modelle sind nach Schweizer Normen hochwertig ausgestattet und erfüllen höchste Ansprüche an Sicherheit und Komfort. Dank grosser Bestellmengen profitieren unsere Kundinnen und Kunden von attraktiven Preisen und modernen Fahrzeugen, ob Elektro-, Hybrid- oder Modelle mit klassischem Antrieb.",
         },
         {
           id: "lieferzeit",
           question: "Wie schnell ist ein Fahrzeug verfügbar?",
           answer:
-            "Viele Fahrzeuge sind sofort ab Lager verfügbar. Für die Disposition, Einlösung und Logistik benötigen wir in der Regel 2 bis 3 Wochen, bis dein Fahrzeug an deine Wunschadresse in der Schweiz geliefert wird.",
+            "Viele Fahrzeuge sind sofort ab Lager verfügbar. Für Disposition, Einlösung und Logistik benötigen wir in der Regel 2 bis 3 Wochen, bis Ihr Fahrzeug an Ihre Wunschadresse in der Schweiz geliefert wird.",
         },
         {
           id: "anpassen",
           question: "Kann ich die Laufzeit und Kilometer anpassen?",
           answer:
-            "Ja, du kannst Laufzeit und Kilometerleistung flexibel jährlich anpassen, ohne zusätzliche Gebühren. So bleibt dein Auto Abo immer perfekt auf deine aktuellen Fahrbedürfnisse abgestimmt.",
+            "Ja, Sie können Laufzeit und Kilometerleistung flexibel jährlich anpassen, ohne zusätzliche Gebühren. So bleibt Ihr Auto Abo immer perfekt auf Ihre aktuellen Fahrbedürfnisse abgestimmt.",
         },
         {
           id: "selbst",
           question: "Kann ich das Fahrzeug liefern lassen oder selbst abholen?",
           answer:
-            "Das Fahrzeug wird ausschliesslich an deine Wunschadresse in der Schweiz geliefert. Die Lieferung wird im Voraus mit unserer Logistikabteilung individuell abgestimmt, damit Termin und Ort perfekt zu dir passen.",
+            "Das Fahrzeug wird ausschliesslich an Ihre Wunschadresse in der Schweiz geliefert. Die Lieferung wird im Voraus mit unserer Logistikabteilung individuell abgestimmt, damit Termin und Ort perfekt zu Ihnen passen.",
         },
         {
           id: "lauft",
           question: "Wie läuft die Fahrzeugübernahme ab?",
           answer:
-            "Bei der Übergabe erhältst du dein neues Auto vollgetankt oder mit geladener Batterie sowie allen wichtigen Fahrzeugunterlagen. Die Übergabe wird im Voraus koordiniert, damit alles reibungslos und zu deinem gewünschten Übergabetermin erfolgt.",
+            "Bei der Übergabe erhalten Sie Ihr neues Auto vollgetankt oder mit geladener Batterie sowie alle wichtigen Fahrzeugunterlagen. Die Übergabe wird im Voraus koordiniert, damit alles reibungslos und zu Ihrem gewünschten Termin erfolgt.",
         },
       ],
     },
@@ -99,31 +99,31 @@ const Deinem = () => {
           id: "kosten-enthalten",
           question: "Was ist im monatlichen Preis enthalten?",
           answer:
-            "Im monatlichen Fixpreis ist alles enthalten, ausser Tanken oder Laden. Darin eingeschlossen sind Versicherung, Wartung, Reifenservice, Steuern, Zulassung, europaweite Pannenhilfe und bei Bedarf ein Ersatzfahrzeug ab dem ersten Tag.",
+            "Im monatlichen Fixpreis ist alles enthalten ausser Tanken oder Laden. Darin eingeschlossen sind Versicherung, Wartung, Reifenservice, Steuern, Zulassung, europaweite Pannenhilfe und bei Bedarf ein Ersatzfahrzeug ab dem ersten Tag.",
         },
         {
           id: "zusatzkosten",
           question: "Gibt es eine Anzahlung oder Kaution?",
           answer:
-            "Nein, bei uns ist keine Anzahlung oder Kaution erforderlich. Nach einer kurzen Bonitätsprüfung kannst du dein Auto Abo einfach, transparent und ohne Vorabkosten starten.",
+            "Nein, bei uns ist keine Anzahlung oder Kaution erforderlich. Nach einer kurzen Bonitätsprüfung können Sie Ihr Auto Abo einfach, transparent und ohne Vorabkosten starten.",
         },
         {
           id: "rate",
           question: "Wie erfolgt die Bezahlung der monatlichen Rate?",
           answer:
-            "Die monatliche Abo-Rate kannst du bequem per Lastschrift (LSV), Dauerauftrag oder Rechnung bezahlen. Die Rechnung wird jeweils Mitte des Monats für den Folgemonat ausgestellt. Eine Zahlung per Kreditkarte ist derzeit nicht möglich.",
+            "Die monatliche Abo-Rate können Sie bequem per Lastschrift (LSV), Dauerauftrag oder Rechnung bezahlen. Die Rechnung wird jeweils Mitte des Monats für den Folgemonat ausgestellt. Eine Zahlung per Kreditkarte ist derzeit nicht möglich.",
         },
         {
           id: "passiert",
           question: "Was passiert bei Mehrkilometern?",
           answer:
-            "Zusätzliche Kilometer werden nach Vertragsende transparent zu den vereinbarten Preisen für Mehrkilometer verrechnet. Du kannst deine Kilometerleistung während der Laufzeit jährlich flexibel und kostenlos anpassen, falls sich dein Fahrbedarf ändert.",
+            "Zusätzliche Kilometer werden nach Vertragsende transparent zu den vereinbarten Preisen für Mehrkilometer verrechnet. Sie können Ihre Kilometerleistung während der Laufzeit jährlich flexibel und kostenlos anpassen, falls sich Ihr Fahrbedarf ändert.",
         },
         {
           id: "geplant",
           question: "Was, wenn ich weniger Kilometer fahre als geplant?",
           answer:
-            "Nicht genutzte Kilometer werden am Vertragsende gemäss den vereinbarten Bedingungen gutgeschrieben. Auch die Preise für Minderkilometer werden im Voraus vertraglich festgelegt, damit alles transparent und fair geregelt ist.",
+            "Nicht genutzte Kilometer werden am Vertragsende gemäss den vereinbarten Bedingungen gutgeschrieben. Auch die Preise für Minderkilometer sind im Voraus vertraglich festgelegt, damit alles transparent und fair bleibt.",
         },
       ],
     },
@@ -135,7 +135,7 @@ const Deinem = () => {
           question: "Wie bin ich versichert?",
           answer: "",
           answer1:
-            "Bei uns bist du optimal geschützt, ohne komplizierte oder intransparente Tarifmodelle. Folgende Leistungen sind in jedem Auto Abo automatisch enthalten:",
+            "Bei uns sind Sie optimal geschützt, ohne komplizierte oder intransparente Tarifmodelle.Folgende Leistungen sind in jedem Auto Abo automatisch enthalten:",
           li1: "Haftpflichtversicherung ohne Selbstbeteiligung",
           li2: "Vollkaskoversicherung mit Grobfahrlässigkeitsschutz",
           li3: "Kollisionsschutz mit einer Selbstbeteiligung von",
@@ -147,34 +147,34 @@ const Deinem = () => {
         {
           id: "zusatzfahrer",
           question:
-            "Dürfen andere Personen wie Familienmitglieder oder Freunde das Fahrzeug fahren und sind sie dann auch versichert?",
+            "Dürfen andere Personen das Fahrzeug fahren und sind sie versichert??",
           answer:
-            "Ja, auch andere Personen dürfen dein Auto fahren, sofern sie mindestens 20 Jahre alt sind, eine gültige Fahrerlaubnis besitzen und in der Schweiz wohnhaft sind. Alle berechtigten Fahrer sind im Rahmen des Auto Abos versichert.",
+            "Ja, auch andere Personen dürfen Ihr Auto fahren, sofern sie mindestens 20 Jahre alt sind, eine gültige Fahrerlaubnis besitzen und in der Schweiz wohnhaft sind. Alle berechtigten Fahrerinnen und Fahrer sind im Rahmen des Auto Abos versichert.",
         },
         {
           id: "fahren",
           question: "Kann ich mit dem Auto ins Ausland fahren?",
           answer:
-            "Ja, du darfst mit deinem Fahrzeug in alle Länder reisen, die auf der grünen Versicherungskarte aufgeführt sind. Damit bist du auch im Ausland bestens abgesichert und profitierst vom umfassenden Versicherungsschutz deines Auto Abos.",
+            "Ja, Sie dürfen mit Ihrem Fahrzeug in alle Länder reisen, die auf der grünen Versicherungskarte aufgeführt sind. Damit sind Sie auch im Ausland bestens abgesichert und profitieren vom umfassenden Versicherungsschutz Ihres Auto Abos.",
         },
         {
           id: "schaden",
           question: "Wie hoch ist der Selbstbehalt bei einem Schaden?",
           answer:
-            "Alle unsere Kunden profitieren von einheitlich vorteilhaften Versicherungsbedingungen, ohne komplizierte Tarifmodelle oder versteckte Kosten. Der Selbstbehalt beträgt CHF 0 in der Haftpflichtversicherung, sowie CHF 500 für Privatkunden und CHF 1'000 für Firmenkunden im Rahmen der Vollkaskoversicherung.",
+            "Alle unsere Kundinnen und Kunden profitieren von einheitlich vorteilhaften Versicherungsbedingungen, ohne komplizierte Tarifmodelle oder versteckte Kosten. Der Selbstbehalt beträgt CHF 0 in der Haftpflichtversicherung sowie CHF 500 für Privatkunden und CHF 1'000 für Firmenkunden in der Vollkaskoversicherung.",
         },
         {
           id: "kratzer",
           question:
             "Wie werden Schäden oder Kratzer bei der Rückgabe bewertet?",
           answer:
-            "Normale Gebrauchsspuren sind selbstverständlich kein Problem. Nur übermässige Schäden oder fehlende Teile werden bei der Fahrzeugrückgabe gemäss den vereinbarten Bewertungsrichtlinien verrechnet. Alle Details findest du in unserem Leitfaden zur Fahrzeugrückgabe > (PDF)",
+            "Normale Gebrauchsspuren sind selbstverständlich kein Problem. Nur übermässige Schäden oder fehlende Teile werden bei der Fahrzeugrückgabe gemäss den vereinbarten Bewertungsrichtlinien verrechnet. Alle Details finden Sie in unserem Leitfaden zur Fahrzeugrückgabe (PDF).",
         },
         {
           id: "diebstahl",
           question: "Was passiert bei Totalschaden oder Diebstahl?",
           answer:
-            "Bei einem Totalschaden oder Diebstahl bist du vollumfänglich versichert. Du erhältst sofort ein Ersatzfahrzeug, damit du ohne Unterbruch mobil bleibst.",
+            "Bei einem Totalschaden oder Diebstahl sind Sie vollumfänglich versichert. Sie erhalten sofort ein Ersatzfahrzeug, damit Sie ohne Unterbruch mobil bleiben.",
         },
       ],
     },
@@ -185,26 +185,26 @@ const Deinem = () => {
           id: "wartung",
           question: "Wie erfolgt Wartung und Service?",
           answer:
-            "Den Fahrzeugservice kannst du bei jeder offiziellen Markenvertretung deiner Wahl durchführen lassen, idealerweise bei einer nächstgelegenen Partnergarage. Die Kosten für Wartung, Inspektionen und Verschleissreparaturen sind im Auto Abo bereits enthalten.",
+            "Den Fahrzeugservice können Sie bei jeder offiziellen Markenvertretung Ihrer Wahl durchführen lassen, idealerweise bei einer nächstgelegenen Partnergarage. Die Kosten für Wartung, Inspektionen und Verschleissreparaturen sind im Auto Abo bereits enthalten.",
         },
         {
           id: "ersatzfahrzeug",
           question: "Wie funktioniert der Reifenservice?",
           answer:
-            "Zweimal pro Jahr wirst du informiert, sobald dein Fahrzeug einen Wechsel auf Sommer- oder Winterreifen benötigt. Über unsere App kannst du deinen bevorzugten Reifenpartner selbst auswählen und den Termin direkt vereinbaren. Der Reifenservice inklusive Montage und Lagerung ist im Auto Abo bereits enthalten.",
+            "Zweimal pro Jahr werden Sie informiert, sobald Ihr Fahrzeug einen Wechsel auf Sommer- oder Winterreifen benötigt. Über unsere App können Sie Ihren bevorzugten Reifenpartner selbst auswählen und den Termin direkt vereinbaren. Der Reifenservice inklusive Montage und Lagerung ist im Auto Abo enthalten.",
         },
         {
           id: "meins",
           question:
             "Bekomme ich ein Ersatzfahrzeug, wenn meins in der Werkstatt ist?",
           answer:
-            "Ja, du erhältst ab dem ersten Tag ein Ersatzfahrzeug ohne Zusatzkosten. Bitte informiere den Servicepartner im Voraus, damit das Ersatzfahrzeug rechtzeitig für dich bereitsteht.",
+            "Ja, Sie erhalten ab dem ersten Tag ein Ersatzfahrzeug ohne Zusatzkosten. Bitte informieren Sie den Servicepartner im Voraus, damit das Ersatzfahrzeug rechtzeitig für Sie bereitsteht.",
         },
         {
           id: "meins2",
           question: "Was mache ich bei einer Panne?",
           answer:
-            "Ein Anruf unter 041 748 37 73 genügt, wir sind rund um die Uhr (24/7) für dich da. Die europaweite Pannenhilfe inklusive Abschlepp- und Bergungskosten ist im Auto Abo enthalten.",
+            "Ein Anruf unter 041 748 37 73 genügt – wir sind rund um die Uhr (24/7) für Sie da. Die europaweite Pannenhilfe inklusive Abschlepp- und Bergungskosten ist im Auto Abo enthalten.",
         },
       ],
     },
@@ -215,19 +215,19 @@ const Deinem = () => {
           id: "elektro-verfuegbar",
           question: "Sind Elektrofahrzeuge auch im Angebot?",
           answer:
-            "Ja, wir bieten eine grosse Auswahl an Elektro- und Hybridfahrzeugen und erweitern unser Angebot kontinuierlich. Damit fördern wir eine nachhaltige und zukunftsorientierte Mobilität in der Schweiz. > Link auf Angebote Privatkunden",
+            "Ja, wir bieten eine grosse Auswahl an Elektro- und Hybridfahrzeugen und erweitern unser Angebot kontinuierlich. Damit fördern wir eine nachhaltige und zukunftsorientierte Mobilität in der Schweiz. Link auf Angebote für Privatkunden",
         },
         {
           id: "nachhaltigkeit",
           question: "Wie funktioniert das Laden eines Elektroautos im Abo?",
           answer:
-            "Alle Elektrofahrzeuge werden mit einem Standard-Ladekabel geliefert, das für das Laden an einer haushaltsüblichen Steckdose geeignet ist. Für das regelmässige Laden zu Hause empfehlen wir die Installation einer Wallbox.",
+            "Alle Elektrofahrzeuge werden mit einem Standard-Ladekabel geliefert, das für das Laden an einer haushaltsüblichen Steckdose geeignet ist. Für das regelmässige Laden zu Hause empfehlen wir die Installation einer Wallbox",
         },
         {
           id: "nachhaltigkeit2",
-          question: "Was sind die Vorteile eines Elektro-Autos im Abo?",
+          question: "Was sind die Vorteile eines Elektroautos im Abo?",
           answer:
-            "Du profitierst von voller Kostenkontrolle, modernster Fahrzeugtechnologie und umweltfreundlicher Mobilität, ohne Aufwand für Wartung, Versicherung oder Batteriemanagement. So fährst du nachhaltig, komfortabel und sorglos durch die Schweiz und Europa.",
+            "Sie profitieren von voller Kostenkontrolle, modernster Fahrzeugtechnologie und umweltfreundlicher Mobilität, ohne Aufwand für Wartung, Versicherung oder Batteriemanagement. So fahren Sie nachhaltig, komfortabel und sorglos durch die Schweiz und Europa.",
         },
       ],
     },
@@ -238,49 +238,49 @@ const Deinem = () => {
           id: "laufzeit",
           question: "Für welche Laufzeit kann ich ein Fahrzeug beziehen?",
           answer:
-            "Du kannst dein Auto Abo bereits ab einer Laufzeit von 1 bis 48 Monaten abschliessen. Einige unserer neuen Fahrzeuge sind auch ab einem Monat verfügbar. Grundsätzlich gilt: Je länger die Laufzeit, desto günstiger ist der monatliche Abo-Preis.",
+            "Sie können Ihr Auto Abo bereits ab einer Laufzeit von 1 bis 48 Monaten abschliessen. Einige unserer neuen Fahrzeuge sind auch ab einem Monat verfügbar. Grundsätzlich gilt: Je länger die Laufzeit, desto günstiger ist der monatliche Abo-Preis.",
         },
         {
           id: "kuendigung",
           question: "Kann ich die Vertragszeit verlängern?",
           answer:
-            "Ja, du kannst die Laufzeit deines Auto Abos im letzten Vertragsjahr unkompliziert verlängern. Melde dich dafür einfach per E-Mail an [info@navigas-mobility.ch](mailto:info@navigas-mobility.ch) oder telefonisch unter 041 780 31 33.",
+            "Ja, Sie können die Laufzeit Ihres Auto Abos im letzten Vertragsjahr unkompliziert verlängern. Melden Sie sich dafür einfach per E-Mail an info@navigas-mobility.ch.",
         },
-        {
-          id: "kuendigung2",
-          question: "Wie funktioniert die Fahrzeugrückgabe?",
-          answer:
-            "Am Ende der Laufzeit wird dein Fahrzeug von einem unabhängigen Sachverständigen überprüft. Die Bewertung erfolgt nach den Richtlinien unseres Leitfadens für Fahrzeugrückgaben, damit alles fair und transparent abläuft.",
-        },
+        // {
+        //   id: "kuendigung2",
+        //   question: "Wie funktioniert die Fahrzeugrückgabe?",
+        //   answer:
+        //     "Am Ende der Laufzeit wird dein Fahrzeug von einem unabhängigen Sachverständigen überprüft. Die Bewertung erfolgt nach den Richtlinien unseres Leitfadens für Fahrzeugrückgaben, damit alles fair und transparent abläuft.",
+        // },
       ],
     },
-    "kontakt-support": {
-      title: "Kontakt & Support",
-      questions: [
-        {
-          id: "kontakt",
-          question: "An wen kann ich mich bei Fragen wenden?",
-          answer:
-            "Unser Team steht dir persönlich telefonisch, per E-Mail oder über das Kontaktformular zur Verfügung, wir helfen dir gerne weiter.",
-        },
-        {
-          id: "oeffnungszeiten",
-          question: "Wie erreiche ich den Pannenservice?",
-          answer:
-            "Bitte melde dich unter der Telefonnummer 041 748 37 73. Unsere Assistance ist 24 Stunden am Tag, 7 Tage die Woche für dich erreichbar, europaweit und ohne Zusatzkosten.",
-        },
-        {
-          id: "oeffnungszeiten2",
-          question: "Ich habe keine Antwort gefunden, was tun?",
-          answer:
-            "Kein Problem! Schreib uns einfach an [info@navigas-mobility.ch](mailto:info@navigas-mobility.ch), oder nutze das Kontaktformular. Wir melden uns schnellstmöglich bei dir.",
-        },
-      ],
-    },
+    // "kontakt-support": {
+    //   title: "Kontakt & Support",
+    //   questions: [
+    //     {
+    //       id: "kontakt",
+    //       question: "An wen kann ich mich bei Fragen wenden?",
+    //       answer:
+    //         "Unser Team steht dir persönlich telefonisch, per E-Mail oder über das Kontaktformular zur Verfügung, wir helfen dir gerne weiter.",
+    //     },
+    //     {
+    //       id: "oeffnungszeiten",
+    //       question: "Wie erreiche ich den Pannenservice?",
+    //       answer:
+    //         "Bitte melde dich unter der Telefonnummer 041 748 37 73. Unsere Assistance ist 24 Stunden am Tag, 7 Tage die Woche für dich erreichbar, europaweit und ohne Zusatzkosten.",
+    //     },
+    //     {
+    //       id: "oeffnungszeiten2",
+    //       question: "Ich habe keine Antwort gefunden, was tun?",
+    //       answer:
+    //         "Kein Problem! Schreib uns einfach an [info@navigas-mobility.ch](mailto:info@navigas-mobility.ch), oder nutze das Kontaktformular. Wir melden uns schnellstmöglich bei dir.",
+    //     },
+    //   ],
+    // },
   };
 
   const tabs = [
-    { id: "grundlagen", label: "Grundlagen" },
+    { id: "grundlagen", label: "Grundlagen zum Auto Abo" },
     {
       id: "auto-abo-fahrzeugwahl",
       label: "Auto Abo abschliessen & Fahrzeugwahl",
@@ -305,7 +305,7 @@ const Deinem = () => {
       id: "laufzeit-kuendigung",
       label: "Laufzeit, Kündigung & Rückgabe",
     },
-    { id: "kontakt-support", label: "Kontakt & Support" },
+    // { id: "kontakt-support", label: "Kontakt & Support" },
   ];
 
   // Filter questions based on search query
@@ -385,7 +385,7 @@ const Deinem = () => {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mt-18 md:mt-28">
       <div className="container mx-auto flex flex-col-reverse lg:flex-row items-center justify-between gap-10 lg:gap-[90px] px-4 lg:px-0">
         <div className="flex flex-col items-start justify-between gap-6 lg:gap-[40px] w-full lg:w-1/2 mb-10 lg:mb-0">
           <h1 className="text-[#0847A4] text-3xl sm:text-4xl lg:text-[48px] font-semibold leading-tight mt-10 lg:mt-0">

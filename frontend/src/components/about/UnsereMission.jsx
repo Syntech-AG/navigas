@@ -30,7 +30,7 @@ const UnsereMission = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Ihre Mobilität. <br className="hidden lg:block" /> Unser Anspruch.
+            Wir revolutionieren nicht den Autobesitz, sondern Ihr Fahrerlebnis
           </motion.h1>
 
           <motion.img

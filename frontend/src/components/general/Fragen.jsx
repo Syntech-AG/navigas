@@ -7,20 +7,22 @@ const Fragen = () => {
     {
       question: "Worin unterscheidet sich FlexRent vom Auto Abo?",
       answer:
-        "FlexRent ist noch flexibler: ab 1 Monat, ideal fur temporare Einsatze. Das Abo ist fur langere, planbare Laufzeiten konzipiert.",
+        "FlexRent ist die kurzfristige Mobilitätslösung für Unternehmen und Privatkunden, die nur für wenige Wochen oder Monate ein Fahrzeug benötigen. Das Auto Abo eignet sich hingegen für längere, planbare Laufzeiten. Mit FlexRent bleiben Sie maximal flexibel, ab 1 Monat und ohne langfristige Verpflichtungen.",
     },
     {
-      question: "Wie schnell ist die Lieferung?",
-      answer: "Die Lieferung erfolgt in der Regel innerhalb von 2-3 Werktagen.",
-    },
-    {
-      question: "Welche Kilometer sind enthalten?",
-      answer: "Die enthaltenen Kilometer variieren je nach gewähltem Paket.",
-    },
-    {
-      question: "Kann ich das Fahrzeug tauschen?",
+      question: "Wie schnell kann das Fahrzeug geliefert werden?",
       answer:
-        "Ja, ein Fahrzeugtausch ist unter bestimmten Bedingungen möglich.",
+        "Fahrzeuge ab Lager werden innerhalb von 48 Stunden an Ihren gewünschten Übergabeort geliefert. Wenn es besonders eilig ist, bieten wir für CHF 150.– (exkl. MwSt.) eine Expresslieferung bereits am Folgetag an, bei Bestellung bis 12 Uhr Mittag.",
+    },
+    {
+      question: "Wie viele Kilometer sind im Monat enthalten?",
+      answer:
+        "Im monatlichen Mietpreis sind 3’000 Kilometer enthalten. Zusätzliche Kilometer werden transparent und fair zum vereinbarten Preis verrechnet. Damit behalten Sie jederzeit die volle Kostenkontrolle.",
+    },
+    {
+      question: "Kann ich das Fahrzeug wechseln oder die Laufzeit anpassen?",
+      answer:
+        "Ja, Sie können das Fahrzeug jederzeit wechseln oder die Laufzeit flexibel anpassen, beispielsweise bei geänderten Projekten, Personalbedarf oder neuen Anforderungen. So bleiben Sie mit FlexRent jederzeit mobil und unabhängig.",
     },
   ];
 
@@ -31,7 +33,7 @@ const Fragen = () => {
   return (
     <div className="container mx-auto flex flex-col md:flex-row items-center justify-between pt-[30px] md:pt-[180px] pb-[40px] md:pb-[110px]">
       <div>
-        <h1 className="text-[#010101] text-[48px]">Häufig Fragen</h1>
+        <h1 className="text-[#010101] text-[48px]">Häufige Fragen</h1>
       </div>
       <div className="flex flex-col gap-4 w-full md:w-1/2 mt-22 md:mt-6">
         {faqs.map((faq, index) => (

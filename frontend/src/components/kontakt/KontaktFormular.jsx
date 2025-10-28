@@ -12,13 +12,13 @@ export default function KontaktSection() {
       <img
         src="/images/form-mobile.png"
         alt=""
-        className="block md:hidden h-[1400px]"
+        className="block md:hidden h-[1400px] w-full"
       />
 
       <div className="absolute inset-0">
         <div className="mx-auto flex h-full w-full container flex-col justify-center gap-10 p-6 md:p-10">
-          <div className="grid grid-cols-1 items-center gap-10 md:gap-40 lg:grid-cols-2">
-            <motion.div
+          <div className="flex flex-row justify-between w-full items-center ">
+            {/* <motion.div
               className="flex flex-col items-start"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -57,25 +57,30 @@ export default function KontaktSection() {
                   </motion.div>
                 ))}
               </motion.div>
-            </motion.div>
+            </motion.div> */}
 
             <motion.div
-              className="flex flex-col items-start"
+              className="flex flex-col lg:flex-row justify-between items-start lg:items-center w-full"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
               <motion.div
-                className="mb-5 flex flex-row items-center justify-start gap-3"
+                className="mb-5 "
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <img src="/images/line.svg" alt="" />
-                <h1 className="text-[14px] uppercase text-[#0847A4]">
-                  Die Fahrt beginnt hier
+                <div className="flex flex-row items-center justify-start gap-3">
+                  <img src="/images/line.svg" alt="" />
+                  <h1 className="text-[14px] uppercase text-[#0847A4]">
+                    Die Fahrt beginnt hier
+                  </h1>
+                </div>
+                <h1 className="text-[36px] font-semibold text-[#010101] md:text-[48px]">
+                  Ihre Mobilität beginnt <br /> mit einem Klick
                 </h1>
               </motion.div>
 
@@ -86,16 +91,10 @@ export default function KontaktSection() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 }}
               >
-                <h1 className="text-[36px] font-semibold text-[#010101] md:text-[48px]">
-                  Ihre Reise beginnt mit einem Klick
-                </h1>
                 <p className="text-[#494B4E]">
-                  Ob Fragen, Beratung oder ein individuelles Angebot – unser
-                  Team ist
-                  <br />
-                  nur eine Nachricht entfernt. Füllen Sie <br />
-                  das Formular aus oder rufen Sie uns an, und wir kümmern uns um
-                  den Rest.
+                  Ob Beratung, individuelles Angebot oder Fahrzeuganfrage, wir
+                  sind für Sie da. <br /> Füllen Sie das Formular aus, und wir
+                  melden uns schnellstmöglich persönlich bei Ihnen.
                 </p>
               </motion.div>
             </motion.div>

@@ -21,7 +21,7 @@ const HomeStart = () => {
       <div className="container flex justify-center items-center md:h-screen z-999 top-80 md:top-0 relative">
         <div className="flex flex-col gap-6 justify-center items-center">
           <h1 className="2xl:text-[80px] lg:text-[70px] md:text-[65px] text-[38px] font-semibold text-white text-center">
-            Navigas Auto Abo: <br />
+            Navigas Auto Abo <br />
             Service-Plus zum besten Preis
           </h1>
           <p className="2xl:text-[24px] lg:text-[20px] md:text-[18px] text-[14px] font-medium text-white text-center">

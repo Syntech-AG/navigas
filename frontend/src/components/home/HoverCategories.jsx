@@ -28,7 +28,7 @@ const items = [
   },
   {
     title: "Elektro",
-    title2: "Elektro",
+    title2: "Elektrisch",
     src: "/images/vans.png",
     src2x: "/images/vans@2x.png",
     src3x: "/images/vans@3x.png",
@@ -53,25 +53,39 @@ export default function HoverCategories() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Pulse effect for mobile - automatically toggle images
   useEffect(() => {
     if (!isMobile) return;
 
     const pulseInterval = setInterval(() => {
       setShowImages((prev) => !prev);
-    }, 2000); // Change every 3 seconds
+    }, 2000);
 
     return () => clearInterval(pulseInterval);
   }, [isMobile]);
 
   const handleCategoryClick = (category) => {
     navigate(`/privatkunden?fahrzeugart=${category}`);
+    window.scrollTo(0, 0);
+  };
+
+  const handleCategoryClick2 = (category2) => {
+    navigate(`/privatkunden?treibstoff=${category2}`);
+    window.scrollTo(0, 0);
+  };
+
+  // Helper function to determine which handler to use
+  const handleItemClick = (item) => {
+    if (item.title === "Elektro") {
+      handleCategoryClick2(item.title2);
+    } else {
+      handleCategoryClick(item.title2);
+    }
   };
 
   const handleInteraction = (index) => {
     if (isMobile) {
       if (hoveredIndex === index) {
-        handleCategoryClick(items[index].title2);
+        handleItemClick(items[index]);
       } else {
         setHoveredIndex(index);
       }
@@ -93,13 +107,11 @@ export default function HoverCategories() {
             onFocus={() => setHoveredIndex(i)}
             onBlur={() => setHoveredIndex(null)}
             onClick={() =>
-              isMobile ? handleInteraction(i) : handleCategoryClick(item.title2)
+              isMobile ? handleInteraction(i) : handleItemClick(item)
             }
             tabIndex={0}
             role="button"
-            onKeyDown={(e) =>
-              e.key === "Enter" && handleCategoryClick(item.title2)
-            }
+            onKeyDown={(e) => e.key === "Enter" && handleItemClick(item)}
           >
             <img
               src="/images/blueBg.png"

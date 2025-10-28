@@ -9,22 +9,31 @@ import Funktioniert from "../components/costumer/Funktioniert";
 import Nachrichten from "../components/about/Nachrichten";
 import Effizienz2 from "../components/costumer/Effizienz2";
 import ScrollToTop from "../components/general/ScrollToTop";
+import AboutStart2 from "../components/about/AboutStart2";
 
 const Customer = () => {
   return (
     <div>
       <ScrollToTop />
-      <AboutStart
+      <AboutStart2
         src="/images/autoBg.png"
         title="Auto Abo Pro"
+        paragraph="Mit Navigas bleiben Sie und Ihr Unternehmen jederzeit mobil, ohne langfristige Verpflichtungen"
         mobileSrc="images/mobileAuto.png"
       />
       {/* <HoverCategories2 /> */}
       <Effizienz />
       <LogoSlider />
+
+      <div className="container mx-auto mt-30">
+        {" "}
+        <h1 className="text-[#010101] text-3xl sm:text-4xl md:text-5xl lg:text-[54px] font-semibold text-center leading-snug">
+          Was ist alles dabei im Auto Abo Pro?
+        </h1>
+      </div>
+      <ServicesType />
       <Dabei />
       <Effizienz2 />
-      <ServicesType />
       {/* <Funktioniert /> */}
       <Nachrichten />
     </div>

@@ -16,11 +16,9 @@ const KontaktInfo = () => {
           </h1>
 
           <p className="text-[#494B4E] text-[15px] sm:text-[16px] leading-relaxed">
-            Für Fragen und zusätzliche Informationen stehen wir Ihnen gerne zur
-            Verfügung. Sie können uns während unserer Büro-Öffnungszeiten von
-            Montag bis Freitag telefonisch kontaktieren oder auch einen Termin
-            für eine persönliche Beratung vereinbaren. Wir sind gerne für Sie
-            da.
+            Ob Fragen zu Ihrem Auto Abo oder individuelle Angebote, unser Team
+            hilft Ihnen gerne weiter. Rufen Sie uns an oder schreiben Sie uns,
+            wir freuen uns auf Ihre Nachricht.
           </p>
         </div>
         <div className="flex flex-col items-start justify-between gap-6 lg:gap-[24px] w-full">
@@ -61,7 +59,7 @@ const KontaktInfo = () => {
         </div>
         <div className="w-full">
           <hr className="text-[#B4B6BC] w-full" />
-          <a
+          {/* <a
             href="https://www.google.com/maps/place/Navigas+Services+GmbH/@47.0356537,7.3126262,1397m/data=!3m1!1e3!4m10!1m2!2m1!1sCh%C3%BCsseberg+19,+3267+Seedorf,+Switzerland!3m6!1s0x479000492f8060ef:0xf5db510a1153c7fd!8m2!3d47.0356502!4d7.3152065!15sCilDaMO8c3NlYmVyZyAxOSwgMzI2NyBTZWVkb3JmLCBTd2l0emVybGFuZJIBC2F1dG9fbWFya2V04AEA!16s%2Fg%2F11hzvdrc9_?entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D"
             className=""
           >
@@ -73,7 +71,7 @@ const KontaktInfo = () => {
               <p>Chüsseberg 19</p>
               <p>CH-3267 Seedorf BE</p>
             </div>
-          </a>
+          </a> */}
         </div>
       </div>
       <div className="w-full lg:w-1/2 flex flex-row items-center justify-center lg:justify-end mt-8 lg:mt-0">

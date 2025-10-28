@@ -7,6 +7,7 @@ import AboutStart from "../components/about/AboutStart";
 import ScrollToTop from "../components/general/ScrollToTop";
 import Nachrichten from "../components/about/Nachrichten";
 import Abonnieren from "../components/general/Abonnieren";
+import AboutStart2 from "../components/about/AboutStart2";
 
 const INITIAL_FILTERS = {
   autoname: "",
@@ -28,6 +29,15 @@ const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
       }));
     }
   }, [searchParams]);
+  useEffect(() => {
+    const treibstoff = searchParams.get("treibstoff");
+    if (treibstoff) {
+      setFilters((prev) => ({
+        ...prev,
+        treibstoff: [treibstoff],
+      }));
+    }
+  }, [searchParams]);
 
   const memoizedFilters = useMemo(
     () => filters,
@@ -42,9 +52,10 @@ const FilteredCarPage = ({ pricingType = PRICING_TYPE.NORMAL }) => {
   return (
     <div>
       {/* <ScrollToTop /> */}
-      <AboutStart
+      <AboutStart2
         src="images/filter.png "
-        title="Privatkunden"
+        title="Ihr Auto Abo all-inclusive, flexibel und einfach"
+        paragraph="Finden Sie Ihr passendes Fahrzeug, schweizweit geliefert und bei jeder offiziellen Markenvertretung gewartet."
         mobileSrc="images/filterMobile.png"
       />
       <div className="container mx-auto p-4 md:p-8">

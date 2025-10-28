@@ -6,13 +6,15 @@ import Verantwortung from "../components/about/Verantwortung";
 import Nachrichten from "../components/about/Nachrichten";
 import ScrollToTop from "../components/general/ScrollToTop";
 import Abonnieren from "../components/general/Abonnieren";
+import AboutStart2 from "../components/about/AboutStart2";
 const About = () => {
   return (
     <div>
       <ScrollToTop />
-      <AboutStart
+      <AboutStart2
         src="/images/aboutStart.png"
-        title="Über uns"
+        title="Unser Antrieb"
+        paragraph="Mobilität, wie sie sein soll. Einfach, fair und auf Ihre Bedürfnisse zugeschnitten"
         mobileSrc="/images/aboutMobile.png"
       />
       <UnsereMission />

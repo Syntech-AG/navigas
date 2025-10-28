@@ -32,7 +32,7 @@ const Unverbindlich = () => {
             Jetzt unverbindlich
           </h1>
           <h2 className="text-4xl md:text-5xl lg:text-6xl  text-white/30 mb-8">
-            angragen
+            anfragen
           </h2>
           <p className="text-lg md:text-xl mb-12 text-white">
             Teilen Sie uns kurz Ihre Anforderungen mit - wir melden uns <br />

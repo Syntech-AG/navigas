@@ -10,11 +10,11 @@ const Faq = () => {
   return (
     <div>
       <ScrollToTop />
-      <AboutStart
+      {/* <AboutStart
         src="/images/faqPhoto.png"
         title="FAQ"
         mobileSrc="/images/mobileFaq.png"
-      />
+      /> */}
       {/* <Angebot /> */}
       <Deinem />
       <Abonnieren />
