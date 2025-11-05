@@ -11,6 +11,7 @@ const Nachrichten = () => {
         "solicare ermöglicht eine Entlöhnung und professionelle Unterstützung für p...",
       date: "Sep. 5, 2022",
       comments: "0 Comments",
+      link: "/blogs/blog2",
     },
     {
       image: "/images/image 15.png",
@@ -19,6 +20,7 @@ const Nachrichten = () => {
         "Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender",
       date: "Jan. 21, 2022",
       comments: "0 Comments",
+      link: "/blogs/blog6",
     },
     {
       image: "/images/image 17.png",
@@ -26,6 +28,7 @@ const Nachrichten = () => {
       title: "Die Elektrifizierungsstrategie der Fahrzeughersteller",
       date: "Okt. 4, 2021",
       comments: "0 Comments",
+      link: "/blogs/blog5",
     },
   ];
 
@@ -76,23 +79,7 @@ const Nachrichten = () => {
               whileTap={{ scale: 0.95 }}
               className="bg-[#0847A4] text-white text-[13px] rounded-xl px-8 py-3 font-medium tracking-wide flex items-center gap-2 transition-all duration-300 whitespace-nowrap"
             >
-              <span className="flex items-center gap-2">
-                Alle anzeigen
-                {/* <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg> */}
-              </span>
+              <span className="flex items-center gap-2">Alle anzeigen</span>
             </motion.button>
           </Link>
         </motion.div>
@@ -100,43 +87,44 @@ const Nachrichten = () => {
 
       <div className="flex flex-col md:flex-row items-start justify-between mt-[45px] gap-6 w-full container mx-auto">
         {newsItems.map((item, index) => (
-          <motion.div
-            key={index}
-            className="text-[#050505] flex-1 w-full cursor-pointer"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay: index * 0.15 }}
-            whileHover={{ y: -10 }}
-          >
-            <div className="overflow-hidden rounded-lg">
-              <motion.img
-                src={item.image}
-                srcSet={`${item.image} 1x, ${item.image.replace(
-                  ".png",
-                  "@2x.png"
-                )} 2x, ${item.image.replace(".png", "@3x.png")} 3x`}
-                alt={item.title}
-                className="w-full h-auto object-cover transition-transform duration-500"
-                loading="lazy"
-                decoding="async"
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-              />
-            </div>
-            <motion.h1
-              className="text-[14px] font-bold uppercase tracking-[2px] mt-2"
-              whileHover={{ x: 5 }}
-              transition={{ duration: 0.3 }}
+          <Link to={item.link} key={index} className="flex-1 w-full">
+            <motion.div
+              className="text-[#050505] cursor-pointer"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              whileHover={{ y: -10 }}
             >
-              {item.category}
-            </motion.h1>
-            <h1 className="text-[18px] font-bold mt-1">{item.title}</h1>
-            <div className="flex flex-row items-center justify-start w-full text-[#909491] text-[14px] gap-3 mt-2">
-              <h1>{item.date}</h1>
-              <h1>{item.comments}</h1>
-            </div>
-          </motion.div>
+              <div className="overflow-hidden rounded-lg">
+                <motion.img
+                  src={item.image}
+                  srcSet={`${item.image} 1x, ${item.image.replace(
+                    ".png",
+                    "@2x.png"
+                  )} 2x, ${item.image.replace(".png", "@3x.png")} 3x`}
+                  alt={item.title}
+                  className="w-full h-auto object-cover transition-transform duration-500"
+                  loading="lazy"
+                  decoding="async"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                />
+              </div>
+              <motion.h1
+                className="text-[14px] font-bold uppercase tracking-[2px] mt-2"
+                whileHover={{ x: 5 }}
+                transition={{ duration: 0.3 }}
+              >
+                {item.category}
+              </motion.h1>
+              <h1 className="text-[18px] font-bold mt-1">{item.title}</h1>
+              <div className="flex flex-row items-center justify-start w-full text-[#909491] text-[14px] gap-3 mt-2">
+                <h1>{item.date}</h1>
+                <h1>{item.comments}</h1>
+              </div>
+            </motion.div>
+          </Link>
         ))}
       </div>
     </div>

@@ -1,20 +1,25 @@
 import React from "react";
 
 const partners = [
-  { src: "/images/bmwLogo.svg", alt: "Partner 1" },
-  { src: "/images/porscheLogo.svg", alt: "Partner 2" },
-  { src: "/images/fiatLogo.svg", alt: "Partner 3" },
-  { src: "/images/mercedesLogo.svg", alt: "Partner 4" },
-  { src: "/images/renaultLogo.svg", alt: "Partner 5" },
-  { src: "/images/polestarLogo.svg", alt: "Partner 6" },
-  { src: "/images/daciaLogo.svg", alt: "Partner 7" },
+  { src: "/images/car1.png", alt: "Partner 1" },
+  { src: "/images/car2.png", alt: "Partner 2" },
+  { src: "/images/car3.png", alt: "Partner 3" },
+  { src: "/images/car1.png", alt: "Partner 1" },
+  { src: "/images/car2.png", alt: "Partner 2" },
+  { src: "/images/car3.png", alt: "Partner 3" },
 ];
 
 const LogoSlider = () => {
   const Logos = ({ items }) => (
     <div className="slide">
       {items.map((logo, i) => (
-        <img className="px-20" key={i} src={logo.src} alt={logo.alt} />
+        <div key={i} className="flex flex-col items-center px-20">
+          <img
+            className="h-auto w-auto object-contain"
+            src={logo.src}
+            alt={logo.alt}
+          />
+        </div>
       ))}
     </div>
   );

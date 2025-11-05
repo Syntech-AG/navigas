@@ -23,7 +23,7 @@ function Home() {
       <ScrollToTop />
       <HomeStart />
       <LogoSlider />
-      <hr className="w-full h-[1px] text-[#d2d0d0]" />
+
       <HoverCategories />
       <Auto />
       <ServicesType />

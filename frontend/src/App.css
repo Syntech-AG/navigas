@@ -62,8 +62,14 @@
 .slider-track {
   display: flex;
   width: max-content;
-  animation: scroll 10s linear infinite;
+  animation: scroll 15s linear infinite;
   will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .slider-track {
+    animation-duration: 18s;
+  }
 }
 
 .slide {

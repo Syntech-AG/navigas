@@ -1,46 +1,54 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useNavigate } from "react-router-dom"; // Add this import
 
 const articles = [
   {
     id: 1,
-    img: "/images/blog2.png",
+    img: "/images/blog1.png",
     title: `Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender`,
     date: "21 Januar 2022",
+    link: "/blogs/blog6",
   },
   {
     id: 2,
     img: "/images/blog2.png",
-    title: `Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender`,
-    date: "10 Februar 2022",
+    title: `Die Elektrifizierungsstrategie der Fahrzeughersteller`,
+    date: "4 Oktober 2021",
+    link: "/blogs/blog5",
   },
   {
     id: 3,
-    img: "/images/blog2.png",
-    title: `Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender`,
-    date: "05 März 2022",
+    img: "/images/blog3.png",
+    title: `Mobilität und Immobilien`,
+    date: "21 Januar 2022",
+    link: "/blogs/blog1",
   },
   {
     id: 4,
-    img: "/images/blog2.png",
-    title: `Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender`,
-    date: "15 April 2022",
+    img: "/images/blog4.png",
+    title: `Solicare ermöglicht eine Entlöhnung und professionelle Unterstützung für pflegende Angehörige`,
+    date: "4 Oktober 2021",
+    link: "/blogs/blog2",
   },
   {
     id: 5,
-    img: "/images/blog2.png",
-    title: `Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender`,
-    date: "15 April 2022",
+    img: "/images/blog5.png",
+    title: `Vernetzte Fahrzeuge`,
+    date: "4 Oktober 2021",
+    link: "/blogs/blog3",
   },
   {
     id: 6,
-    img: "/images/blog2.png",
-    title: `Hybrid-, Plug-in-Hybrid- oder Elektrofahrzeuge mit Range-Extender`,
-    date: "15 April 2022",
+    img: "/images/blog6.png",
+    title: `Medienmitteilung navigas mobility`,
+    date: "4 Oktober 2021",
+    link: "/blogs/blog4",
   },
 ];
 
 const News = () => {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(2);
   const maxIndex = Math.ceil(articles.length / visibleCount) - 1;
@@ -111,7 +119,7 @@ const News = () => {
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
         <motion.div
-          className="flex flex-row items-center justify-between border-[#D3D3D3] border py-8 md:py-0 px-0"
+          className="flex flex-row items-center justify-between border-none md:border md:border-solid md:border-[#D3D3D3] py-8 md:py-0 px-0"
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -148,7 +156,7 @@ const News = () => {
           </div>
         </motion.div>
 
-        <div className="overflow-x-auto md:overflow-hidden -mx-4 md:mx-0">
+        <div className="overflow-hidden -mx-4 md:mx-0">
           <motion.div
             className="flex"
             animate={{
@@ -163,7 +171,7 @@ const News = () => {
               width: `${(100 / visibleCount) * articles.length}%`,
             }}
           >
-            {articles.map(({ id, img, title, date }, index) => (
+            {articles.map(({ id, img, title, date, link }, index) => (
               <motion.div
                 key={id}
                 className="py-8 px-6 md:py-[35px] md:px-[25px] border-[#D3D3D3] border flex-shrink-0 md:flex-shrink md:w-auto group"
@@ -185,25 +193,34 @@ const News = () => {
                     transition={{ duration: 0.4 }}
                   />
                 </div>
-
-                <div className="mt-5 md:mt-[20px]">
-                  <h1 className="text-[18px] md:text-[20px] text-black">
-                    {title}
-                  </h1>
-                </div>
-
-                <div className="flex flex-row items-center justify-between mt-6 md:mt-[95px]">
-                  <div>
-                    <h1 className="text-sm md:text-base">{date}</h1>
+                <div className="h-40 md:h-60 flex flex-col justify-between">
+                  <div className="mt-5 md:mt-[20px]">
+                    <h1 className="text-[18px] md:text-[20px] text-black">
+                      {title}
+                    </h1>
                   </div>
+                  <div className="flex flex-row items-center justify-between ">
+                    <div>
+                      <h1 className="text-sm md:text-base">{date}</h1>
+                    </div>
 
-                  <motion.div
-                    className="bg-[#E8EBF1] p-3 md:p-4 rounded-[4px] flex items-center"
-                    whileHover={{ backgroundColor: "#D8DBE6" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <img src="/images/rightArroww.svg" alt="" />
-                  </motion.div>
+                    <motion.div
+                      onClick={() => navigate(link)}
+                      className="bg-[#E8EBF1] p-3 md:p-4 rounded-[4px] flex items-center cursor-pointer"
+                      whileHover={{ backgroundColor: "#D8DBE6", scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      transition={{ duration: 0.2 }}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          navigate(link);
+                        }
+                      }}
+                    >
+                      <img src="/images/rightArroww.svg" alt="Read more" />
+                    </motion.div>
+                  </div>
                 </div>
               </motion.div>
             ))}

@@ -8,7 +8,7 @@ const items = [
     src: "/images/sportwagen.png",
     src2x: "/images/sportwagen@2x.png",
     src3x: "/images/sportwagen@3x.png",
-    text: "",
+    text: "Ideal für Stadtfahrten – wendig, sparsam und unkompliziert unterwegs.",
   },
   {
     title: "Kompakt",
@@ -16,15 +16,15 @@ const items = [
     src: "/images/luxuslimousinen.png",
     src2x: "/images/luxuslimousinen@2x.png",
     src3x: "/images/luxuslimousinen@3x.png",
-    text: "",
+    text: "Perfekte Balance aus Komfort, Platz und Effizienz für den Alltag.",
   },
   {
     title: "SUVs",
     title2: "SUV",
-    src: "/images/suv.png",
+    src: "/images/suv@2x.png",
     src2x: "/images/suv@2x.png",
     src3x: "/images/suv@3x.png",
-    text: "",
+    text: "Mehr Raum, Leistung und Sicherheit – für Business und Familie zugleich.",
   },
   {
     title: "Elektro",
@@ -32,7 +32,7 @@ const items = [
     src: "/images/vans.png",
     src2x: "/images/vans@2x.png",
     src3x: "/images/vans@3x.png",
-    text: "",
+    text: "Nachhaltig und modern – fahren Sie emissionsfrei mit neuester Technologie.",
   },
 ];
 
@@ -73,7 +73,6 @@ export default function HoverCategories() {
     window.scrollTo(0, 0);
   };
 
-  // Helper function to determine which handler to use
   const handleItemClick = (item) => {
     if (item.title === "Elektro") {
       handleCategoryClick2(item.title2);
@@ -148,7 +147,7 @@ export default function HoverCategories() {
                     {item.title}
                   </h1>
                   <img
-                    className="max-w-[31px]"
+                    className={`max-w-[31px] ${isHovered ? "rotate-35" : ""}`}
                     src="/images/whiteArrow.svg"
                     alt=""
                     loading="lazy"
